@@ -1,38 +1,87 @@
-.App {
+body {
+  overflow: hidden;
+}
+
+.app {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: flex-start; /* Align to the top of the container vertically */
+  height: 100vh; /* Take up the full height of the viewport */
+  background-color: burlywood;
+}
+
+.container {
+  display: flex;
+  flex-direction: row; /* Arrange children horizontally */
+  align-items: stretch; /* Make both areas stretch to match height */
+  width: 100%; /* Expand to the full width of the container */
+  max-width: 800px; /* Adjust the maximum width as needed */
+  justify-content: center;
+  background-color: transparent;
+}
+
+.left-column {
+  display: flex;
+  flex-direction: column; 
+  background-color: white;
+}
+
+.photo-area {
+  position: relative;
+  border: 1px solid #ccc;
+  overflow: hidden;
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.manipulate-button {
+  position: relative;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.right-column {
+  display: flex;
+  flex-direction: column; 
+  justify-content:space-between;
+  z-index: 0;
+}
+
+.option-area {
+  display: flex;
+  flex-direction: column; 
+  position: relative;
+  border-top: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  overflow: hidden;
+}
+
+.uploaded-photo, .example-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.instruction-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: white;
+  padding: 10px;
+  border: 1px solid #ccc;
+  /* Adjust positioning as needed */
+}
+
+.preview-container {
+  margin-top: 1em; /* Add some space above the preview */
+  border: 1px solid #ccc; /* Add a border around the preview */
+  overflow: hidden; /* Hide overflow */
+  background-color: white;
+  align-self:center;
+}
+
+.cropped-preview {
+  max-width: 100%;
+  max-height: 100%;
 }
