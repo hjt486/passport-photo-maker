@@ -7,7 +7,20 @@ import './App.css';
 const INITIAL_ZOOM = 1;
 const INITIAL_ROTATION = 0;
 
-const LeftColumn = ({ photo, setPhoto, options, zoom, setZoom, rotation, setRotation, setCroppedImage, editorRef, editorWidth, editorHeight, photoGuides }) => {
+const LeftColumn = ({
+  photo,
+  setPhoto,
+  options,
+  zoom,
+  setZoom,
+  rotation,
+  setRotation,
+  setCroppedImage,
+  editorRef,
+  editorWidth,
+  editorHeight,
+  photoGuides,
+}) => {
   const handleDrag = () => {
     // Update the preview when a drag event occurs
     updatePreview(editorRef, setCroppedImage);
@@ -50,29 +63,52 @@ const LeftColumn = ({ photo, setPhoto, options, zoom, setZoom, rotation, setRota
     });
   };
 
-  // Handle mouse scroll for zooming
   const handleMouseScroll = (event) => {
-    // Check if user is scrolling up (zoom in) or down (zoom out)
     const delta = event.deltaY;
     if (delta > 0) {
-      // Scroll down (zoom out)
       setZoom((prevZoom) => Math.max(1, prevZoom - 0.05));
     } else {
-      // Scroll up (zoom in)
       setZoom((prevZoom) => Math.min(10, prevZoom + 0.05));
     }
 
     updatePreview(editorRef, setCroppedImage, rotation);
   };
 
+  const preventDefault = useCallback((e) => {
+    e.preventDefault();
+  }, []);
+
+  const handleMouseEnter = () => {
+    // Prevent scroll when the mouse enters
+    document.addEventListener('wheel', preventDefault, { passive: false });
+  };
+
+  const handleMouseLeave = () => {
+    // Allow scroll when the mouse leaves
+    document.removeEventListener('wheel', preventDefault, { passive: false });
+  };
+
+  useEffect(() => {
+    const photoArea = document.querySelector('.photo-area');
+    if (photoArea) {
+      photoArea.addEventListener('wheel', preventDefault, { passive: false });
+      return () => photoArea.removeEventListener('wheel', preventDefault, { passive: false });
+    }
+  }, [preventDefault]);
+
   return (
-    <div className="left-column">
-      <div className="photo-area" onWheel={handleMouseScroll} style={{ position: 'relative', width: `${editorWidth}px`, height: `${editorHeight}px` }}>
-        {
-          !photo && (
-            <>No Photo is Loaded</>
-          )
-        }
+    <div className="left-column"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}>
+      <div
+        className="photo-area"
+        style={{
+          position: 'relative',
+          width: `${editorWidth}px`,
+          height: `${editorHeight}px`,
+        }}
+      >
+        {!photo && <>No Photo is Loaded</>}
         {photo && (
           <AvatarEditor
             ref={editorRef}
@@ -87,28 +123,33 @@ const LeftColumn = ({ photo, setPhoto, options, zoom, setZoom, rotation, setRota
             onWheel={handleMouseScroll}
           />
         )}
-        {options.example && <img src="/Example.png" alt="Example" className="example-photo" />}
+        {options.example && (
+          <img src="/Example.png" alt="Example" className="example-photo" />
+        )}
       </div>
       {photo && options.guide && (
         <GuideDrawer guides={photoGuides} editorDimensions={{ width: editorWidth, height: editorHeight }} />
       )}
-      {photo && (<div className="controls">
-        <input
-          type="range"
-          min="1"
-          max="5"
-          step="0.01"
-          value={zoom}
-          onChange={handleZoomChange}
-        />
-        <button onClick={handleZoomOut}>-</button>
-        <button onClick={handleZoomIn}>+</button>
-        <button onClick={handleRotateCounterclockwise}>⤽</button>
-        <button onClick={handleRotateClockwise}>⤼</button>
-      </div>)}
+      {photo && (
+        <div className="controls">
+          <input
+            type="range"
+            min="1"
+            max="5"
+            step="0.01"
+            value={zoom}
+            onChange={handleZoomChange}
+          />
+          <button onClick={handleZoomOut}>-</button>
+          <button onClick={handleZoomIn}>+</button>
+          <button onClick={handleRotateCounterclockwise}>⤽</button>
+          <button onClick={handleRotateClockwise}>⤼</button>
+        </div>
+      )}
     </div>
   );
 };
+
 
 // Function to update the preview
 const updatePreview = (editorRef, setCroppedImage) => {
