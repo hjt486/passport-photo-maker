@@ -1,7 +1,10 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react'
 import AvatarEditor from 'react-avatar-editor'
 import GuideDrawer from './GuideDrawer'
-import guideData from './Templates/PRC_Passport_Photo.json' // Update the path
+import { useLanguage } from './translate';
+import { resizeAndCompressImage } from './ImageUtils';
+import PRC_Passport_Photo from './Templates/PRC_Passport_Photo.json'
+import US_Passport_Photo from './Templates/US_Passport_Photo.json'
 import './App.css'
 
 const INITIAL_ZOOM = 1.5
@@ -9,8 +12,199 @@ const INITIAL_ROTATION = 0
 const ZOOM_FACTOR = 0.01
 const MOVE_FACTOR = 0.01
 const PAN_FACTOR = 0.5
+const EXPORT_WIDTH_LIMIT = 2000
+const EXPORT_HEIGHT_LIMIT = 2000
+const EXPORT_SIZE_LIMIT = 2000
+const TEMPLATES = [
+  PRC_Passport_Photo,
+  US_Passport_Photo,
+]
+
+// Function to update the preview
+const updatePreview = (editorRef, setCroppedImage) => {
+  if (editorRef.current) {
+    const canvas = editorRef.current.getImageScaledToCanvas()
+    canvas.style.touchAction = 'none'
+    setCroppedImage(canvas.toDataURL())
+  }
+}
+
+// LoadPhotoButton component
+const LoadPhotoButton = ({ onPhotoLoad, title }) => {
+  const MAX_FILE_SIZE = 20000000;
+  const handlePhotoUpload = (event) => {
+    const file = event.target.files[0];
+
+    if (file) {
+      // Check the file size
+      if (file.size > MAX_FILE_SIZE) {
+        alert(`File size should be less than ${MAX_FILE_SIZE / 1000000}MB`);
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        onPhotoLoad(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleClickBrowse = () => {
+    // Trigger the file input when the "Browse..." button is clicked
+    document.getElementById('selectedFile').click();
+  };
+
+  return (
+    <>
+      <input
+        type="file"
+        id="selectedFile"
+        style={{ display: 'none' }}
+        onChange={handlePhotoUpload}
+        accept="image/png, image/jpeg, image/jpg"
+      />
+      <div
+        role="button"
+        tabIndex="0"
+        className="load-file-button"
+        onClick={handleClickBrowse}
+      >{title}</div>
+    </>
+  );
+}
+
+const SaveFileButton = ({ exportPhoto, croppedImage, editorWidth, translate }) => {
+  const handleSave = () => {
+    if (croppedImage) {
+      resizeAndCompressImage(croppedImage, exportPhoto.width, exportPhoto.height, exportPhoto.size)
+        .then((resizedBlob) => {
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(resizedBlob);
+          a.download = 'resized-image.jpeg';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  };
+
+  return (
+    <div
+      disabled={!(exportPhoto.width_valid && exportPhoto.height_valid && exportPhoto.size_valid)}
+      role="button"
+      className="save-button"
+      style={{ width: `${editorWidth / 2}px` }}
+      onClick={handleSave}
+    >{translate("saveButton")}</div>
+  );
+};
+
+const NavBar = ({
+  template,
+  setTemplate,
+  exportPhoto,
+  setExportPhoto,
+  language,
+  getLanguage,
+  setLanguage,
+  translate,
+  translateGuide,
+}) => {
+
+  const handleTemplateChange = (event) => {
+    const selectedTemplateTitle = event.target.value;
+
+    // Find the template object that matches the selected title
+    const selectedTemplate = TEMPLATES.find((t) => t.title[getLanguage()] === selectedTemplateTitle);
+
+    // Set the selected template
+    if (selectedTemplate) {
+      setTemplate(selectedTemplate);
+      setExportPhoto({
+        width: parseInt(selectedTemplate.width),
+        height: parseInt(selectedTemplate.height),
+        size: parseInt(selectedTemplate.size),
+        ratio: parseInt(selectedTemplate.width) / parseInt(selectedTemplate.height),
+        width_valid: true,
+        height_valid: true,
+        size_valid: true,
+      })
+    }
+  };
+
+  const handleLanguageChange = (event) => {
+    const isChecked = event.target.checked;
+    setLanguage(isChecked ? "zh" : "en");
+  };
+
+  return (
+    <nav>
+      <ul>
+        <li><strong>{translate("app.title")}</strong></li>
+      </ul>
+      <ul>
+        <li>
+          <select
+            aria-label="Templates"
+            required
+            value={translateGuide(template.title)}
+            onChange={handleTemplateChange}
+          >
+            {TEMPLATES.map((template, index) => (
+              <option key={index} value={translateGuide(template.title)}> {translateGuide(template.title)}  </option>
+            ))}
+          </select>
+        </li>
+        <li>
+          <label>
+            <input
+              type="checkbox"
+              role="switch"
+              onChange={handleLanguageChange}
+              checked={getLanguage() === "zh"}
+            />
+          中文</label>
+        </li>
+      </ul>
+    </nav>
+  )
+}
 
 const LeftColumn = ({
+  photo,
+  options,
+  onOptionChange,
+  onPhotoLoad,
+  croppedImage,
+  editorHeight,
+  editorWidth,
+  photoGuides,
+  translate,
+  translateGuide,
+}) => {
+  const { guide, instruction } = photoGuides
+  return (
+    photo && (<div className="left-column" style={{ width: `${editorWidth}px` }}>
+      <article className="guides-section guide-instruction">
+        <small dangerouslySetInnerHTML={{ __html: translateGuide(instruction) }} />
+      </article>
+      <article className="guides-section guide-details">
+        {guide.map((guide, index) => (
+          <div key={index} className="guide-item">
+            <kbd className="color-block" style={{ backgroundColor: guide.color, color: "black" }}><small>{guide.index}</small></kbd>
+            <small>{translateGuide(guide.instruction)}</small>
+          </div>
+        ))}
+      </article>
+    </div>)
+  )
+}
+
+const MiddleColumn = ({
   onPhotoLoad,
   photo,
   setPhoto,
@@ -24,8 +218,9 @@ const LeftColumn = ({
   editorWidth,
   editorHeight,
   photoGuides,
+  translate
 }) => {
-  const {guide} = photoGuides
+  const { guide } = photoGuides
   const touchStartRef = useRef({ x: null, y: null })
   const lastTouchDistance = useRef(null)
   const [position, setPosition] = useState({ x: editorWidth * 100, y: editorHeight * 100 }) // Weirdly, have to set a out-of-boundary number to make moving working when page is loaded.
@@ -227,7 +422,7 @@ const LeftColumn = ({
 
 
   return (
-    <article className="left-column"
+    <article className="middle-column"
       style={{
         width: `${editorWidth + 40}px`,
       }}
@@ -241,7 +436,7 @@ const LeftColumn = ({
           height: `${editorHeight}px`,
         }}
       >
-        {!photo && <LoadPhotoButton onPhotoLoad={onPhotoLoad} />}
+        {!photo && <LoadPhotoButton onPhotoLoad={onPhotoLoad} title={translate("selectPhotoButton")} />}
         {photo && (
           <AvatarEditor
             ref={editorRef}
@@ -297,86 +492,105 @@ const LeftColumn = ({
   )
 }
 
-
-// Function to update the preview
-const updatePreview = (editorRef, setCroppedImage) => {
-  if (editorRef.current) {
-    const canvas = editorRef.current.getImageScaledToCanvas()
-    canvas.style.touchAction = 'none'
-    setCroppedImage(canvas.toDataURL())
-  }
-}
-
-// LoadPhotoButton component
-const LoadPhotoButton = ({ onPhotoLoad }) => {
-  const handlePhotoUpload = (event) => {
-    const file = event.target.files[0]
-    const reader = new FileReader()
-
-    reader.onloadend = () => {
-      onPhotoLoad(reader.result)
-    }
-
-    if (file) {
-      reader.readAsDataURL(file)
-    }
-  }
-
-  const handleClickBrowse = () => {
-    // Trigger the file input when the "Browse..." button is clicked
-    document.getElementById('selectedFile').click();
-  };
-
-  return (
-    <>
-      <input type="file" id="selectedFile" style={{ display: 'none' }} onChange={handlePhotoUpload} />
-      <div
-        role="button"
-        tabIndex="0"
-        className="load-file-button" // Add the class for styling
-        onClick={handleClickBrowse}
-      >Select A Photo</div>
-    </>
-  );
-}
-
-// OptionsArea component
 const RightColumn = ({
   photo,
   options,
   onOptionChange,
   onPhotoLoad,
   croppedImage,
-  onClickSave,
   editorHeight,
   editorWidth,
   photoGuides,
+  exportPhoto,
+  setExportPhoto,
+  translate,
 }) => {
-  const {guide, instruction} = photoGuides
+
+  const handleWidthChange = (e) => {
+    const newWidth = e.target.value;
+    if (newWidth > 0 && newWidth <= EXPORT_WIDTH_LIMIT && !isNaN(newWidth)) {
+      const newHeight = Math.round(newWidth / exportPhoto.ratio);
+      setExportPhoto((prevState) => ({
+        ...prevState, height: newHeight, width: newWidth, width_valid: true
+      }))
+    } else setExportPhoto((prevState) => ({
+      ...prevState, width: newWidth, width_valid: false
+    }))
+  };
+
+  const handleHeightChange = (e) => {
+    const newHeight = e.target.value;
+    if (newHeight > 0 && newHeight <= EXPORT_HEIGHT_LIMIT && !isNaN(newHeight)) {
+      const newWidth = Math.round(newHeight * exportPhoto.ratio);
+      setExportPhoto((prevState) => ({
+        ...prevState, height: newHeight, width: newWidth, height_valid: true
+      }))
+    } else setExportPhoto((prevState) => ({
+      ...prevState, height: newHeight, height_valid: false
+    }))
+  };
+
+  const handleSizeChange = (e) => {
+    const newSize = e.target.value;
+    if (newSize > 0 && EXPORT_SIZE_LIMIT <= 2000 && !isNaN(newSize)) {
+      setExportPhoto((prevState) => ({
+        ...prevState, size: newSize, size_valid: true
+      }))
+    } else setExportPhoto((prevState) => ({
+      ...prevState, size: newSize, size_valid: false
+    }))
+  };
+
   return (
-    photo && (<div className="right-column grid" style={{ width: `${editorWidth}px` }}>
-      <article className="guides-section">
-        <small dangerouslySetInnerHTML={{ __html: instruction }} />
-      </article>
-      <article className="guides-section">
-        {guide.map((guide, index) => (
-          <div key={index} className="guide-item">
-            <kbd className="color-block" style={{ backgroundColor: guide.color, color: "black"}}><small>{guide.index}</small></kbd>
-            <small>{guide.instruction}</small>
-          </div>
-        ))}
-      </article>
-      {/* <label>
-          <input type="checkbox" name="guide" onChange={onOptionChange} /> Display Guide
-        </label>
-        <label>
-          <input type="checkbox" name="instruction" onChange={onOptionChange} /> Display Instruction
-        </label> */}
+    photo && (<div className="right-column" style={{ width: `${editorWidth / 2}px` }}>
       {croppedImage && (
-        <article className="preview-container">
-          <img src={croppedImage} alt="Cropped preview" className="cropped-preview" height={editorHeight / 2} width={editorWidth / 2} />
-          <div role="button" className="save-button" style={{ width: `${editorWidth / 2}px` }} onClick={onClickSave}>Save</div>
-        </article>
+        <>
+          <article className="guides-section guide-instruction">
+            <LoadPhotoButton onPhotoLoad={onPhotoLoad} title={translate("loadNewPhotoButton")} />
+          </article>
+          <article className="preview-container">
+            <img src={croppedImage} alt="Cropped preview" className="cropped-preview" height={editorHeight / 2} width={editorWidth / 2} />
+            <div className='export-container' style={{ width: `${editorWidth / 2}px` }}>
+              <label className="export-label">{translate("widthLabel")}<br />(px)</label>
+              <input
+                type="number"
+                value={exportPhoto.width}
+                aria-invalid={!exportPhoto.width_valid}
+                onChange={handleWidthChange}
+                className="export-input"
+                style={{ width: `${editorWidth / 2.9}px` }}
+              />
+            </div>
+            <div className='export-container' style={{ width: `${editorWidth / 2}px` }}>
+              <label className="export-label">{translate("heightLabel")}<br />(px)</label>
+              <input
+                type="number"
+                value={exportPhoto.height}
+                aria-invalid={!exportPhoto.height_valid}
+                onChange={handleHeightChange}
+                className="export-input"
+                style={{ width: `${editorWidth / 2.9}px` }}
+              />
+            </div>
+            <div className='export-container' style={{ width: `${editorWidth / 2}px` }}>
+              <label className="export-label" >{translate("sizeLabel")}<br />(KB)</label>
+              <input
+                type="number"
+                value={exportPhoto.size}
+                aria-invalid={!exportPhoto.size_valid}
+                onChange={handleSizeChange}
+                className="export-input"
+                style={{ width: `${editorWidth / 2.9}px` }}
+              />
+            </div>
+            <SaveFileButton
+              exportPhoto={exportPhoto}
+              croppedImage={croppedImage}
+              editorWidth={editorWidth}
+              translate={translate}
+            />
+          </article>
+        </>
       )}
     </div>)
   )
@@ -384,6 +598,7 @@ const RightColumn = ({
 
 // Main App component
 const App = () => {
+  const [template, setTemplate] = useState(TEMPLATES[0]);
   const [photo, setPhoto] = useState(null)
   const [zoom, setZoom] = useState(INITIAL_ZOOM)
   const [rotation, setRotation] = useState(INITIAL_ROTATION)
@@ -393,11 +608,22 @@ const App = () => {
     example: false,
   })
   const [croppedImage, setCroppedImage] = useState(null)
-  const editorRef = React.createRef()
+  const [exportPhoto, setExportPhoto] = useState({
+    width: parseInt(template.width),
+    height: parseInt(template.height),
+    size: parseInt(template.size),
+    ratio: parseInt(template.width) / parseInt(template.height),
+    width_valid: true,
+    height_valid: true,
+    size_valid: true,
+  })
 
-  const photoGuides = guideData
-  const editorWidth = parseInt(guideData.width)
-  const editorHeight = parseInt(guideData.height)
+  const editorRef = React.createRef()
+  const { translate, translateGuide, setLanguage, getLanguage } = useLanguage();
+
+  const photoGuides = template
+  const editorWidth = parseInt(template.width)
+  const editorHeight = parseInt(template.height)
 
   const handlePhotoLoad = useCallback((photoData) => {
     setPhoto(photoData)
@@ -412,17 +638,6 @@ const App = () => {
     }
   }, [photo, zoom, rotation, editorRef])
 
-  const handleSave = () => {
-    if (croppedImage) {
-      const a = document.createElement('a')
-      a.href = croppedImage
-      a.download = 'processed-image.jpeg'
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-    }
-  }
-
   const handleOptionChange = (event) => {
     const { name, checked } = event.target
     setOptions((prevOptions) => ({
@@ -433,33 +648,62 @@ const App = () => {
 
   return (
     <div className="app">
-      <div className="container">
-        <LeftColumn
-          onPhotoLoad={handlePhotoLoad}
-          photo={photo}
-          setPhoto={setPhoto}
-          options={options}
-          zoom={zoom}
-          setZoom={setZoom}
-          rotation={rotation}
-          setRotation={setRotation}
-          setCroppedImage={setCroppedImage}
-          editorRef={editorRef}
-          editorWidth={editorWidth}
-          editorHeight={editorHeight}
-          photoGuides={photoGuides}
-        />
-        <RightColumn
-          photo={photo}
-          options={options}
-          onOptionChange={handleOptionChange}
-          onPhotoLoad={handlePhotoLoad}
-          croppedImage={croppedImage}
-          onClickSave={handleSave}
-          editorHeight={editorHeight}
-          editorWidth={editorWidth}
-          photoGuides={photoGuides}
-        />
+      <div className="frame">
+        <div className="container">
+          <NavBar
+            template={template}
+            setTemplate={setTemplate}
+            exportPhoto={exportPhoto}
+            setExportPhoto={setExportPhoto}
+            getLanguage={getLanguage}
+            setLanguage={setLanguage}
+            translate={translate}
+            translateGuide={translateGuide}
+          />
+        </div>
+        <div className="container">
+          <LeftColumn
+            photo={photo}
+            options={options}
+            onOptionChange={handleOptionChange}
+            onPhotoLoad={handlePhotoLoad}
+            croppedImage={croppedImage}
+            editorHeight={editorHeight}
+            editorWidth={editorWidth}
+            photoGuides={photoGuides}
+            translate={translate}
+            translateGuide={translateGuide}
+          />
+          <MiddleColumn
+            onPhotoLoad={handlePhotoLoad}
+            photo={photo}
+            setPhoto={setPhoto}
+            options={options}
+            zoom={zoom}
+            setZoom={setZoom}
+            rotation={rotation}
+            setRotation={setRotation}
+            setCroppedImage={setCroppedImage}
+            editorRef={editorRef}
+            editorWidth={editorWidth}
+            editorHeight={editorHeight}
+            photoGuides={photoGuides}
+            translate={translate}
+          />
+          <RightColumn
+            photo={photo}
+            options={options}
+            onOptionChange={handleOptionChange}
+            onPhotoLoad={handlePhotoLoad}
+            croppedImage={croppedImage}
+            editorHeight={editorHeight}
+            editorWidth={editorWidth}
+            photoGuides={photoGuides}
+            exportPhoto={exportPhoto}
+            setExportPhoto={setExportPhoto}
+            translate={translate}
+          />
+        </div>
       </div>
     </div>
   )

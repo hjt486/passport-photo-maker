@@ -1,0 +1,88 @@
+{
+  "title": {
+    "en": "US Passport Photo",
+    "zh": "美国护照照片"
+  },
+  "width": "510",
+  "height": "510",
+  "format": "jpg",
+  "size": "100",
+  "instruction": {
+    "en": "Please check the latest requirement at <a href=\"https://travel.state.gov/content/travel/en/passports/how-apply/photos.html\">here</a>.",
+    "zh": "请点击<a href=\"https://travel.state.gov/content/travel/en/passports/how-apply/photos.html\">这里</a>查看最新标准。"
+  },
+  "guide": [
+    {
+      "index": "A",
+      "title": "Center Guide Line",
+      "instruction": {
+        "en": "Align the nose tip to the center line",
+        "zh": "将鼻尖居中对齐这条线"
+      },
+      "start_x": "252.5",
+      "start_y": "0",
+      "width": "5",
+      "height": "510",
+      "color": "yellow",
+      "isVerticalMovable": false,
+      "isHorizontalMovable": false,
+      "overlap": true,
+      "opacity": "0.5",
+      "group": "1"
+    },
+    {
+      "index": "↕",
+      "title": "Draggable Indicator",
+      "instruction": {
+        "en": "Move the two bars up and down to fit your face",
+        "zh": "请上下拖动这两条绿色方框使得你的头部和脸部符合以下要求"
+      },
+      "start_x": "20",
+      "start_y": "58",
+      "width": "25",
+      "height": "28",
+      "color": "aqua",
+      "isVerticalMovable": true,
+      "isHorizontalMovable": false,
+      "overlap": true,
+      "opacity": "0.5",
+      "group": "2"
+    },
+    {
+      "index": "B",
+      "title": "Center Square: Left",
+      "instruction": {
+        "en": "Put the edge of the top of the head/hair into this area",
+        "zh": "请将头部（包含头发）上沿放入此区域"
+      },
+      "start_x": "0",
+      "start_y": "40",
+      "width": "510",
+      "height": "65",
+      "color": "green",
+      "isVerticalMovable": true,
+      "isHorizontalMovable": false,
+      "overlap": true,
+      "opacity": "0.5",
+      "group": "2"
+    },
+    {
+      "index": "C",
+      "title": "Center Square: Left",
+      "instruction": {
+        "en": "Put the edge of the bottom of the face/chin into this area",
+        "zh": "请将脸部（下巴）下沿放入此区域"
+      },
+      "start_x": "0",
+      "start_y": "335",
+      "width": "510",
+      "height": "65",
+      "color": "green",
+      "isVerticalMovable": true,
+      "isHorizontalMovable": false,
+      "overlap": true,
+      "opacity": "0.5",
+      "group": "2"
+    }
+  ]
+}

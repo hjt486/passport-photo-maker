@@ -1,0 +1,33 @@
+{
+  "app.title": {
+    "en": "Passport & Visa Photo Maker",
+    "zh": "护照签证照片制作器"
+  },
+  "selectPhotoButton": {
+    "en": "Select A Photo",
+    "zh": "选择照片"
+  },
+  "loadNewPhotoButton": {
+    "en": "Load New Photo",
+    "zh": "加载新照片"
+  },
+  "widthLabel": {
+    "en": "Width",
+    "zh": "宽度"
+  },
+  "heightLabel": {
+    "en": "Height",
+    "zh": "高度"
+  },
+  "sizeLabel": {
+    "en": "Size",
+    "zh": "文件大小"
+  },
+  "saveButton": {
+    "en": "Save",
+    "zh": "保存"
+  },
+  "test" : {
+    
+  }
+}

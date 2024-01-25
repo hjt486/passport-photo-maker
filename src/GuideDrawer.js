@@ -97,10 +97,11 @@ const GuideDrawer = ({ guides, editorDimensions }) => {
                   className="guide-number"
                   style={{
                     position: 'absolute',
-                    left: `${centerX - 14}px`,
+                    left: `${centerX - 12.5}px`,
                     top: `${centerY - 14}px`,
                     color: "black",
-                    width: "28px",
+                    width: "25px",
+                    hight: "25px",
                     textAlign: "center",
                     backgroundColor: 'rgba(256, 256, 256, 0.5)',
                     zIndex: 1001

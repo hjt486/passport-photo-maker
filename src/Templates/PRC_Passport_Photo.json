@@ -1,15 +1,24 @@
 {
-  "title": "Chinese Passport Photo",
+  "title": {
+    "en": "Chinese Passport Photo",
+    "zh": "中国护照照片"
+  },
   "width": "330",
   "height": "480",
   "format": "jpg",
   "size": "100",
-  "instruction": "Please check the latest requirement at <a href=\"http://cs.mfa.gov.cn/zlbg/bgzl/hzlxz/202204/t20220408_10665772.shtml\">here</a>.",
+  "instruction": {
+    "en": "Please check the latest requirement at <a href=\"http://cs.mfa.gov.cn/zlbg/bgzl/hzlxz/202204/t20220408_10665772.shtml\">here</a>.",
+    "zh": "请点击<a href=\"http://cs.mfa.gov.cn/zlbg/bgzl/hzlxz/202204/t20220408_10665772.shtml\">这里</a>查看最新标准。"
+  },
   "guide": [
     {
       "index": "A",
       "title": "Center Guide Line",
-      "instruction": "Align the nose tip to the center line",
+      "instruction": {
+        "en": "Align the nose tip to the center line",
+        "zh": "将鼻尖居中对齐这条线"
+      },
       "start_x": "162.5",
       "start_y": "0",
       "width": "5",
@@ -17,14 +26,17 @@
       "color": "yellow",
       "isVerticalMovable": false,
       "isHorizontalMovable": false,
-      "overlap" : true,
+      "overlap": true,
       "opacity": "0.5",
       "group": "1"
     },
     {
       "index": "B",
       "title": "Forbidden Area: Top",
-      "instruction": "Do not put top of the head/hair into this area",
+      "instruction": {
+        "en": "Do not put top of the head/hair into this area",
+        "zh": "请勿将头部（包含头发）上沿放入此区域"
+      },
       "start_x": "0",
       "start_y": "0",
       "width": "330",
@@ -32,14 +44,17 @@
       "color": "red",
       "isVerticalMovable": false,
       "isHorizontalMovable": false,
-      "overlap" : false,
+      "overlap": false,
       "opacity": "0.5",
       "group": "1"
     },
     {
       "index": "C",
       "title": "Forbidden Area: Bottom",
-      "instruction": "Do not put bottom of the face/chin into this area",
+      "instruction": {
+        "en": "Do not put bottom of the face/chin into this area",
+        "zh": "请勿将头部（包含下巴）下沿放入此区域"
+      },
       "start_x": "0",
       "start_y": "410",
       "width": "330",
@@ -47,14 +62,17 @@
       "color": "red",
       "isVerticalMovable": false,
       "isHorizontalMovable": false,
-      "overlap" : false,
+      "overlap": false,
       "opacity": "0.5",
       "group": "1"
     },
     {
       "index": "D",
       "title": "Top Head Area",
-      "instruction": "Put top of the head/hair into this area",
+      "instruction": {
+        "en": "Put top of the head/hair into this area",
+        "zh": "请将头部（包含头发）上沿放入此区域"
+      },
       "start_x": "107.5",
       "start_y": "30",
       "width": "115",
@@ -62,14 +80,35 @@
       "color": "yellow",
       "isVerticalMovable": false,
       "isHorizontalMovable": false,
-      "overlap" : true,
+      "overlap": true,
       "opacity": "0.5",
       "group": "1"
     },
     {
+      "index": "↕",
+      "title": "Draggable Indicator",
+      "instruction": {
+        "en": "Move the rectangle up and down to fit your face",
+        "zh": "移动方框将头部或脸部边缘按下列要求放入有颜色处"
+      },
+      "start_x": "55",
+      "start_y": "345",
+      "width": "35",
+      "height": "25",
+      "color": "aqua",
+      "isVerticalMovable": true,
+      "isHorizontalMovable": false,
+      "overlap": true,
+      "opacity": "0.5",
+      "group": "2"
+    },
+    {
       "index": "E",
       "title": "Center Square: Left",
-      "instruction": "Put the edge of the left side of the face (not ear) into this area",
+      "instruction": {
+        "en": "Put the edge of the left side of the face (not ear) into this area",
+        "zh": "请将脸部（不含耳朵）左侧放入此区域"
+      },
       "start_x": "55",
       "start_y": "40",
       "width": "35",
@@ -77,14 +116,17 @@
       "color": "green",
       "isVerticalMovable": true,
       "isHorizontalMovable": false,
-      "overlap" : true,
+      "overlap": true,
       "opacity": "0.5",
       "group": "2"
     },
     {
       "index": "F",
       "title": "Center Square: right",
-      "instruction": "Put the edge of the right side of the face (not ear) into this area",
+      "instruction": {
+        "en": "Put the edge of the right side of the face (not ear) into this area",
+        "zh": "请将脸部（不含耳朵）右侧放入此区域"
+      },
       "start_x": "240",
       "start_y": "40",
       "width": "35",
@@ -92,14 +134,17 @@
       "color": "green",
       "isVerticalMovable": true,
       "isHorizontalMovable": false,
-      "overlap" : true,
+      "overlap": true,
       "opacity": "0.5",
       "group": "2"
     },
     {
       "index": "G",
       "title": "Center Square: top",
-      "instruction": "Put the edge of the top of the head/hair into this area",
+      "instruction": {
+        "en": "Put the edge of the top of the head/hair into this area",
+        "zh": "请将头部（包含头发）上沿放入此区域"
+      },
       "start_x": "90",
       "start_y": "40",
       "width": "150",
@@ -107,14 +152,17 @@
       "color": "green",
       "isVerticalMovable": true,
       "isHorizontalMovable": false,
-      "overlap" : true,
+      "overlap": true,
       "opacity": "0.5",
       "group": "2"
     },
     {
       "index": "H",
       "title": "Center Square: bottom",
-      "instruction": "Put the edge of the bottom of the face/chin into this area",
+      "instruction": {
+        "en": "Put the edge of the bottom of the face/chin into this area",
+        "zh": "请将脸部（下巴）下沿放入此区域"
+      },
       "start_x": "90",
       "start_y": "345",
       "width": "150",
@@ -122,7 +170,7 @@
       "color": "green",
       "isVerticalMovable": true,
       "isHorizontalMovable": false,
-      "overlap" : true,
+      "overlap": true,
       "opacity": "0.5",
       "group": "2"
     }
