@@ -1,10 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Draggable from 'react-draggable';
-import { Tooltip } from 'react-tooltip';
 import "./GuideDrawer.css"
 
 const GuideDrawer = ({ guides, editorDimensions }) => {
   const [positions, setPositions] = useState({});
+
+  const preventDefault = useCallback((e) => {
+    e.preventDefault();
+  }, []);
+
+  useEffect(() => {
+    // Attach preventDefault to each guide shape
+    const guideShapes = document.querySelectorAll('.guide-shape');
+    guideShapes.forEach(shape => {
+      shape.addEventListener('wheel', preventDefault, { passive: false });
+    });
+
+    return () => {
+      // Detach preventDefault from each guide shape
+      guideShapes.forEach(shape => {
+        shape.removeEventListener('wheel', preventDefault, { passive: false });
+      });
+    };
+  }, [guides, preventDefault]);
 
   const handleDragStop = (group, e, data) => {
     // Check movability constraints for the group
@@ -57,10 +75,13 @@ const GuideDrawer = ({ guides, editorDimensions }) => {
       >
         <div style={{ position: 'absolute' }}>
           {group.map((guide, guideIndex) => {
-            const { start_x, start_y, width, height, color, opacity, instruction } = guide;
+            const { start_x, start_y, width, height, color, opacity, index } = guide;
+            const centerX = width / 2; // Calculate the horizontal center
+            const centerY = height / 2; // Calculate the vertical center
             return (
               <div
                 key={guideIndex}
+                className="guide-shape"
                 style={{
                   position: 'absolute',
                   left: `${start_x}px`,
@@ -71,18 +92,21 @@ const GuideDrawer = ({ guides, editorDimensions }) => {
                   opacity: opacity,
                   zIndex: 1000
                 }}
-                data-tooltip-id={`tooltip-${group[0].group}-${guideIndex}`}
-                data-tooltip-content={instruction}
-                data-tooltip-place="top"
               >
-                <Tooltip opacity={1}
+                <span 
+                  className="guide-number"
                   style={{
-                    backgroundColor: 'black',
-                    color: 'white',
+                    position: 'absolute',
+                    left: `${centerX - 14}px`,
+                    top: `${centerY - 14}px`,
+                    color: "black",
+                    width: "28px",
+                    textAlign: "center",
+                    backgroundColor: 'rgba(256, 256, 256, 0.5)',
+                    zIndex: 1001
                   }}
-                  id={`tooltip-${group[0].group}-${guideIndex}`} effect="solid" place="top" />
+                ><small>{index}</small></span>
               </div>
-
             );
           })}
         </div>

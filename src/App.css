@@ -1,21 +1,89 @@
-body {
-  /* overflow: hidden; */
+@import "@picocss/pico";
+
+/* Yellow color for light color scheme (Default) */
+/* Can be forced with data-theme="light" */
+[data-theme=light],
+:root:not([data-theme=dark]) {
+  --pico-text-selection-color: rgba(158, 146, 0, 0.25);
+  --pico-primary: #756b00;
+  --pico-primary-background: #f2df0d;
+  --pico-primary-underline: rgba(117, 107, 0, 0.5);
+  --pico-primary-hover: #5b5300;
+  --pico-primary-hover-background: #e8d600;
+  --pico-primary-focus: rgba(158, 146, 0, 0.5);
+  --pico-primary-inverse: #000;
+  --pico-switch-color: var(--pico-secondary-hover);
+}
+
+/* Yellow color for dark color scheme (Auto) */
+/* Automatically enabled if user has Dark mode enabled */
+@media only screen and (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --pico-text-selection-color: rgba(173, 159, 0, 0.1875);
+    --pico-primary: #ad9f00;
+    --pico-primary-background: #f2df0d;
+    --pico-primary-underline: rgba(173, 159, 0, 0.5);
+    --pico-primary-hover: #caba01;
+    --pico-primary-hover-background: #f8e861;
+    --pico-primary-focus: rgba(173, 159, 0, 0.375);
+    --pico-primary-inverse: #000;
+    --pico-switch-color: var(--pico-background-color);
+  }
+}
+
+/* Yellow color for dark color scheme (Forced) */
+/* Enabled if forced with data-theme="dark" */
+[data-theme=dark] {
+  --pico-text-selection-color: rgba(173, 159, 0, 0.1875);
+  --pico-primary: #ad9f00;
+  --pico-primary-background: #f2df0d;
+  --pico-primary-underline: rgba(173, 159, 0, 0.5);
+  --pico-primary-hover: #caba01;
+  --pico-primary-hover-background: #f8e861;
+  --pico-primary-focus: rgba(173, 159, 0, 0.375);
+  --pico-primary-inverse: #000;
+  --pico-switch-color: var(--pico-background-color);
+}
+
+/* Blue-grey (Common styles) */
+:root {
+  --form-element-active-border-color: var(--primary);
+  --form-element-focus-color: var(--primary-focus);
+  --switch-color: var(--primary-inverse);
+  --switch-checked-background-color: var(--primary);
 }
 
 .app {
   display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: flex-start; /* Align to the top of the container vertically */
-  height: 100vh; /* Take up the full height of the viewport */
-  background-color: burlywood;
+  justify-content: center;
+  /* Center horizontally */
+  align-items: flex-start;
+  /* Align to the top of the container vertically */
+  height: 100vh;
+  /* Take up the full height of the viewport */
+  margin: 2vw;
+}
+
+.load-file-button {
+  position: relative;
+  flex-grow: 1;
+  width: auto;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .container {
   display: flex;
-  flex-direction: row; /* Arrange children horizontally */
-  align-items: stretch; /* Make both areas stretch to match height */
-  width: 100%; /* Expand to the full width of the container */
-  max-width: 800px; /* Adjust the maximum width as needed */
+  flex-direction: row;
+  /* Arrange children horizontally */
+  align-items: stretch;
+  /* Make both areas stretch to match height */
+  width: 100%;
+  /* Expand to the full width of the container */
+  max-width: 800px;
+  /* Adjust the maximum width as needed */
   justify-content: center;
   background-color: transparent;
   flex-wrap: wrap;
@@ -23,66 +91,107 @@ body {
 
 .left-column {
   display: flex;
-  flex-direction: column; 
-  background-color: white;
+  flex-direction: column;
 }
 
 .photo-area {
   position: relative;
-  border: 1px solid #ccc;
   overflow: hidden;
   text-align: center;
-  display: flex;
+  display:flex;
   flex-direction: column;
   justify-content: center;
+  background-color: white;
+  border: 1px solid var(--pico-primary);
 }
 
-.manipulate-button {
+.control-container {
+  display: flex;
+  flex-direction: column;
+  padding: 0.25em;
+}
+
+.slide-control {
+  width: 100%;
+}
+
+.control-row2 {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap; 
+}
+
+.control-button {
   position: relative;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-basis: calc(25% - 10px); /* Set the width for 3 elements per row, considering the margin */
+  max-width: calc(25% - 10px); /* Set the maximum width for 3 elements per row */
+  margin: 5px;
 }
 
 .right-column {
   display: flex;
-  flex-direction: column; 
-  justify-content:space-between;
+  flex-direction: column;
+  justify-content: space-between;
   z-index: 0;
+  flex-grow: 1;
+  padding-left: 1vw;
+  padding-right: 1vw;
 }
 
-.option-area {
+.guides-section {
+  max-height: 100%;
+  max-width: 100%;
+  overflow-y: auto;
+  padding: 0.5em;
+  text-wrap:pretty;
+  word-wrap:normal;
+  margin: 0px;
+}
+
+.guide-item {
   display: flex;
-  flex-direction: column; 
-  position: relative;
-  border-top: 1px solid #ccc;
-  border-right: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-  overflow: hidden;
+  align-items: normal;
+  margin-bottom: 0.5em;
 }
 
-.uploaded-photo, .example-photo {
+.color-block {
+  display: inline-block;
+  margin-right: 0.5em;
+}
+
+.uploaded-photo,
+.example-photo {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.instruction-box {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: white;
-  padding: 10px;
-  border: 1px solid #ccc;
-  /* Adjust positioning as needed */
-}
-
 .preview-container {
-  margin-top: 1em; /* Add some space above the preview */
-  border: 1px solid #ccc; /* Add a border around the preview */
-  overflow: hidden; /* Hide overflow */
-  background-color: white;
-  align-self:center;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  /* Hide overflow */
+  width: 100%;
+  display: flex; /* Add display: flex to center its children */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
 }
 
 .cropped-preview {
   max-width: 100%;
   max-height: 100%;
+  background-color: white;
+  border: 1px solid var(--pico-primary) ; 
+}
+
+.save-button {
+  margin-top: 1em;
+}
+
+.disable-scroll {
+  overflow: hidden;
 }

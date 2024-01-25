@@ -4,11 +4,12 @@
   "height": "480",
   "format": "jpg",
   "size": "100",
-  "instruction": "test",
+  "instruction": "Please check the latest requirement at <a href=\"http://cs.mfa.gov.cn/zlbg/bgzl/hzlxz/202204/t20220408_10665772.shtml\">here</a>.",
   "guide": [
     {
+      "index": "A",
       "title": "Center Guide Line",
-      "instruction": "Align the nose to this line",
+      "instruction": "Align the nose tip to the center line",
       "start_x": "162.5",
       "start_y": "0",
       "width": "5",
@@ -21,6 +22,7 @@
       "group": "1"
     },
     {
+      "index": "B",
       "title": "Forbidden Area: Top",
       "instruction": "Do not put top of the head/hair into this area",
       "start_x": "0",
@@ -35,6 +37,7 @@
       "group": "1"
     },
     {
+      "index": "C",
       "title": "Forbidden Area: Bottom",
       "instruction": "Do not put bottom of the face/chin into this area",
       "start_x": "0",
@@ -49,6 +52,7 @@
       "group": "1"
     },
     {
+      "index": "D",
       "title": "Top Head Area",
       "instruction": "Put top of the head/hair into this area",
       "start_x": "107.5",
@@ -63,6 +67,7 @@
       "group": "1"
     },
     {
+      "index": "E",
       "title": "Center Square: Left",
       "instruction": "Put the edge of the left side of the face (not ear) into this area",
       "start_x": "55",
@@ -77,6 +82,7 @@
       "group": "2"
     },
     {
+      "index": "F",
       "title": "Center Square: right",
       "instruction": "Put the edge of the right side of the face (not ear) into this area",
       "start_x": "240",
@@ -91,6 +97,7 @@
       "group": "2"
     },
     {
+      "index": "G",
       "title": "Center Square: top",
       "instruction": "Put the edge of the top of the head/hair into this area",
       "start_x": "90",
@@ -105,6 +112,7 @@
       "group": "2"
     },
     {
+      "index": "H",
       "title": "Center Square: bottom",
       "instruction": "Put the edge of the bottom of the face/chin into this area",
       "start_x": "90",
