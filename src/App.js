@@ -1,8 +1,8 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react'
 import AvatarEditor from 'react-avatar-editor'
 import GuideDrawer from './GuideDrawer'
-import { useLanguage } from './translate';
-import { resizeAndCompressImage } from './ImageUtils';
+import { useLanguage } from './translate'
+import { resizeAndCompressImage } from './ImageUtils'
 import PRC_Passport_Photo from './Templates/PRC_Passport_Photo.json'
 import US_Passport_Photo from './Templates/US_Passport_Photo.json'
 import './App.css'
@@ -31,29 +31,29 @@ const updatePreview = (editorRef, setCroppedImage) => {
 
 // LoadPhotoButton component
 const LoadPhotoButton = ({ onPhotoLoad, title }) => {
-  const MAX_FILE_SIZE = 20000000;
+  const MAX_FILE_SIZE = 20000000
   const handlePhotoUpload = (event) => {
-    const file = event.target.files[0];
+    const file = event.target.files[0]
 
     if (file) {
       // Check the file size
       if (file.size > MAX_FILE_SIZE) {
-        alert(`File size should be less than ${MAX_FILE_SIZE / 1000000}MB`);
-        return;
+        alert(`File size should be less than ${MAX_FILE_SIZE / 1000000}MB`)
+        return
       }
 
-      const reader = new FileReader();
+      const reader = new FileReader()
       reader.onloadend = () => {
-        onPhotoLoad(reader.result);
-      };
-      reader.readAsDataURL(file);
+        onPhotoLoad(reader.result)
+      }
+      reader.readAsDataURL(file)
     }
-  };
+  }
 
   const handleClickBrowse = () => {
     // Trigger the file input when the "Browse..." button is clicked
-    document.getElementById('selectedFile').click();
-  };
+    document.getElementById('selectedFile').click()
+  }
 
   return (
     <>
@@ -71,7 +71,7 @@ const LoadPhotoButton = ({ onPhotoLoad, title }) => {
         onClick={handleClickBrowse}
       >{title}</div>
     </>
-  );
+  )
 }
 
 const SaveFileButton = ({
@@ -85,18 +85,18 @@ const SaveFileButton = ({
     if (croppedImage) {
       resizeAndCompressImage(croppedImage, exportPhoto.width, exportPhoto.height, exportPhoto.size)
         .then((resizedBlob) => {
-          const a = document.createElement('a');
-          a.href = URL.createObjectURL(resizedBlob);
-          a.download = 'resized-image.jpeg';
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
+          const a = document.createElement('a')
+          a.href = URL.createObjectURL(resizedBlob)
+          a.download = 'resized-image.jpeg'
+          document.body.appendChild(a)
+          a.click()
+          document.body.removeChild(a)
         })
         .catch((error) => {
-          console.error(error);
-        });
+          console.error(error)
+        })
     }
-  };
+  }
 
   return (
     <div
@@ -106,8 +106,8 @@ const SaveFileButton = ({
       style={{ width: `${editorDimensions.width / 2}px` }}
       onClick={handleSave}
     >{translate("saveButton")}</div>
-  );
-};
+  )
+}
 
 const NavBar = ({
   template,
@@ -120,19 +120,19 @@ const NavBar = ({
   translate,
   translateGuide,
   setEditorDimensions,
-  editorRef, 
+  editorRef,
   setCroppedImage
 }) => {
 
   const handleTemplateChange = (event) => {
-    const selectedTemplateTitle = event.target.value;
+    const selectedTemplateTitle = event.target.value
 
     // Find the template object that matches the selected title
-    const selectedTemplate = TEMPLATES.find((t) => t.title[getLanguage()] === selectedTemplateTitle);
+    const selectedTemplate = TEMPLATES.find((t) => t.title[getLanguage()] === selectedTemplateTitle)
 
     // Set the selected template
     if (selectedTemplate) {
-      setTemplate(selectedTemplate);
+      setTemplate(selectedTemplate)
       setExportPhoto({
         width: parseInt(selectedTemplate.width),
         height: parseInt(selectedTemplate.height),
@@ -148,12 +148,12 @@ const NavBar = ({
       })
       updatePreview(editorRef, setCroppedImage)
     }
-  };
+  }
 
   const handleLanguageChange = (event) => {
-    const isChecked = event.target.checked;
-    setLanguage(isChecked ? "zh" : "en");
-  };
+    const isChecked = event.target.checked
+    setLanguage(isChecked ? "zh" : "en")
+  }
 
   return (
     <nav>
@@ -521,31 +521,31 @@ const RightColumn = ({
 }) => {
 
   const handleWidthChange = (e) => {
-    const newWidth = e.target.value;
+    const newWidth = e.target.value
     if (newWidth > 0 && newWidth <= EXPORT_WIDTH_LIMIT && !isNaN(newWidth)) {
-      const newHeight = Math.round(newWidth / exportPhoto.ratio);
+      const newHeight = Math.round(newWidth / exportPhoto.ratio)
       setExportPhoto((prevState) => ({
         ...prevState, height: newHeight, width: newWidth, width_valid: true
       }))
     } else setExportPhoto((prevState) => ({
       ...prevState, width: newWidth, width_valid: false
     }))
-  };
+  }
 
   const handleHeightChange = (e) => {
-    const newHeight = e.target.value;
+    const newHeight = e.target.value
     if (newHeight > 0 && newHeight <= EXPORT_HEIGHT_LIMIT && !isNaN(newHeight)) {
-      const newWidth = Math.round(newHeight * exportPhoto.ratio);
+      const newWidth = Math.round(newHeight * exportPhoto.ratio)
       setExportPhoto((prevState) => ({
         ...prevState, height: newHeight, width: newWidth, height_valid: true
       }))
     } else setExportPhoto((prevState) => ({
       ...prevState, height: newHeight, height_valid: false
     }))
-  };
+  }
 
   const handleSizeChange = (e) => {
-    const newSize = e.target.value;
+    const newSize = e.target.value
     if (newSize > 0 && EXPORT_SIZE_LIMIT <= 2000 && !isNaN(newSize)) {
       setExportPhoto((prevState) => ({
         ...prevState, size: newSize, size_valid: true
@@ -553,7 +553,7 @@ const RightColumn = ({
     } else setExportPhoto((prevState) => ({
       ...prevState, size: newSize, size_valid: false
     }))
-  };
+  }
 
   return (
     photo && (<div className="right-column" style={{ width: `${editorDimensions.width / 2}px` }}>
@@ -645,7 +645,7 @@ const BuyMeACoffee = ({
 
 // Main App component
 const App = () => {
-  const [template, setTemplate] = useState(TEMPLATES[0]);
+  const [template, setTemplate] = useState(TEMPLATES[0])
   const [photo, setPhoto] = useState(null)
   const [zoom, setZoom] = useState(INITIAL_ZOOM)
   const [rotation, setRotation] = useState(INITIAL_ROTATION)
@@ -671,7 +671,7 @@ const App = () => {
   })
 
   const editorRef = React.createRef()
-  const { translate, translateGuide, setLanguage, getLanguage } = useLanguage();
+  const { translate, translateGuide, setLanguage, getLanguage } = useLanguage()
 
   const photoGuides = template
 
