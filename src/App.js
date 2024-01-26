@@ -767,6 +767,12 @@ const App = () => {
             coffee={coffee}
             setCoffee={setCoffee}
           />
+          <div
+            role="button"
+            class="outline coffee-button"
+          >
+            <a href="https://github.com/hjt486/passport-photo-maker/issues">{translate("feedback")}</a>
+          </div>
         </div>
       </div>
     </div>
