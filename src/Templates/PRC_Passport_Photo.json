@@ -6,7 +6,7 @@
   "width": "330",
   "height": "480",
   "format": "jpg",
-  "size": "100",
+  "size": "70",
   "instruction": {
     "en": "Please check the latest requirement at <a href=\"https://www.visaforchina.cn/SGP2_EN/generalinformation/news/282849.shtml\">here</a>.",
     "zh": "请点击<a href=\"http://cs.mfa.gov.cn/zlbg/bgzl/hzlxz/202204/t20220408_10665772.shtml\">这里</a>查看最新标准。"
@@ -92,7 +92,7 @@
         "zh": "移动方框将头部或脸部边缘按下列要求放入有颜色处"
       },
       "start_x": "55",
-      "start_y": "345",
+      "start_y": "335",
       "width": "35",
       "height": "25",
       "color": "aqua",
@@ -110,7 +110,7 @@
         "zh": "请将脸部（不含耳朵）左侧放入此区域"
       },
       "start_x": "55",
-      "start_y": "40",
+      "start_y": "30",
       "width": "35",
       "height": "330",
       "color": "green",
@@ -128,7 +128,7 @@
         "zh": "请将脸部（不含耳朵）右侧放入此区域"
       },
       "start_x": "240",
-      "start_y": "40",
+      "start_y": "30",
       "width": "35",
       "height": "330",
       "color": "green",
@@ -146,7 +146,7 @@
         "zh": "请将头部（包含头发）上沿放入此区域"
       },
       "start_x": "90",
-      "start_y": "40",
+      "start_y": "30",
       "width": "150",
       "height": "25",
       "color": "green",
@@ -164,7 +164,7 @@
         "zh": "请将脸部（下巴）下沿放入此区域"
       },
       "start_x": "90",
-      "start_y": "345",
+      "start_y": "335",
       "width": "150",
       "height": "25",
       "color": "green",

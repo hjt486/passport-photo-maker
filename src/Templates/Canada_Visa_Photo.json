@@ -1,15 +1,15 @@
 {
   "title": {
-    "en": "US Passport/Visa Photo",
-    "zh": "美国护照签证照片"
+    "en": "Canada Visa Photo",
+    "zh": "加拿大签证照片"
   },
-  "width": "510",
-  "height": "510",
+  "width": "350",
+  "height": "450",
   "format": "jpg",
-  "size": "230",
+  "size": "150",
   "instruction": {
-    "en": "Please check the latest requirement at <a href=\"https://travel.state.gov/content/travel/en/passports/how-apply/photos.html\">here</a>.",
-    "zh": "请点击<a href=\"https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/photos.html\">这里</a>查看最新标准。"
+    "en": "Please check the latest requirement at <a href=\"https://www.canada.ca/en/immigration-refugees-citizenship/services/application/application-forms-guides/temporary-resident-visa-application-photograph-specifications.html\">here</a>.",
+    "zh": "请点击<a href=\"https://www.canada.ca/en/immigration-refugees-citizenship/services/application/application-forms-guides/temporary-resident-visa-application-photograph-specifications.html\">这里</a>查看最新标准。"
   },
   "guide": [
     {
@@ -19,10 +19,10 @@
         "en": "Align the nose tip to the center line",
         "zh": "将鼻尖居中对齐这条线"
       },
-      "start_x": "252.5",
+      "start_x": "172.5",
       "start_y": "0",
       "width": "5",
-      "height": "510",
+      "height": "450",
       "color": "yellow",
       "isVerticalMovable": false,
       "isHorizontalMovable": false,
@@ -56,11 +56,11 @@
         "zh": "请将头部（包含头发）上沿放入此区域"
       },
       "start_x": "0",
-      "start_y": "20",
-      "width": "510",
-      "height": "65",
+      "start_y": "45",
+      "width": "350",
+      "height": "25",
       "color": "green",
-      "isVerticalMovable": true,
+      "isVerticalMovable": false,
       "isHorizontalMovable": false,
       "overlap": true,
       "opacity": "0.5",
@@ -74,11 +74,11 @@
         "zh": "请将脸部（下巴）下沿放入此区域"
       },
       "start_x": "0",
-      "start_y": "315",
-      "width": "510",
-      "height": "65",
+      "start_y": "380",
+      "width": "350",
+      "height": "25",
       "color": "green",
-      "isVerticalMovable": true,
+      "isVerticalMovable": false,
       "isHorizontalMovable": false,
       "overlap": true,
       "opacity": "0.5",

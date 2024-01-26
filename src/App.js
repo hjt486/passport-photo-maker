@@ -5,6 +5,8 @@ import { useLanguage } from './translate'
 import { resizeAndCompressImage } from './ImageUtils'
 import PRC_Passport_Photo from './Templates/PRC_Passport_Photo.json'
 import US_Passport_Photo from './Templates/US_Passport_Photo.json'
+import Canada_Passport_Photo from './Templates/Canada_Passport_Photo.json'
+import Canada_Visa_Photo from './Templates/Canada_Visa_Photo.json'
 import './App.css'
 
 const INITIAL_ZOOM = 1.5
@@ -18,6 +20,8 @@ const EXPORT_SIZE_LIMIT = 2000
 const TEMPLATES = [
   PRC_Passport_Photo,
   US_Passport_Photo,
+  Canada_Passport_Photo,
+  Canada_Visa_Photo,
 ]
 
 // Function to update the preview
