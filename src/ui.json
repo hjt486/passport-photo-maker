@@ -1,7 +1,7 @@
 {
   "app.title": {
     "en": "Passport & Visa Photo Maker",
-    "zh": "护照签证照片制作器"
+    "zh": "护照签证照片生成器"
   },
   "selectPhotoButton": {
     "en": "Select A Photo",
@@ -27,7 +27,16 @@
     "en": "Save",
     "zh": "保存"
   },
-  "test" : {
-    
+  "buyMeACoffeeButton" : {
+    "en": "Like it? Buy me A coffee!",
+    "zh": "帮上忙了？欢迎打赏！"
+  },
+  "buyMeACoffeeTitle" : {
+    "en": "Thank you for your coffee!",
+    "zh": "谢谢打赏！"
+  },
+  "buyMeACoffeeWords" : {
+    "en": "Anything is appreciated! A thank-you letter sent to hjt486@gmail.com would make my day! I'm glad I can help.",
+    "zh": "任何心意都很感激！哪怕是一封发到 hjt486@gmail.com 的感谢信，能帮到你是我最开心的事情！"
   }
 }

@@ -54,6 +54,7 @@
 }
 
 .app {
+  margin-bottom: 10vh;
 }
 
 .load-file-button {
@@ -213,6 +214,18 @@
 
 .save-button {
   margin-top: 1em;
+}
+
+.coffee-modal {
+  margin-bottom: 5vh;
+}
+
+.coffee-button {
+  margin-top: 1em;
+}
+
+.coffee-method {
+  text-align: center;
 }
 
 .disable-scroll {

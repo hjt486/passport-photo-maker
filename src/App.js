@@ -167,7 +167,7 @@ const NavBar = ({
               onChange={handleLanguageChange}
               checked={getLanguage() === "zh"}
             />
-          中文</label>
+            中文</label>
         </li>
       </ul>
     </nav>
@@ -596,6 +596,40 @@ const RightColumn = ({
   )
 }
 
+const BuyMeACoffee = ({
+  translate,
+  coffee,
+  setCoffee,
+}) => {
+  console.log("BuyMeACoffee")
+  return (<>
+    <dialog open={coffee} className='coffee-modal'>
+      <article>
+        <h2>{translate("buyMeACoffeeTitle")}</h2>
+        <div class="grid coffee-method">
+          <div><img src="https://jiataihan.dev/assets/css/hid.hid" alt="WeChat" className="wechat-logo" /><p>WeChat</p></div>
+          <div>
+            <img src="/BuyMeACoffee/zelle.png" alt="Zelle" className="zelle-logo" />
+            <img src="/BuyMeACoffee/paypal.png" alt="Paypal" className="paypal-logo" />
+            <p>Zelle Or Paypal</p>
+            <p>hjt486@gmail.com</p>
+          </div>
+        </div>
+        <p>{translate("buyMeACoffeeWords")}</p>
+        <footer>
+          <button onClick={() => { setCoffee(false) }}>OK</button>
+        </footer>
+      </article>
+    </dialog>
+    <div
+      role="button"
+      class="outline coffee-button"
+      onClick={() => { setCoffee(true) }}>
+      {translate("buyMeACoffeeButton")}
+    </div>
+  </>)
+}
+
 // Main App component
 const App = () => {
   const [template, setTemplate] = useState(TEMPLATES[0]);
@@ -617,6 +651,7 @@ const App = () => {
     height_valid: true,
     size_valid: true,
   })
+  const [coffee, setCoffee] = useState(false)
 
   const editorRef = React.createRef()
   const { translate, translateGuide, setLanguage, getLanguage } = useLanguage();
@@ -702,6 +737,13 @@ const App = () => {
             exportPhoto={exportPhoto}
             setExportPhoto={setExportPhoto}
             translate={translate}
+          />
+        </div>
+        <div className="container">
+          <BuyMeACoffee
+            translate={translate}
+            coffee={coffee}
+            setCoffee={setCoffee}
           />
         </div>
       </div>
