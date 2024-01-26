@@ -120,6 +120,8 @@ const NavBar = ({
   translate,
   translateGuide,
   setEditorDimensions,
+  editorRef, 
+  setCroppedImage
 }) => {
 
   const handleTemplateChange = (event) => {
@@ -144,6 +146,7 @@ const NavBar = ({
         width: parseInt(selectedTemplate.width),
         height: parseInt(selectedTemplate.height),
       })
+      updatePreview(editorRef, setCroppedImage)
     }
   };
 
@@ -707,6 +710,8 @@ const App = () => {
             translate={translate}
             translateGuide={translateGuide}
             setEditorDimensions={setEditorDimentions}
+            setCroppedImage={setCroppedImage}
+            editorRef={editorRef}
           />
         </div>
         <div className="container">
