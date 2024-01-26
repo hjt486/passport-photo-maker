@@ -48,16 +48,29 @@ const GuideDrawer = ({ guides, editorDimensions }) => {
   }, {});
 
   return Object.values(groupedGuides).map((group, index) => {
+    const isVerticallyMovable = group.every(guide => guide.isVerticalMovable);
+    const isHorizontallyMovable = group.every(guide => guide.isHorizontalMovable);
+
     let axis = 'none';
-    if (group.some(guide => guide.isVerticalMovable) && group.some(guide => guide.isHorizontalMovable)) {
+    if ((isVerticallyMovable) && (isHorizontallyMovable)) {
       axis = 'both';
-    } else if (group.some(guide => guide.isVerticalMovable)) {
+    } else if (isVerticallyMovable) {
       axis = 'y';
-    } else if (group.some(guide => guide.isHorizontalMovable)) {
+    } else if (isHorizontallyMovable) {
       axis = 'x';
     }
 
     const position = positions[group[0].group] || { x: 0, y: 0 };
+
+    const startYValues = group.map(item => parseInt(item.start_y));
+    const minStartY = Math.min(...startYValues);
+    const maxYValues = group.map(item => parseInt(item.start_y) + parseInt(item.height));
+    const maxY = Math.max(...maxYValues);
+
+    const startXValues = group.map(item => parseInt(item.start_x));
+    const minStartX = Math.min(...startXValues);
+    const maxXValues = group.map(item => parseInt(item.start_x) + parseInt(item.width));
+    const maxX = Math.max(...maxXValues);
 
     return (
       <Draggable
@@ -67,10 +80,10 @@ const GuideDrawer = ({ guides, editorDimensions }) => {
         onStop={(e, data) => handleDragStop(group, e, data)}
 
         bounds={{
-          left: -group[0].start_x,
-          top: -group[0].start_y,
-          right: editorDimensions.width - group[0].width - group[0].start_x, // Subtract the width of the guide
-          bottom: editorDimensions.height - group[0].height - group[0].start_y, // Subtract the height of the guide
+          left: -minStartX,
+          right: editorDimensions.width - maxX,
+          top: -minStartY,
+          bottom: editorDimensions.height - maxY,
         }}
       >
         <div style={{ position: 'absolute' }}>

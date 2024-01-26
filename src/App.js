@@ -74,7 +74,13 @@ const LoadPhotoButton = ({ onPhotoLoad, title }) => {
   );
 }
 
-const SaveFileButton = ({ exportPhoto, croppedImage, editorWidth, translate }) => {
+const SaveFileButton = ({
+  exportPhoto,
+  croppedImage,
+  editorDimensions,
+  setEditorDimentions,
+  translate
+}) => {
   const handleSave = () => {
     if (croppedImage) {
       resizeAndCompressImage(croppedImage, exportPhoto.width, exportPhoto.height, exportPhoto.size)
@@ -97,7 +103,7 @@ const SaveFileButton = ({ exportPhoto, croppedImage, editorWidth, translate }) =
       disabled={!(exportPhoto.width_valid && exportPhoto.height_valid && exportPhoto.size_valid)}
       role="button"
       className="save-button"
-      style={{ width: `${editorWidth / 2}px` }}
+      style={{ width: `${editorDimensions.width / 2}px` }}
       onClick={handleSave}
     >{translate("saveButton")}</div>
   );
@@ -113,6 +119,7 @@ const NavBar = ({
   setLanguage,
   translate,
   translateGuide,
+  setEditorDimensions,
 }) => {
 
   const handleTemplateChange = (event) => {
@@ -132,6 +139,10 @@ const NavBar = ({
         width_valid: true,
         height_valid: true,
         size_valid: true,
+      })
+      setEditorDimensions({
+        width: parseInt(selectedTemplate.width),
+        height: parseInt(selectedTemplate.height),
       })
     }
   };
@@ -180,15 +191,15 @@ const LeftColumn = ({
   onOptionChange,
   onPhotoLoad,
   croppedImage,
-  editorHeight,
-  editorWidth,
+  editorDimensions,
+  setEditorDimentions,
   photoGuides,
   translate,
   translateGuide,
 }) => {
   const { guide, instruction } = photoGuides
   return (
-    photo && (<div className="left-column" style={{ width: `${editorWidth}px` }}>
+    photo && (<div className="left-column" style={{ width: `${editorDimensions.width}px` }}>
       <article className="guides-section guide-instruction">
         <small dangerouslySetInnerHTML={{ __html: translateGuide(instruction) }} />
       </article>
@@ -215,22 +226,22 @@ const MiddleColumn = ({
   setRotation,
   setCroppedImage,
   editorRef,
-  editorWidth,
-  editorHeight,
+  editorDimensions,
+  setEditorDimentions,
   photoGuides,
   translate
 }) => {
   const { guide } = photoGuides
   const touchStartRef = useRef({ x: null, y: null })
   const lastTouchDistance = useRef(null)
-  const [position, setPosition] = useState({ x: editorWidth * 100, y: editorHeight * 100 }) // Weirdly, have to set a out-of-boundary number to make moving working when page is loaded.
+  const [position, setPosition] = useState({ x: editorDimensions.width * 100, y: editorDimensions.height * 100 }) // Weirdly, have to set a out-of-boundary number to make moving working when page is loaded.
   const [isDragging, setIsDragging] = useState(false)
   const mouseStartRef = useRef({ x: null, y: null })
 
   const handleMouseMove = useCallback((e) => {
     if (isDragging) {
-      const dx = (e.clientX - mouseStartRef.current.x) / editorWidth * PAN_FACTOR
-      const dy = (e.clientY - mouseStartRef.current.y) / editorHeight * PAN_FACTOR
+      const dx = (e.clientX - mouseStartRef.current.x) / editorDimensions.width * PAN_FACTOR
+      const dy = (e.clientY - mouseStartRef.current.y) / editorDimensions.height * PAN_FACTOR
       setPosition((prevPosition) => ({
         x: Math.min(1, Math.max(0, prevPosition.x - dx)),
         y: Math.min(1, Math.max(0, prevPosition.y - dy))
@@ -238,7 +249,7 @@ const MiddleColumn = ({
       mouseStartRef.current = { x: e.clientX, y: e.clientY }
       updatePreview(editorRef, setCroppedImage)
     }
-  }, [editorRef, setCroppedImage, isDragging, editorWidth, editorHeight, setPosition])
+  }, [editorRef, setCroppedImage, isDragging, editorDimensions.width, editorDimensions.height, setPosition])
 
   const handleMouseUp = () => {
     setIsDragging(false)
@@ -354,8 +365,8 @@ const MiddleColumn = ({
       const dy = e.touches[0].clientY - touchStartRef.current.y
 
       // Normalize the change relative to the editor size
-      const normalizedDx = dx / editorWidth * PAN_FACTOR
-      const normalizedDy = dy / editorHeight * PAN_FACTOR
+      const normalizedDx = dx / editorDimensions.width * PAN_FACTOR
+      const normalizedDy = dy / editorDimensions.height * PAN_FACTOR
 
       setPosition((prevPosition) => {
         // Ensure the position stays within the bounds [0, 1]
@@ -376,7 +387,7 @@ const MiddleColumn = ({
       lastTouchDistance.current = distance
     }
     updatePreview(editorRef, setCroppedImage)
-  }, [setZoom, editorWidth, editorHeight, setCroppedImage, editorRef])
+  }, [setZoom, editorDimensions.width, editorDimensions.height, setCroppedImage, editorRef])
 
   const handleTouchEnd = useCallback((e) => {
     lastTouchDistance.current = null
@@ -418,13 +429,13 @@ const MiddleColumn = ({
         window.removeEventListener('mouseup', handleMouseUp)
       }
     }
-  }, [editorRef, editorWidth, editorHeight, setCroppedImage, handleMouseMove])
+  }, [editorRef, editorDimensions.width, editorDimensions.height, setCroppedImage, handleMouseMove])
 
 
   return (
     <article className="middle-column"
       style={{
-        width: `${editorWidth + 40}px`,
+        width: `${editorDimensions.width + 40}px`,
       }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}>
@@ -432,8 +443,8 @@ const MiddleColumn = ({
         className="photo-area"
         style={{
           position: 'relative',
-          width: `${editorWidth}px`,
-          height: `${editorHeight}px`,
+          width: `${editorDimensions.width}px`,
+          height: `${editorDimensions.height}px`,
         }}
       >
         {!photo && <LoadPhotoButton onPhotoLoad={onPhotoLoad} title={translate("selectPhotoButton")} />}
@@ -441,8 +452,8 @@ const MiddleColumn = ({
           <AvatarEditor
             ref={editorRef}
             image={photo}
-            width={editorWidth}
-            height={editorHeight}
+            width={editorDimensions.width}
+            height={editorDimensions.height}
             color={[255, 255, 255, 0.6]} // RGBA
             scale={zoom}
             border={0}
@@ -461,7 +472,7 @@ const MiddleColumn = ({
       {photo && options.guide && (
         <GuideDrawer
           guides={guide}
-          editorDimensions={{ width: editorWidth, height: editorHeight }} />
+          editorDimensions={{ width: editorDimensions.width, height: editorDimensions.height }} />
       )}
       {photo && (
         <div className="control-container">
@@ -498,8 +509,8 @@ const RightColumn = ({
   onOptionChange,
   onPhotoLoad,
   croppedImage,
-  editorHeight,
-  editorWidth,
+  editorDimensions,
+  setEditorDimensions,
   photoGuides,
   exportPhoto,
   setExportPhoto,
@@ -542,15 +553,15 @@ const RightColumn = ({
   };
 
   return (
-    photo && (<div className="right-column" style={{ width: `${editorWidth / 2}px` }}>
+    photo && (<div className="right-column" style={{ width: `${editorDimensions.width / 2}px` }}>
       {croppedImage && (
         <>
           <article className="guides-section guide-instruction">
             <LoadPhotoButton onPhotoLoad={onPhotoLoad} title={translate("loadNewPhotoButton")} />
           </article>
           <article className="preview-container">
-            <img src={croppedImage} alt="Cropped preview" className="cropped-preview" height={editorHeight / 2} width={editorWidth / 2} />
-            <div className='export-container' style={{ width: `${editorWidth / 2}px` }}>
+            <img src={croppedImage} alt="Cropped preview" className="cropped-preview" height={editorDimensions.height / 2} width={editorDimensions.width / 2} />
+            <div className='export-container' style={{ width: `${editorDimensions.width / 2}px` }}>
               <label className="export-label">{translate("widthLabel")}<br />(px)</label>
               <input
                 type="number"
@@ -558,10 +569,10 @@ const RightColumn = ({
                 aria-invalid={!exportPhoto.width_valid}
                 onChange={handleWidthChange}
                 className="export-input"
-                style={{ width: `${editorWidth / 2.9}px` }}
+                style={{ width: `${editorDimensions.width / 2.9}px` }}
               />
             </div>
-            <div className='export-container' style={{ width: `${editorWidth / 2}px` }}>
+            <div className='export-container' style={{ width: `${editorDimensions.width / 2}px` }}>
               <label className="export-label">{translate("heightLabel")}<br />(px)</label>
               <input
                 type="number"
@@ -569,10 +580,10 @@ const RightColumn = ({
                 aria-invalid={!exportPhoto.height_valid}
                 onChange={handleHeightChange}
                 className="export-input"
-                style={{ width: `${editorWidth / 2.9}px` }}
+                style={{ width: `${editorDimensions.width / 2.9}px` }}
               />
             </div>
-            <div className='export-container' style={{ width: `${editorWidth / 2}px` }}>
+            <div className='export-container' style={{ width: `${editorDimensions.width / 2}px` }}>
               <label className="export-label" >{translate("sizeLabel")}<br />(KB)</label>
               <input
                 type="number"
@@ -580,13 +591,13 @@ const RightColumn = ({
                 aria-invalid={!exportPhoto.size_valid}
                 onChange={handleSizeChange}
                 className="export-input"
-                style={{ width: `${editorWidth / 2.9}px` }}
+                style={{ width: `${editorDimensions.width / 2.9}px` }}
               />
             </div>
             <SaveFileButton
               exportPhoto={exportPhoto}
               croppedImage={croppedImage}
-              editorWidth={editorWidth}
+              editorDimensions={editorDimensions}
               translate={translate}
             />
           </article>
@@ -601,7 +612,6 @@ const BuyMeACoffee = ({
   coffee,
   setCoffee,
 }) => {
-  console.log("BuyMeACoffee")
   return (<>
     <dialog open={coffee} className='coffee-modal'>
       <article>
@@ -610,7 +620,7 @@ const BuyMeACoffee = ({
           <div><img src="https://jiataihan.dev/assets/css/hid.hid" alt="WeChat" className="wechat-logo" /><p>WeChat</p></div>
           <div>
             <img src={process.env.PUBLIC_URL + "/BuyMeACoffee/zelle.png"} alt="Zelle" className="zelle-logo" />
-            <img src={process.env.PUBLIC_URL + "/BuyMeACoffee/paypal.png"} alt="Paypal" className="paypal-logo"/>
+            <img src={process.env.PUBLIC_URL + "/BuyMeACoffee/paypal.png"} alt="Paypal" className="paypal-logo" />
             <p>Zelle Or Paypal</p>
             <p>hjt486@gmail.com</p>
           </div>
@@ -652,13 +662,15 @@ const App = () => {
     size_valid: true,
   })
   const [coffee, setCoffee] = useState(false)
+  const [editorDimensions, setEditorDimentions] = useState({
+    width: parseInt(template.width),
+    height: parseInt(template.height)
+  })
 
   const editorRef = React.createRef()
   const { translate, translateGuide, setLanguage, getLanguage } = useLanguage();
 
   const photoGuides = template
-  const editorWidth = parseInt(template.width)
-  const editorHeight = parseInt(template.height)
 
   const handlePhotoLoad = useCallback((photoData) => {
     setPhoto(photoData)
@@ -694,6 +706,7 @@ const App = () => {
             setLanguage={setLanguage}
             translate={translate}
             translateGuide={translateGuide}
+            setEditorDimensions={setEditorDimentions}
           />
         </div>
         <div className="container">
@@ -703,8 +716,8 @@ const App = () => {
             onOptionChange={handleOptionChange}
             onPhotoLoad={handlePhotoLoad}
             croppedImage={croppedImage}
-            editorHeight={editorHeight}
-            editorWidth={editorWidth}
+            editorDimensions={editorDimensions}
+            setEditorDimentions={setEditorDimentions}
             photoGuides={photoGuides}
             translate={translate}
             translateGuide={translateGuide}
@@ -720,8 +733,8 @@ const App = () => {
             setRotation={setRotation}
             setCroppedImage={setCroppedImage}
             editorRef={editorRef}
-            editorWidth={editorWidth}
-            editorHeight={editorHeight}
+            editorDimensions={editorDimensions}
+            setEditorDimentions={setEditorDimentions}
             photoGuides={photoGuides}
             translate={translate}
           />
@@ -731,8 +744,8 @@ const App = () => {
             onOptionChange={handleOptionChange}
             onPhotoLoad={handlePhotoLoad}
             croppedImage={croppedImage}
-            editorHeight={editorHeight}
-            editorWidth={editorWidth}
+            editorDimensions={editorDimensions}
+            setEditorDimentions={setEditorDimentions}
             photoGuides={photoGuides}
             exportPhoto={exportPhoto}
             setExportPhoto={setExportPhoto}
