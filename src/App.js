@@ -609,8 +609,8 @@ const BuyMeACoffee = ({
         <div class="grid coffee-method">
           <div><img src="https://jiataihan.dev/assets/css/hid.hid" alt="WeChat" className="wechat-logo" /><p>WeChat</p></div>
           <div>
-            <img src="/BuyMeACoffee/zelle.png" alt="Zelle" className="zelle-logo" />
-            <img src="/BuyMeACoffee/paypal.png" alt="Paypal" className="paypal-logo" />
+            <img src={process.env.PUBLIC_URL + "/BuyMeACoffee/zelle.png"} alt="Zelle" className="zelle-logo" />
+            <img src={process.env.PUBLIC_URL + "/BuyMeACoffee/paypal.png"} alt="Paypal" className="paypal-logo"/>
             <p>Zelle Or Paypal</p>
             <p>hjt486@gmail.com</p>
           </div>
