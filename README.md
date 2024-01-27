@@ -10,9 +10,6 @@
   <p align="center">
     不需要任何图像处理知识，只需要简单的动动鼠标，就可以快速生成符合不同国家标准的护照或签证照片。
     <br />
-    <strong>注：目前仅支持运行在Windows平台。</strong>
-    <br />
-    <br />
     <a href="https://jiataihan.dev/passport-photo-maker/"><strong>{ 点击开始使用 }</strong></a>
     <br />
     <a href="https://www.youtube.com/watch?v=Q86svYysahA"><strong>{ 点击查看视频教程 }</strong></a>
