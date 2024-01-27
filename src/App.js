@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react'
 import AvatarEditor from 'react-avatar-editor'
-import pica from 'pica';
 import GuideDrawer from './GuideDrawer'
 import { useLanguage } from './translate'
 import { resizeAndCompressImage } from './ImageUtils'
@@ -26,9 +25,7 @@ const TEMPLATES = [
 ]
 const MAX_EDITOR_WIDTH = 330
 const MAX_EDITOR_HEIGHT = 480
-const EDITOR_SCALE = 1// To max the export image quality
 const MM2INCH = 25.4 // Convert millimeter to inch
-
 
 // Function to update the preview
 const updatePreview = (editorRef, setCroppedImage) => {
@@ -84,23 +81,6 @@ const LoadPhotoButton = ({ onPhotoLoad, title }) => {
   )
 }
 
-const processImageWithPica = async (editorRef, exportPhoto) => {
-  if (editorRef.current) {
-    const originalCanvas = editorRef.current.getImage();
-    const offScreenCanvas = document.createElement('canvas');
-    offScreenCanvas.width = exportPhoto.width;
-    offScreenCanvas.height = exportPhoto.height;
-
-    try {
-      await pica().resize(originalCanvas, offScreenCanvas);
-      return await pica().toBlob(offScreenCanvas, 'image/jpeg', 0.9);
-    } catch (error) {
-      console.error('Error processing image:', error);
-      throw error;  // Re-throw the error to be caught in handleSave
-    }
-  }
-};
-
 const SaveFileButton = ({
   editorRef,
   exportPhoto,
@@ -111,7 +91,12 @@ const SaveFileButton = ({
 }) => {
   const handleSave = () => {
     if (croppedImage) {
-      processImageWithPica(editorRef, exportPhoto)
+      // Get the canvas from AvatarEditor
+      const canvas = editorRef.current.getImage();
+      const imageDataUrl = canvas.toDataURL('image/jpeg');
+  
+      // Now use resizeAndCompressImage
+      resizeAndCompressImage(imageDataUrl, exportPhoto.width, exportPhoto.height, exportPhoto.size)
         .then((resizedBlob) => {
           const url = URL.createObjectURL(resizedBlob);
           const a = document.createElement('a');
@@ -122,10 +107,11 @@ const SaveFileButton = ({
           document.body.removeChild(a);
         })
         .catch((error) => {
-          console.error(error);
+          console.error('Error resizing and compressing image:', error);
         });
     }
   };
+  
 
   return (
     <div
@@ -497,8 +483,8 @@ const MiddleColumn = ({
             <AvatarEditor
               ref={editorRef}
               image={photo}
-              width={editorDimensions.width * EDITOR_SCALE}
-              height={editorDimensions.height * EDITOR_SCALE}
+              width={editorDimensions.width }
+              height={editorDimensions.height }
               color={[255, 255, 255, 0.6]} // RGBA
               scale={zoom}
               border={0}
