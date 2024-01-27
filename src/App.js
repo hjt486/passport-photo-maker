@@ -94,7 +94,7 @@ const SaveFileButton = ({
     if (croppedImage) {
       // Get the canvas from AvatarEditor
       const canvas = editorRef.current.getImage()
-      console.log('Canvas:', canvas);
+      console.log('Canvas:', canvas)
       const imageDataUrl = canvas.toDataURL('image/png')
 
       // Now use resizeAndCompressImage
