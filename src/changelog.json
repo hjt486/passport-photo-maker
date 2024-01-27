@@ -1,6 +1,15 @@
 {
   "changelog": [
     {
+      "date": "2024-01-27",
+      "item": [
+        {
+          "en": "Limit adaptive size to width, prevent overflow on handset.",
+          "zh": "将自适应尺寸改为由宽度定义，防止在手持设备上溢出。"
+        }
+      ]
+    },
+    {
       "date": "2024-01-26",
       "item": [
         {

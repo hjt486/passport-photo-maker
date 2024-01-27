@@ -127,7 +127,7 @@ const SaveFileButton = ({
 
 
 const calculateEditorZoom = (originalWidth, originalHeight) => {
-  return Math.max(MAX_EDITOR_WIDTH / originalWidth, MAX_EDITOR_HEIGHT / originalHeight)
+  return Math.min(MAX_EDITOR_WIDTH / originalWidth, MAX_EDITOR_HEIGHT / originalHeight)
 }
 
 const NavBar = ({
