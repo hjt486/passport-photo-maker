@@ -1,3 +1,16 @@
+/*
+      object-assign
+      (c) Sindre Sorhus
+      @license MIT
+      */
+
+/*!
+
+pica
+https://github.com/nodeca/pica
+
+*/
+
 /**
  * @license React
  * react-dom.production.min.js
