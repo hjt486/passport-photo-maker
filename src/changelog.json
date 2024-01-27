@@ -1,0 +1,79 @@
+{
+  "changelog": [
+    {
+      "date": "2024-01-26",
+      "item": [
+        {
+          "en": "Added Changelog.",
+          "zh": "增加更新历史。"
+        },
+        {
+          "en": "Replaced with high quality export lib, better image quality.",
+          "zh": "替换成高品质图像输出的库，输出图像有更好的品质了。"
+        },
+        {
+          "en": "Updated editor area to auto size, preventing issue on handset devices.",
+          "zh": "更新编辑器区域支持自动调整大小，防止在手持设备上出现的一些问题。"
+        },
+        {
+          "en": "Updated all templates to support proper DPI to correct size.",
+          "zh": "更新所有模板信息以支持DPI和正确分辨率的转换。"
+        },
+        {
+          "en": "Added Google Analytics",
+          "zh": "增加Google分析。"
+        }
+      ]
+    },
+    {
+      "date": "2024-01-25",
+      "item": [
+        {
+          "en": "Added feedback link.",
+          "zh": "增加反馈链接。"
+        },
+        {
+          "en": "Added Canada templates, tweaked other templates.",
+          "zh": "增加加拿大模板，修改了其他的模板信息。"
+        },
+        {
+          "en": "Fixed draggable guide out of boundary.",
+          "zh": "修复可拖拽辅助线超出边界问题。"
+        },
+        {
+          "en": "Added Github Readme, favicon, project info etc..",
+          "zh": "增加Github描述，图标，项目信息等。"
+        },
+        {
+          "en": "First deploy to public.",
+          "zh": "正式上线"
+        },
+        {
+          "en": "Added 'Buy Me A Coffee'.",
+          "zh": "增加打赏功能。"
+        },
+        {
+          "en": "Resized the UI, Added English/Chinese language support.",
+          "zh": "重新调整UI，添加中英双语界面。"
+        },
+        {
+          "en": "Basic feature/structure finished.",
+          "zh": "基本框架功能完成"
+        }
+      ]
+    },
+    {
+      "date": "2024-01-24",
+      "item": [
+        {
+          "en": "Responsive UI updated.",
+          "zh": "完成自适应界面。"
+        },
+        {
+          "en": "Basic feature/structure finished.",
+          "zh": "基本框架功能完成。"
+        }
+      ]
+    }
+  ]
+}

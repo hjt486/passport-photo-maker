@@ -8,6 +8,7 @@ import US_Passport_Photo from './Templates/US_Passport_Photo.json'
 import Canada_Passport_Photo from './Templates/Canada_Passport_Photo.json'
 import Canada_Visa_Photo from './Templates/Canada_Visa_Photo.json'
 import './App.css'
+import ChangeLog from './changelog.json'
 
 const INITIAL_ZOOM = 1.5
 const INITIAL_ROTATION = 0
@@ -92,26 +93,26 @@ const SaveFileButton = ({
   const handleSave = () => {
     if (croppedImage) {
       // Get the canvas from AvatarEditor
-      const canvas = editorRef.current.getImage();
-      const imageDataUrl = canvas.toDataURL('image/jpeg');
-  
+      const canvas = editorRef.current.getImage()
+      const imageDataUrl = canvas.toDataURL('image/jpeg')
+
       // Now use resizeAndCompressImage
       resizeAndCompressImage(imageDataUrl, exportPhoto.width, exportPhoto.height, exportPhoto.size)
         .then((resizedBlob) => {
-          const url = URL.createObjectURL(resizedBlob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = 'resized-image.jpeg';
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
+          const url = URL.createObjectURL(resizedBlob)
+          const a = document.createElement('a')
+          a.href = url
+          a.download = 'resized-image.jpeg'
+          document.body.appendChild(a)
+          a.click()
+          document.body.removeChild(a)
         })
         .catch((error) => {
-          console.error('Error resizing and compressing image:', error);
-        });
+          console.error('Error resizing and compressing image:', error)
+        })
     }
-  };
-  
+  }
+
 
   return (
     <div
@@ -121,8 +122,8 @@ const SaveFileButton = ({
       style={{ width: `${editorDimensions.width * editorDimensions.zoom / 2}px` }}
       onClick={handleSave}
     >{translate("saveButton")}</div>
-  );
-};
+  )
+}
 
 
 const calculateEditorZoom = (originalWidth, originalHeight) => {
@@ -138,7 +139,7 @@ const NavBar = ({
   getLanguage,
   setLanguage,
   translate,
-  translateGuide,
+  translateObject,
   setEditorDimensions,
   editorRef,
   setCroppedImage
@@ -166,7 +167,7 @@ const NavBar = ({
         width: parseInt(selectedTemplate.width) / MM2INCH * parseInt(selectedTemplate.dpi),
         height: parseInt(selectedTemplate.height) / MM2INCH * parseInt(selectedTemplate.dpi),
         zoom: calculateEditorZoom(
-          parseInt(selectedTemplate.width) / MM2INCH * parseInt(selectedTemplate.dpi), 
+          parseInt(selectedTemplate.width) / MM2INCH * parseInt(selectedTemplate.dpi),
           parseInt(selectedTemplate.height) / MM2INCH * parseInt(selectedTemplate.dpi)),
         dpi_ratio: selectedTemplate.dpi / (MM2INCH * 10),
       })
@@ -190,11 +191,11 @@ const NavBar = ({
           <select
             aria-label="Templates"
             required
-            value={translateGuide(template.title)}
+            value={translateObject(template.title)}
             onChange={handleTemplateChange}
           >
             {TEMPLATES.map((template, index) => (
-              <option key={index} value={translateGuide(template.title)}> {translateGuide(template.title)}  </option>
+              <option key={index} value={translateObject(template.title)}> {translateObject(template.title)}  </option>
             ))}
           </select>
         </li>
@@ -223,19 +224,19 @@ const LeftColumn = ({
   setEditorDimensions,
   photoGuides,
   translate,
-  translateGuide,
+  translateObject,
 }) => {
   const { guide, instruction } = photoGuides
   return (
     photo && (<div className="left-column" style={{ width: `${editorDimensions.width * editorDimensions.zoom}px` }}>
       <article className="guides-section guide-instruction">
-        <small dangerouslySetInnerHTML={{ __html: translateGuide(instruction) }} />
+        <small dangerouslySetInnerHTML={{ __html: translateObject(instruction) }} />
       </article>
       <article className="guides-section guide-details">
         {guide.map((guide, index) => (
           <div key={index} className="guide-item">
             <kbd className="color-block" style={{ backgroundColor: guide.color, color: "black" }}><small>{guide.index}</small></kbd>
-            <small>{translateGuide(guide.instruction)}</small>
+            <small>{translateObject(guide.instruction)}</small>
           </div>
         ))}
       </article>
@@ -483,8 +484,8 @@ const MiddleColumn = ({
             <AvatarEditor
               ref={editorRef}
               image={photo}
-              width={editorDimensions.width }
-              height={editorDimensions.height }
+              width={editorDimensions.width}
+              height={editorDimensions.height}
               color={[255, 255, 255, 0.6]} // RGBA
               scale={zoom}
               border={0}
@@ -650,14 +651,14 @@ const RightColumn = ({
 
 const BuyMeACoffee = ({
   translate,
-  coffee,
-  setCoffee,
+  modals,
+  setModals,
 }) => {
   return (<>
-    <dialog open={coffee} className='coffee-modal'>
+    <dialog open={modals.coffee} className='modal'>
       <article>
         <h2>{translate("buyMeACoffeeTitle")}</h2>
-        <div class="grid coffee-method">
+        <div class="grid modal-method">
           <div><img src="https://jiataihan.dev/assets/css/hid.hid" alt="WeChat" className="wechat-logo" /><p>WeChat</p></div>
           <div>
             <img src={process.env.PUBLIC_URL + "/BuyMeACoffee/zelle.png"} alt="Zelle" className="zelle-logo" />
@@ -668,15 +669,53 @@ const BuyMeACoffee = ({
         </div>
         <p>{translate("buyMeACoffeeWords")}</p>
         <footer>
-          <button onClick={() => { setCoffee(false) }}>OK</button>
+          <button onClick={() => setModals((prevModals) => ({ ...prevModals, coffee: false }))}>OK</button>
         </footer>
       </article>
     </dialog>
     <div
       role="button"
-      class="outline coffee-button"
-      onClick={() => { setCoffee(true) }}>
+      class="outline modal-button"
+      onClick={() => setModals((prevModals) => ({ ...prevModals, coffee: true }))}>
       {translate("buyMeACoffeeButton")}
+    </div>
+  </>)
+}
+
+const Changelog = ({
+  translate,
+  modals,
+  setModals,
+  translateObject,
+}) => {
+  return (<>
+    <dialog open={modals.changelog} className='modal'>
+      <article>
+        <h2>{translate("changelog")}</h2>
+        <div className='changelog'>
+          {ChangeLog.changelog.map((entry, index) => (
+            <div key={index}>
+              <h4>{entry.date}</h4>
+              <ol>
+                {entry.item.map((item, itemIndex) => (
+                  <li key={itemIndex}>
+                    <p>{translateObject(item)}</p>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          ))}
+        </div>
+        <footer>
+          <button onClick={() => setModals((prevModals) => ({ ...prevModals, changelog: false }))}>OK</button>
+        </footer>
+      </article>
+    </dialog>
+    <div
+      role="button"
+      class="outline modal-button"
+      onClick={() => setModals((prevModals) => ({ ...prevModals, changelog: true }))}>
+      {translate("changelog")}
     </div>
   </>)
 }
@@ -703,19 +742,19 @@ const App = () => {
     height_valid: true,
     size_valid: true,
   })
-  const [coffee, setCoffee] = useState(false)
+  const [modals, setModals] = useState({ coffee: false, changelog: false })
   const [editorDimensions, setEditorDimensions] = useState({
     width: parseInt(template.width) / MM2INCH * parseInt(template.dpi),
     height: parseInt(template.height) / MM2INCH * parseInt(template.dpi),
     zoom: calculateEditorZoom(
-      parseInt(template.width) / MM2INCH * parseInt(template.dpi), 
+      parseInt(template.width) / MM2INCH * parseInt(template.dpi),
       parseInt(template.height) / MM2INCH * parseInt(template.dpi),
     ),
     dpi_ratio: template.dpi / (MM2INCH * 10)
   })
 
   const editorRef = React.createRef()
-  const { translate, translateGuide, setLanguage, getLanguage } = useLanguage()
+  const { translate, translateObject, setLanguage, getLanguage } = useLanguage()
 
   const photoGuides = template
 
@@ -752,7 +791,7 @@ const App = () => {
             getLanguage={getLanguage}
             setLanguage={setLanguage}
             translate={translate}
-            translateGuide={translateGuide}
+            translateObject={translateObject}
             setEditorDimensions={setEditorDimensions}
             setCroppedImage={setCroppedImage}
             editorRef={editorRef}
@@ -769,7 +808,7 @@ const App = () => {
             setEditorDimensions={setEditorDimensions}
             photoGuides={photoGuides}
             translate={translate}
-            translateGuide={translateGuide}
+            translateObject={translateObject}
           />
           <MiddleColumn
             onPhotoLoad={handlePhotoLoad}
@@ -788,13 +827,13 @@ const App = () => {
             translate={translate}
           />
           <RightColumn
-          editorRef={editorRef}
+            editorRef={editorRef}
             photo={photo}
             options={options}
             onOptionChange={handleOptionChange}
             onPhotoLoad={handlePhotoLoad}
             croppedImage={croppedImage}
-            setCroppedImage={{setCroppedImage}}
+            setCroppedImage={{ setCroppedImage }}
             editorDimensions={editorDimensions}
             setEditorDimensions={setEditorDimensions}
             photoGuides={photoGuides}
@@ -806,12 +845,18 @@ const App = () => {
         <div className="container">
           <BuyMeACoffee
             translate={translate}
-            coffee={coffee}
-            setCoffee={setCoffee}
+            modals={modals}
+            setModals={setModals}
+          />
+          <Changelog
+            translate={translate}
+            modals={modals}
+            setModals={setModals}
+            translateObject={translateObject}
           />
           <div
             role="button"
-            class="outline coffee-button"
+            class="outline modal-button"
           >
             <a target="_blank" rel="noreferrer" href="https://github.com/hjt486/passport-photo-maker/issues">{translate("feedback")}</a>
           </div>

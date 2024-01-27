@@ -25,9 +25,9 @@ export function useLanguage() {
     return translatedText || key
   }
 
-  function translateGuide(str) {
+  function translateObject(str) {
     return str[currentLanguage]
   }
 
-  return { currentLanguage, setLanguage, getLanguage, translate, translateGuide}
+  return { currentLanguage, setLanguage, getLanguage, translate, translateObject}
 }

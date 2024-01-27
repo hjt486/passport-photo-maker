@@ -216,18 +216,23 @@
   margin-top: 1em;
 }
 
-.coffee-modal {
+.modal {
   margin-bottom: 5vh;
 }
 
-.coffee-button {
+.modal-button {
   margin-top: 1em;
   margin-left: 1em;
   margin-right: 1em;
 }
 
-.coffee-method {
+.modal-method {
   text-align: center;
+}
+
+.changelog {
+  height: 400px; 
+  overflow-y: scroll;
 }
 
 .disable-scroll {
