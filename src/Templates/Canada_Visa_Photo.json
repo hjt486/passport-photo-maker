@@ -31,24 +31,6 @@
       "group": "1"
     },
     {
-      "index": "↕",
-      "title": "Draggable Indicator",
-      "instruction": {
-        "en": "Move the two bars up and down to fit your face",
-        "zh": "请上下拖动这两条绿色方框使得你的头部和脸部符合以下要求"
-      },
-      "start_x": "20",
-      "start_y": "38",
-      "width": "25",
-      "height": "28",
-      "color": "aqua",
-      "isVerticalMovable": true,
-      "isHorizontalMovable": false,
-      "overlap": true,
-      "opacity": "0.5",
-      "group": "2"
-    },
-    {
       "index": "B",
       "title": "Bar: Top",
       "instruction": {
