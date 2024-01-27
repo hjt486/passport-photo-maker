@@ -80,27 +80,27 @@ const GuideDrawer = ({ guides, editorDimensions }) => {
         onStop={(e, data) => handleDragStop(group, e, data)}
 
         bounds={{
-          left: (-minStartX) * editorDimensions.zoom,
-          right: (editorDimensions.width - maxX) * editorDimensions.zoom,
-          top: (-minStartY) * editorDimensions.zoom,
-          bottom: (editorDimensions.height - maxY) * editorDimensions.zoom,
+          left: (-minStartX  * editorDimensions.dpi_ratio) * editorDimensions.zoom,
+          right: (editorDimensions.width - maxX * editorDimensions.dpi_ratio) * editorDimensions.zoom,
+          top: (-minStartY * editorDimensions.dpi_ratio) * editorDimensions.zoom,
+          bottom: (editorDimensions.height - maxY * editorDimensions.dpi_ratio) * editorDimensions.zoom,
         }}
       >
         <div style={{ position: 'absolute' }}>
           {group.map((guide, guideIndex) => {
             const { start_x, start_y, width, height, color, opacity, index } = guide
-            const centerX = (width / 2) * editorDimensions.zoom // Calculate the horizontal center
-            const centerY = (height / 2) * editorDimensions.zoom // Calculate the vertical center
+            const centerX = (width / 2) * editorDimensions.zoom * editorDimensions.dpi_ratio // Calculate the horizontal center
+            const centerY = (height / 2) * editorDimensions.zoom * editorDimensions.dpi_ratio // Calculate the vertical center
             return (
               <div
               key={guideIndex}
                 className="guide-shape"
                 style={{
                   position: 'absolute',
-                  left: `${start_x * editorDimensions.zoom}px`,
-                  top: `${start_y * editorDimensions.zoom}px`,
-                  width: `${width * editorDimensions.zoom}px`,
-                  height: `${height * editorDimensions.zoom}px`,
+                  left: `${start_x * editorDimensions.zoom * editorDimensions.dpi_ratio}px`,
+                  top: `${start_y * editorDimensions.zoom * editorDimensions.dpi_ratio}px`,
+                  width: `${width * editorDimensions.zoom * editorDimensions.dpi_ratio}px`,
+                  height: `${height * editorDimensions.zoom * editorDimensions.dpi_ratio }px`,
                   backgroundColor: color,
                   opacity: opacity,
                   zIndex: 1000

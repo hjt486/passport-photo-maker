@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react'
 import AvatarEditor from 'react-avatar-editor'
+import pica from 'pica';
 import GuideDrawer from './GuideDrawer'
 import { useLanguage } from './translate'
 import { resizeAndCompressImage } from './ImageUtils'
@@ -25,9 +26,8 @@ const TEMPLATES = [
 ]
 const MAX_EDITOR_WIDTH = 330
 const MAX_EDITOR_HEIGHT = 480
-const EDITOR_SCALE = 2
+const EDITOR_SCALE = 1// To max the export image quality
 const MM2INCH = 25.4 // Convert millimeter to inch
-const MM2PX = 10 // Convert millimeter to Canvas pixels
 
 
 // Function to update the preview
@@ -84,29 +84,48 @@ const LoadPhotoButton = ({ onPhotoLoad, title }) => {
   )
 }
 
+const processImageWithPica = async (editorRef, exportPhoto) => {
+  if (editorRef.current) {
+    const originalCanvas = editorRef.current.getImage();
+    const offScreenCanvas = document.createElement('canvas');
+    offScreenCanvas.width = exportPhoto.width;
+    offScreenCanvas.height = exportPhoto.height;
+
+    try {
+      await pica().resize(originalCanvas, offScreenCanvas);
+      return await pica().toBlob(offScreenCanvas, 'image/jpeg', 0.9);
+    } catch (error) {
+      console.error('Error processing image:', error);
+      throw error;  // Re-throw the error to be caught in handleSave
+    }
+  }
+};
+
 const SaveFileButton = ({
+  editorRef,
   exportPhoto,
   croppedImage,
+  setCroppedImage,
   editorDimensions,
-  setEditorDimensions,
   translate
 }) => {
   const handleSave = () => {
     if (croppedImage) {
-      resizeAndCompressImage(croppedImage, exportPhoto.width, exportPhoto.height, exportPhoto.size)
+      processImageWithPica(editorRef, exportPhoto)
         .then((resizedBlob) => {
-          const a = document.createElement('a')
-          a.href = URL.createObjectURL(resizedBlob)
-          a.download = 'resized-image.jpeg'
-          document.body.appendChild(a)
-          a.click()
-          document.body.removeChild(a)
+          const url = URL.createObjectURL(resizedBlob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'resized-image.jpeg';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
         })
         .catch((error) => {
-          console.error(error)
-        })
+          console.error(error);
+        });
     }
-  }
+  };
 
   return (
     <div
@@ -116,8 +135,9 @@ const SaveFileButton = ({
       style={{ width: `${editorDimensions.width * editorDimensions.zoom / 2}px` }}
       onClick={handleSave}
     >{translate("saveButton")}</div>
-  )
-}
+  );
+};
+
 
 const calculateEditorZoom = (originalWidth, originalHeight) => {
   return Math.max(MAX_EDITOR_WIDTH / originalWidth, MAX_EDITOR_HEIGHT / originalHeight)
@@ -157,9 +177,12 @@ const NavBar = ({
         size_valid: true,
       })
       setEditorDimensions({
-        width: parseInt(selectedTemplate.width) * MM2PX,
-        height: parseInt(selectedTemplate.height) * MM2PX,
-        zoom: calculateEditorZoom(selectedTemplate.width * MM2PX, selectedTemplate.height * MM2PX),
+        width: parseInt(selectedTemplate.width) / MM2INCH * parseInt(selectedTemplate.dpi),
+        height: parseInt(selectedTemplate.height) / MM2INCH * parseInt(selectedTemplate.dpi),
+        zoom: calculateEditorZoom(
+          parseInt(selectedTemplate.width) / MM2INCH * parseInt(selectedTemplate.dpi), 
+          parseInt(selectedTemplate.height) / MM2INCH * parseInt(selectedTemplate.dpi)),
+        dpi_ratio: selectedTemplate.dpi / (MM2INCH * 10),
       })
       setCroppedImage(null)
       updatePreview(editorRef, setCroppedImage)
@@ -453,10 +476,6 @@ const MiddleColumn = ({
 
   return (
     <article className="middle-column"
-      style={{
-        // width: `${editorDimensions.width * editorDimensions.zoom + 40}px`,
-        // height: `${editorDimensions.height * editorDimensions.zoom + 40}px`,
-      }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}>
       <div
@@ -478,8 +497,8 @@ const MiddleColumn = ({
             <AvatarEditor
               ref={editorRef}
               image={photo}
-              width={editorDimensions.width}
-              height={editorDimensions.height}
+              width={editorDimensions.width * EDITOR_SCALE}
+              height={editorDimensions.height * EDITOR_SCALE}
               color={[255, 255, 255, 0.6]} // RGBA
               scale={zoom}
               border={0}
@@ -536,11 +555,13 @@ const MiddleColumn = ({
 }
 
 const RightColumn = ({
+  editorRef,
   photo,
   options,
   onOptionChange,
   onPhotoLoad,
   croppedImage,
+  setCroppedImage,
   editorDimensions,
   setEditorDimensions,
   photoGuides,
@@ -627,8 +648,10 @@ const RightColumn = ({
               />
             </div>
             <SaveFileButton
+              editorRef={editorRef}
               exportPhoto={exportPhoto}
               croppedImage={croppedImage}
+              setCroppedImage={setCroppedImage}
               editorDimensions={editorDimensions}
               translate={translate}
             />
@@ -696,9 +719,13 @@ const App = () => {
   })
   const [coffee, setCoffee] = useState(false)
   const [editorDimensions, setEditorDimensions] = useState({
-    width: parseInt(template.width) * MM2PX,
-    height: parseInt(template.height) * MM2PX,
-    zoom: calculateEditorZoom(template.width * MM2PX, template.height * MM2PX),
+    width: parseInt(template.width) / MM2INCH * parseInt(template.dpi),
+    height: parseInt(template.height) / MM2INCH * parseInt(template.dpi),
+    zoom: calculateEditorZoom(
+      parseInt(template.width) / MM2INCH * parseInt(template.dpi), 
+      parseInt(template.height) / MM2INCH * parseInt(template.dpi),
+    ),
+    dpi_ratio: template.dpi / (MM2INCH * 10)
   })
 
   const editorRef = React.createRef()
@@ -775,11 +802,13 @@ const App = () => {
             translate={translate}
           />
           <RightColumn
+          editorRef={editorRef}
             photo={photo}
             options={options}
             onOptionChange={handleOptionChange}
             onPhotoLoad={handlePhotoLoad}
             croppedImage={croppedImage}
+            setCroppedImage={{setCroppedImage}}
             editorDimensions={editorDimensions}
             setEditorDimensions={setEditorDimensions}
             photoGuides={photoGuides}
