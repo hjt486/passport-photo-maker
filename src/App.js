@@ -23,6 +23,12 @@ const TEMPLATES = [
   Canada_Passport_Photo,
   Canada_Visa_Photo,
 ]
+const MAX_EDITOR_WIDTH = 330
+const MAX_EDITOR_HEIGHT = 480
+const EDITOR_SCALE = 2
+const MM2INCH = 25.4 // Convert millimeter to inch
+const MM2PX = 10 // Convert millimeter to Canvas pixels
+
 
 // Function to update the preview
 const updatePreview = (editorRef, setCroppedImage) => {
@@ -82,7 +88,7 @@ const SaveFileButton = ({
   exportPhoto,
   croppedImage,
   editorDimensions,
-  setEditorDimentions,
+  setEditorDimensions,
   translate
 }) => {
   const handleSave = () => {
@@ -107,10 +113,14 @@ const SaveFileButton = ({
       disabled={!(exportPhoto.width_valid && exportPhoto.height_valid && exportPhoto.size_valid)}
       role="button"
       className="save-button"
-      style={{ width: `${editorDimensions.width / 2}px` }}
+      style={{ width: `${editorDimensions.width * editorDimensions.zoom / 2}px` }}
       onClick={handleSave}
     >{translate("saveButton")}</div>
   )
+}
+
+const calculateEditorZoom = (originalWidth, originalHeight) => {
+  return Math.max(MAX_EDITOR_WIDTH / originalWidth, MAX_EDITOR_HEIGHT / originalHeight)
 }
 
 const NavBar = ({
@@ -138,8 +148,8 @@ const NavBar = ({
     if (selectedTemplate) {
       setTemplate(selectedTemplate)
       setExportPhoto({
-        width: parseInt(selectedTemplate.width),
-        height: parseInt(selectedTemplate.height),
+        width: parseInt(parseInt(selectedTemplate.width) / MM2INCH * parseInt(selectedTemplate.dpi)),
+        height: parseInt(parseInt(selectedTemplate.height) / MM2INCH * parseInt(selectedTemplate.dpi)),
         size: parseInt(selectedTemplate.size),
         ratio: parseInt(selectedTemplate.width) / parseInt(selectedTemplate.height),
         width_valid: true,
@@ -147,9 +157,11 @@ const NavBar = ({
         size_valid: true,
       })
       setEditorDimensions({
-        width: parseInt(selectedTemplate.width),
-        height: parseInt(selectedTemplate.height),
+        width: parseInt(selectedTemplate.width) * MM2PX,
+        height: parseInt(selectedTemplate.height) * MM2PX,
+        zoom: calculateEditorZoom(selectedTemplate.width * MM2PX, selectedTemplate.height * MM2PX),
       })
+      setCroppedImage(null)
       updatePreview(editorRef, setCroppedImage)
     }
   }
@@ -199,14 +211,14 @@ const LeftColumn = ({
   onPhotoLoad,
   croppedImage,
   editorDimensions,
-  setEditorDimentions,
+  setEditorDimensions,
   photoGuides,
   translate,
   translateGuide,
 }) => {
   const { guide, instruction } = photoGuides
   return (
-    photo && (<div className="left-column" style={{ width: `${editorDimensions.width}px` }}>
+    photo && (<div className="left-column" style={{ width: `${editorDimensions.width * editorDimensions.zoom}px` }}>
       <article className="guides-section guide-instruction">
         <small dangerouslySetInnerHTML={{ __html: translateGuide(instruction) }} />
       </article>
@@ -234,14 +246,14 @@ const MiddleColumn = ({
   setCroppedImage,
   editorRef,
   editorDimensions,
-  setEditorDimentions,
+  setEditorDimensions,
   photoGuides,
   translate
 }) => {
   const { guide } = photoGuides
   const touchStartRef = useRef({ x: null, y: null })
   const lastTouchDistance = useRef(null)
-  const [position, setPosition] = useState({ x: editorDimensions.width * 100, y: editorDimensions.height * 100 }) // Weirdly, have to set a out-of-boundary number to make moving working when page is loaded.
+  const [position, setPosition] = useState({ x: editorDimensions.width * 10, y: editorDimensions.height * 10 }) // Weirdly, have to set a out-of-boundary number to make moving working when page is loaded.
   const [isDragging, setIsDragging] = useState(false)
   const mouseStartRef = useRef({ x: null, y: null })
 
@@ -442,7 +454,8 @@ const MiddleColumn = ({
   return (
     <article className="middle-column"
       style={{
-        width: `${editorDimensions.width + 40}px`,
+        // width: `${editorDimensions.width * editorDimensions.zoom + 40}px`,
+        // height: `${editorDimensions.height * editorDimensions.zoom + 40}px`,
       }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}>
@@ -450,39 +463,51 @@ const MiddleColumn = ({
         className="photo-area"
         style={{
           position: 'relative',
-          width: `${editorDimensions.width}px`,
-          height: `${editorDimensions.height}px`,
+          width: editorDimensions.width * editorDimensions.zoom,
+          height: editorDimensions.height * editorDimensions.zoom,
         }}
       >
         {!photo && <LoadPhotoButton onPhotoLoad={onPhotoLoad} title={translate("selectPhotoButton")} />}
-        {photo && (
-          <AvatarEditor
-            ref={editorRef}
-            image={photo}
-            width={editorDimensions.width}
-            height={editorDimensions.height}
-            color={[255, 255, 255, 0.6]} // RGBA
-            scale={zoom}
-            border={0}
-            rotate={rotation}
-            position={position}
-            onWheel={handleMouseScroll}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-          />
-        )}
-        {options.example && (
-          <img src="/Example.png" alt="Example" className="example-photo" />
-        )}
+        <div className="photo-transform" style={{
+          position: 'absolute', // Adjust positioning as needed
+          left: '50%',
+          top: '50%',
+          transform: `translate(-50%, -50%) scale(${editorDimensions.zoom})`,
+        }}>
+          {photo && (
+            <AvatarEditor
+              ref={editorRef}
+              image={photo}
+              width={editorDimensions.width}
+              height={editorDimensions.height}
+              color={[255, 255, 255, 0.6]} // RGBA
+              scale={zoom}
+              border={0}
+              rotate={rotation}
+              position={position}
+              onWheel={handleMouseScroll}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            />
+          )}
+        </div>
       </div>
-      {photo && options.guide && (
-        <GuideDrawer
-          guides={guide}
-          editorDimensions={{ width: editorDimensions.width, height: editorDimensions.height }} />
-      )}
+      {
+        photo && options.guide && (
+          <GuideDrawer
+            guides={guide}
+            editorDimensions={editorDimensions}
+          />
+        )
+      }
       {photo && (
-        <div className="control-container">
+        <div
+          className="control-container"
+          style={{
+            width: editorDimensions.width * editorDimensions.zoom,
+          }}
+        >
           <div className="control-row1">
             <input
               className="slide-control"
@@ -506,7 +531,7 @@ const MiddleColumn = ({
           </div>
         </div>
       )}
-    </article>
+    </article >
   )
 }
 
@@ -560,15 +585,15 @@ const RightColumn = ({
   }
 
   return (
-    photo && (<div className="right-column" style={{ width: `${editorDimensions.width / 2}px` }}>
+    photo && (<div className="right-column" style={{ width: `${editorDimensions.width * editorDimensions.zoom / 2}px` }}>
       {croppedImage && (
         <>
           <article className="guides-section guide-instruction">
             <LoadPhotoButton onPhotoLoad={onPhotoLoad} title={translate("loadNewPhotoButton")} />
           </article>
           <article className="preview-container">
-            <img src={croppedImage} alt="Cropped preview" className="cropped-preview" height={editorDimensions.height / 2} width={editorDimensions.width / 2} />
-            <div className='export-container' style={{ width: `${editorDimensions.width / 2}px` }}>
+            <img src={croppedImage} alt="Cropped preview" className="cropped-preview" height={editorDimensions.height * editorDimensions.zoom / 2} width={editorDimensions.width * editorDimensions.zoom / 2} />
+            <div className='export-container' style={{ width: `${editorDimensions.width * editorDimensions.zoom / 2}px` }}>
               <label className="export-label">{translate("widthLabel")}<br />(px)</label>
               <input
                 type="number"
@@ -576,10 +601,10 @@ const RightColumn = ({
                 aria-invalid={!exportPhoto.width_valid}
                 onChange={handleWidthChange}
                 className="export-input"
-                style={{ width: `${editorDimensions.width / 2.9}px` }}
+                style={{ width: `${editorDimensions.width * editorDimensions.zoom / 2.9}px` }}
               />
             </div>
-            <div className='export-container' style={{ width: `${editorDimensions.width / 2}px` }}>
+            <div className='export-container' style={{ width: `${editorDimensions.width * editorDimensions.zoom / 2}px` }}>
               <label className="export-label">{translate("heightLabel")}<br />(px)</label>
               <input
                 type="number"
@@ -587,10 +612,10 @@ const RightColumn = ({
                 aria-invalid={!exportPhoto.height_valid}
                 onChange={handleHeightChange}
                 className="export-input"
-                style={{ width: `${editorDimensions.width / 2.9}px` }}
+                style={{ width: `${editorDimensions.width * editorDimensions.zoom / 2.9}px` }}
               />
             </div>
-            <div className='export-container' style={{ width: `${editorDimensions.width / 2}px` }}>
+            <div className='export-container' style={{ width: `${editorDimensions.width * editorDimensions.zoom / 2}px` }}>
               <label className="export-label" >{translate("sizeLabel")}<br />(KB)</label>
               <input
                 type="number"
@@ -598,7 +623,7 @@ const RightColumn = ({
                 aria-invalid={!exportPhoto.size_valid}
                 onChange={handleSizeChange}
                 className="export-input"
-                style={{ width: `${editorDimensions.width / 2.9}px` }}
+                style={{ width: `${editorDimensions.width * editorDimensions.zoom / 2.9}px` }}
               />
             </div>
             <SaveFileButton
@@ -649,7 +674,7 @@ const BuyMeACoffee = ({
 
 // Main App component
 const App = () => {
-  const [template, setTemplate] = useState(TEMPLATES[0])
+  const [template, setTemplate] = useState(TEMPLATES[0]) // Default is China
   const [photo, setPhoto] = useState(null)
   const [zoom, setZoom] = useState(INITIAL_ZOOM)
   const [rotation, setRotation] = useState(INITIAL_ROTATION)
@@ -659,9 +684,10 @@ const App = () => {
     example: false,
   })
   const [croppedImage, setCroppedImage] = useState(null)
+
   const [exportPhoto, setExportPhoto] = useState({
-    width: parseInt(template.width),
-    height: parseInt(template.height),
+    width: parseInt(parseInt(template.width) / MM2INCH * parseInt(template.dpi)),
+    height: parseInt(parseInt(template.height) / MM2INCH * parseInt(template.dpi)),
     size: parseInt(template.size),
     ratio: parseInt(template.width) / parseInt(template.height),
     width_valid: true,
@@ -669,9 +695,10 @@ const App = () => {
     size_valid: true,
   })
   const [coffee, setCoffee] = useState(false)
-  const [editorDimensions, setEditorDimentions] = useState({
-    width: parseInt(template.width),
-    height: parseInt(template.height)
+  const [editorDimensions, setEditorDimensions] = useState({
+    width: parseInt(template.width) * MM2PX,
+    height: parseInt(template.height) * MM2PX,
+    zoom: calculateEditorZoom(template.width * MM2PX, template.height * MM2PX),
   })
 
   const editorRef = React.createRef()
@@ -713,7 +740,7 @@ const App = () => {
             setLanguage={setLanguage}
             translate={translate}
             translateGuide={translateGuide}
-            setEditorDimensions={setEditorDimentions}
+            setEditorDimensions={setEditorDimensions}
             setCroppedImage={setCroppedImage}
             editorRef={editorRef}
           />
@@ -726,7 +753,7 @@ const App = () => {
             onPhotoLoad={handlePhotoLoad}
             croppedImage={croppedImage}
             editorDimensions={editorDimensions}
-            setEditorDimentions={setEditorDimentions}
+            setEditorDimensions={setEditorDimensions}
             photoGuides={photoGuides}
             translate={translate}
             translateGuide={translateGuide}
@@ -743,7 +770,7 @@ const App = () => {
             setCroppedImage={setCroppedImage}
             editorRef={editorRef}
             editorDimensions={editorDimensions}
-            setEditorDimentions={setEditorDimentions}
+            setEditorDimensions={setEditorDimensions}
             photoGuides={photoGuides}
             translate={translate}
           />
@@ -754,7 +781,7 @@ const App = () => {
             onPhotoLoad={handlePhotoLoad}
             croppedImage={croppedImage}
             editorDimensions={editorDimensions}
-            setEditorDimentions={setEditorDimentions}
+            setEditorDimensions={setEditorDimensions}
             photoGuides={photoGuides}
             exportPhoto={exportPhoto}
             setExportPhoto={setExportPhoto}
@@ -771,7 +798,7 @@ const App = () => {
             role="button"
             class="outline coffee-button"
           >
-            <a href="https://github.com/hjt486/passport-photo-maker/issues">{translate("feedback")}</a>
+            <a target="_blank" rel="noreferrer" href="https://github.com/hjt486/passport-photo-maker/issues">{translate("feedback")}</a>
           </div>
         </div>
       </div>

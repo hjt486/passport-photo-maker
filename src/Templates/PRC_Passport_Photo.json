@@ -3,13 +3,14 @@
     "en": "Chinese Passport/Visa Photo",
     "zh": "中国护照签证照片"
   },
-  "width": "330",
-  "height": "480",
+  "width": "33",
+  "height": "48",
+  "dpi": "300",
   "format": "jpg",
   "size": "70",
   "instruction": {
-    "en": "Please check the latest requirement at <a href=\"https://www.visaforchina.cn/SGP2_EN/generalinformation/news/282849.shtml\">here</a>.",
-    "zh": "请点击<a href=\"http://cs.mfa.gov.cn/zlbg/bgzl/hzlxz/202204/t20220408_10665772.shtml\">这里</a>查看最新标准。"
+    "en": "Please check the latest requirement at <a target=\"_blank\" rel=\"noreferrer\" href=\"https://www.visaforchina.cn/SGP2_EN/generalinformation/news/282849.shtml\">here</a>.",
+    "zh": "请点击<a target=\"_blank\" rel=\"noreferrer\" href=\"http://cs.mfa.gov.cn/zlbg/bgzl/hzlxz/202204/t20220408_10665772.shtml\">这里</a>查看最新标准。"
   },
   "guide": [
     {

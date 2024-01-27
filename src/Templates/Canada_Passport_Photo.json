@@ -3,13 +3,14 @@
     "en": "Canada Passport Photo",
     "zh": "加拿大护照照片"
   },
-  "width": "500",
-  "height": "700",
+  "width": "50",
+  "height": "70",
+  "dpi": "300",
   "format": "jpg",
   "size": "230",
   "instruction": {
-    "en": "Please check the latest requirement at <a href=\"https://www.canada.ca/en/immigration-refugees-citizenship/services/canadian-passports/photos.html\">here</a>.",
-    "zh": "请点击<a href=\"https://www.canada.ca/en/immigration-refugees-citizenship/services/canadian-passports/photos.html\">这里</a>查看最新标准。"
+    "en": "Please check the latest requirement at <a target=\"_blank\" rel=\"noreferrer\" href=\"https://www.canada.ca/en/immigration-refugees-citizenship/services/canadian-passports/photos.html\">here</a>.",
+    "zh": "请点击<a target=\"_blank\" rel=\"noreferrer\" href=\"https://www.canada.ca/en/immigration-refugees-citizenship/services/canadian-passports/photos.html\">这里</a>查看最新标准。"
   },
   "guide": [
     {
