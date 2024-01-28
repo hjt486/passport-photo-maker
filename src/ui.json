@@ -23,10 +23,6 @@
     "en": "Size",
     "zh": "文件大小"
   },
-  "saveButton": {
-    "en": "Save",
-    "zh": "保存"
-  },
   "buyMeACoffeeButton" : {
     "en": "Like it? Buy me a coffee!",
     "zh": "帮上忙了？欢迎打赏！"
@@ -46,5 +42,29 @@
   "feedback": {
     "en": "Feedback?",
     "zh": "反馈或建议？"
+  },
+  "saveTitle": {
+    "en": "Save Photo",
+    "zh": "保存照片"
+  },
+  "saveGenerating": {
+    "en": "Generating...",
+    "zh": "生成照片中......"
+  },
+  "saveSingle": {
+    "en": "Save Single Photo",
+    "zh": "保存单张照片"
+  },
+  "save4x6": {
+    "en": "Save Printable Layout",
+    "zh": "保存打印照片"
+  },
+  "saveSingleText": {
+    "en": "For Electronic Upload",
+    "zh": "用于电子版上传"
+  },
+  "save4x6Text": {
+    "en": "For 4''x6'' Photo Print",
+    "zh": "用于打印4''x6''照片"
   }
 }

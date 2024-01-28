@@ -1,6 +1,15 @@
 {
   "changelog": [
     {
+      "date": "2024-01-28",
+      "item": [
+        {
+          "en": "Added 4''x6'' printable option.",
+          "zh": "增加打印成4‘’x6''照片的功能。"
+        }
+      ]
+    },
+    {
       "date": "2024-01-27",
       "item": [
         {

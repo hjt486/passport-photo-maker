@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect, useRef } from 'react'
 import AvatarEditor from 'react-avatar-editor'
 import GuideDrawer from './GuideDrawer'
 import { useLanguage } from './translate'
-import { resizeAndCompressImage } from './ImageUtils'
+import { generateSingle, handleSaveSingle, generate4x6, handleSave4x6 } from './SaveImage'
 import PRC_Passport_Photo from './Templates/PRC_Passport_Photo.json'
 import US_Passport_Photo from './Templates/US_Passport_Photo.json'
 import Canada_Passport_Photo from './Templates/Canada_Passport_Photo.json'
@@ -83,50 +83,6 @@ const LoadPhotoButton = ({ onPhotoLoad, title }) => {
   )
 }
 
-const SaveFileButton = ({
-  editorRef,
-  exportPhoto,
-  croppedImage,
-  setCroppedImage,
-  editorDimensions,
-  translate
-}) => {
-  const handleSave = () => {
-    if (croppedImage) {
-      // Get the canvas from AvatarEditor
-      const canvas = editorRef.current.getImage()
-      const imageDataUrl = canvas.toDataURL('image/png')
-
-      // Now use resizeAndCompressImage
-      resizeAndCompressImage(imageDataUrl, exportPhoto.width, exportPhoto.height, exportPhoto.size)
-        .then((resizedBlob) => {
-          const url = URL.createObjectURL(resizedBlob)
-          const a = document.createElement('a')
-          a.href = url
-          a.download = 'resized-image.jpeg'
-          document.body.appendChild(a)
-          a.click()
-          document.body.removeChild(a)
-        })
-        .catch((error) => {
-          console.error('Error resizing and compressing image:', error)
-        })
-    }
-  }
-
-
-  return (
-    <div
-      disabled={!(exportPhoto.width_valid && exportPhoto.height_valid && exportPhoto.size_valid)}
-      role="button"
-      className="save-button"
-      style={{ width: `${editorDimensions.width * editorDimensions.zoom / 2}px` }}
-      onClick={handleSave}
-    >{translate("saveButton")}</div>
-  )
-}
-
-
 const calculateEditorZoom = (originalWidth, originalHeight) => {
   return Math.min(MAX_EDITOR_WIDTH / originalWidth, MAX_EDITOR_HEIGHT / originalHeight)
 }
@@ -160,6 +116,9 @@ const NavBar = ({
         height: parseInt(parseInt(selectedTemplate.height) / MM2INCH * parseInt(selectedTemplate.dpi)),
         size: parseInt(selectedTemplate.size),
         ratio: parseInt(selectedTemplate.width) / parseInt(selectedTemplate.height),
+        width_mm: selectedTemplate.width,
+        height_mm: selectedTemplate.height,
+        dpi: selectedTemplate.dpi,
         width_valid: true,
         height_valid: true,
         size_valid: true,
@@ -611,6 +570,7 @@ const RightColumn = ({
   exportPhoto,
   setExportPhoto,
   translate,
+  setModals,
 }) => {
 
   const handleWidthChange = (e) => {
@@ -690,14 +650,13 @@ const RightColumn = ({
                 style={{ width: `${editorDimensions.width * editorDimensions.zoom / 2.9}px` }}
               />
             </div>
-            <SaveFileButton
-              editorRef={editorRef}
-              exportPhoto={exportPhoto}
-              croppedImage={croppedImage}
-              setCroppedImage={setCroppedImage}
-              editorDimensions={editorDimensions}
-              translate={translate}
-            />
+            <div
+              disabled={!(exportPhoto.width_valid && exportPhoto.height_valid && exportPhoto.size_valid)}
+              role="button"
+              className="save-button"
+              style={{ width: `${editorDimensions.width * editorDimensions.zoom / 2}px` }}
+              onClick={() => setModals((prevModals) => ({ ...prevModals, save: true }))}
+            >{translate("saveTitle")}</div>
           </article>
         </>
       )}
@@ -776,6 +735,98 @@ const Changelog = ({
   </>)
 }
 
+const SaveModal = ({
+  translate,
+  modals,
+  setModals,
+  translateObject,
+  croppedImage,
+  editorDimensions,
+  exportPhoto,
+  editorRef
+}) => {
+  const [image4x6Src, setImage4x6Src] = useState(null)
+  const [imageSingleSrc, setImageSingleSrc] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
+  // eslint-disable-next-line no-unused-vars
+  const [loadCounter, setLoadCounter] = useState(0)
+
+  const initiateLoading = () => {
+    setIsLoading(true)
+    setLoadCounter(2) // Expecting two async operations
+  }
+
+  const decrementLoadCounter = () => {
+    setLoadCounter(prevCount => {
+      const newCount = prevCount - 1
+      if (newCount === 0) {
+        setIsLoading(false)
+      }
+      return newCount
+    })
+  }
+
+  useEffect(() => {
+    if (croppedImage && editorRef.current && modals.save) {
+      initiateLoading()
+      generateSingle(croppedImage, editorRef, exportPhoto)
+        .then(image => setImageSingleSrc(image))
+        .catch(error => console.error("Error generating single image:", error))
+        .finally(decrementLoadCounter)
+    }
+  }, [croppedImage, editorRef, exportPhoto, modals.save])
+
+  useEffect(() => {
+    if (imageSingleSrc && modals.save) {
+      generate4x6(MM2INCH, imageSingleSrc, exportPhoto)
+        .then(image => setImage4x6Src(image))
+        .catch(error => console.error("Error generating 4x6 image:", error))
+        .finally(decrementLoadCounter)
+    }
+  }, [imageSingleSrc, croppedImage, exportPhoto, modals.save])
+
+  return (
+    <>
+      <dialog open={modals.save} className='modal'>
+        <article>
+          <h2>{isLoading? translate("saveGenerating") : translate("saveTitle")}</h2>
+          <div aria-busy={isLoading} >
+            {!isLoading && (<div className="save-option-container">
+              <div className="save-option">
+                <img src={imageSingleSrc || croppedImage} alt="Save preview" className="save-preview" height={editorDimensions.height * editorDimensions.zoom / 2} width={editorDimensions.width * editorDimensions.zoom / 2} />
+                <p className="save-text" >{translate("saveSingleText")}</p>
+                <div
+                  role="button"
+                  className="save-option-button"
+                  disabled={!imageSingleSrc}
+                  onClick={() => imageSingleSrc && handleSaveSingle(imageSingleSrc)}
+                >{translate("saveSingle")}</div>
+              </div>
+              <div className="save-option">
+                {
+                  image4x6Src &&
+                  <img src={image4x6Src} alt="Save 4x6 preview" className="save-preview" height={editorDimensions.height * editorDimensions.zoom / 2} width={editorDimensions.width * editorDimensions.zoom / 2} />
+                }
+                <p className="save-text" >{translate("save4x6Text")}</p>
+                <div
+                  role="button"
+                  disabled={!image4x6Src}
+                  className="save-option-button"
+                  onClick={() => image4x6Src && handleSave4x6(image4x6Src)}
+                >{translate("save4x6")}</div>                
+              </div>
+            </div>)}
+          </div>
+          <footer>
+            <button onClick={() => setModals((prevModals) => ({ ...prevModals, save: false }))}>OK</button>
+          </footer>
+        </article>
+      </dialog>
+    </>
+  )
+}
+
+
 // Main App component
 const App = () => {
   const [template, setTemplate] = useState(TEMPLATES[0]) // Default is China
@@ -794,11 +845,14 @@ const App = () => {
     height: parseInt(parseInt(template.height) / MM2INCH * parseInt(template.dpi)),
     size: parseInt(template.size),
     ratio: parseInt(template.width) / parseInt(template.height),
+    width_mm: template.width,
+    height_mm: template.height,
+    dpi: template.dpi,
     width_valid: true,
     height_valid: true,
     size_valid: true,
   })
-  const [modals, setModals] = useState({ coffee: false, changelog: false })
+  const [modals, setModals] = useState({ coffee: false, changelog: false, save: false })
   const [editorDimensions, setEditorDimensions] = useState({
     width: parseInt(template.width) / MM2INCH * parseInt(template.dpi),
     height: parseInt(template.height) / MM2INCH * parseInt(template.dpi),
@@ -903,6 +957,17 @@ const App = () => {
             exportPhoto={exportPhoto}
             setExportPhoto={setExportPhoto}
             translate={translate}
+            setModals={setModals}
+          />
+          <SaveModal
+            translate={translate}
+            modals={modals}
+            setModals={setModals}
+            translateObject={translateObject}
+            croppedImage={croppedImage}
+            editorDimensions={editorDimensions}
+            exportPhoto={exportPhoto}
+            editorRef={editorRef}
           />
         </div>
         <div className="container">
