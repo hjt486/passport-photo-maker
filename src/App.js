@@ -259,7 +259,11 @@ const MiddleColumn = ({
   editorDimensions,
   setEditorDimensions,
   photoGuides,
-  translate
+  translate,
+  initialDistance,
+  setInitialDistance,
+  initialAngle,
+  setInitialAngle,
 }) => {
   const { guide } = photoGuides
   const touchStartRef = useRef({ x: null, y: null })
@@ -270,8 +274,12 @@ const MiddleColumn = ({
 
   const handleMouseMove = useCallback((e) => {
     if (isDragging) {
-      const dx = (e.clientX - mouseStartRef.current.x) / editorDimensions.width / zoom
-      const dy = (e.clientY - mouseStartRef.current.y) / editorDimensions.height / zoom
+      let dx = (e.clientX - mouseStartRef.current.x) / editorDimensions.width / zoom
+      let dy = (e.clientY - mouseStartRef.current.y) / editorDimensions.height / zoom
+
+      const adjusted = adjustPositionForRotation(dx, dy, rotation)
+      dx = adjusted.x
+      dy = adjusted.y
 
       setPosition((prevPosition) => ({
         x: prevPosition.x - dx,
@@ -280,7 +288,7 @@ const MiddleColumn = ({
       mouseStartRef.current = { x: e.clientX, y: e.clientY }
       updatePreview(editorRef, setCroppedImage)
     }
-  }, [editorRef, setCroppedImage, isDragging, editorDimensions.width, editorDimensions.height, zoom, setPosition])
+  }, [editorRef, setCroppedImage, isDragging, editorDimensions.width, editorDimensions.height, zoom, setPosition, rotation])
 
   const handleMouseUp = () => {
     setIsDragging(false)
@@ -292,36 +300,49 @@ const MiddleColumn = ({
   }
 
   const handleMoveLeft = (e) => {
-    setPosition((prevPosition) => ({
-      x: prevPosition.x + MOVE_FACTOR * 1 / zoom,
-      y: prevPosition.y
-    }))
+    setPosition((prevPosition) => {
+      const adjusted = adjustPositionForRotation(MOVE_FACTOR * 1 / zoom, 0, rotation)
+      return {
+        x: prevPosition.x + adjusted.x,
+        y: prevPosition.y + adjusted.y
+      }
+    })
     updatePreview(editorRef, setCroppedImage)
   }
 
   const handleMoveRight = (e) => {
-    setPosition((prevPosition) => ({
-      x: prevPosition.x - MOVE_FACTOR * 1 / zoom,
-      y: prevPosition.y
-    }))
+    setPosition((prevPosition) => {
+      const adjusted = adjustPositionForRotation(-MOVE_FACTOR * 1 / zoom, 0, rotation)
+      return {
+        x: prevPosition.x + adjusted.x,
+        y: prevPosition.y + adjusted.y
+      }
+    })
     updatePreview(editorRef, setCroppedImage)
   }
 
   const handleMoveUp = (e) => {
-    setPosition((prevPosition) => ({
-      x: prevPosition.x,
-      y: prevPosition.y + MOVE_FACTOR * 1 / zoom,
-    }))
+    setPosition((prevPosition) => {
+      const adjusted = adjustPositionForRotation(0, MOVE_FACTOR * 1 / zoom, rotation)
+      return {
+        x: prevPosition.x + adjusted.x,
+        y: prevPosition.y + adjusted.y
+      }
+    })
     updatePreview(editorRef, setCroppedImage)
   }
 
   const handleMoveDown = (e) => {
-    setPosition((prevPosition) => ({
-      x: prevPosition.x,
-      y: prevPosition.y - MOVE_FACTOR * 1 / zoom,
-    }))
+    setPosition((prevPosition) => {
+      const adjusted = adjustPositionForRotation(0, -MOVE_FACTOR * 1 / zoom, rotation)
+      return {
+        x: prevPosition.x + adjusted.x,
+        y: prevPosition.y + adjusted.y
+      }
+    })
     updatePreview(editorRef, setCroppedImage)
   }
+
 
   const handleZoomChange = (e) => {
     setZoom(parseFloat(e.target.value))
@@ -363,13 +384,8 @@ const MiddleColumn = ({
   const handleMouseScroll = (event) => {
     const delta = event.deltaY
     setZoom(prevZoom => {
-      // Define the zoom step
       const zoomStep = Math.pow(ZOOM_FACTOR, 2) // Adjust this step size as needed
-
-      // Calculate the new zoom value
       let newZoom = delta > 0 ? prevZoom / zoomStep : prevZoom * zoomStep
-
-      // Clamp the zoom value between 1 and 10
       newZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, newZoom))
 
       return newZoom
@@ -378,42 +394,84 @@ const MiddleColumn = ({
     updatePreview(editorRef, setCroppedImage)
   }
 
+  const adjustPositionForRotation = (dx, dy, rotation) => {
+    const radians = rotation * (Math.PI / 180)
+    return {
+      x: dx * Math.cos(radians) + dy * Math.sin(radians),
+      y: dy * Math.cos(radians) - dx * Math.sin(radians)
+    }
+  }
+
+
   const handleTouchStart = (e) => {
     if (e.touches.length === 1) {
       touchStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
     } else if (e.touches.length === 2) {
-      // Handle pinch start
+      setInitialDistance(null)
+      setInitialAngle(null)
     }
   }
 
   const handleTouchMove = useCallback((e) => {
-    //e.preventDefault()
     if (e.touches.length === 1) {
       // Single finger touch does panning
       const dx = e.touches[0].clientX - touchStartRef.current.x
       const dy = e.touches[0].clientY - touchStartRef.current.y
 
-      // Normalize the change relative to the editor size
       const normalizedDx = dx / editorDimensions.width / zoom
       const normalizedDy = dy / editorDimensions.height / zoom
 
+      const adjusted = adjustPositionForRotation(normalizedDx, normalizedDy, rotation)
+
       setPosition((prevPosition) => {
-        // Ensure the position stays within the bounds [0, 1]
-        const newX = prevPosition.x - normalizedDx
-        const newY = prevPosition.y - normalizedDy
+        const newX = prevPosition.x - adjusted.x
+        const newY = prevPosition.y - adjusted.y
         return { x: newX, y: newY }
       })
 
-      // Update initial touch position for next move
       touchStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
     } else if (e.touches.length === 2) {
+      // Two fingers touch does pinch zooming and rotation
+      const touch1 = e.touches[0]
+      const touch2 = e.touches[1]
+
+      // Calculate the distance for zoom
+      const currentDistance = Math.sqrt(
+        Math.pow(touch2.clientX - touch1.clientX, 2) +
+        Math.pow(touch2.clientY - touch1.clientY, 2)
+      )
+
+      // Calculate the angle for rotation
+      const angleRadians = Math.atan2(
+        touch2.clientY - touch1.clientY,
+        touch2.clientX - touch1.clientX
+      )
+
+      if (initialDistance === null) {
+        setInitialDistance(currentDistance)
+        setInitialAngle(angleRadians)
+      } else {
+        const scaleChange = currentDistance / initialDistance
+        setZoom(prevZoom => Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, prevZoom * scaleChange)))
+
+        if (initialAngle !== null) {
+          const angleChange = angleRadians - initialAngle
+          const angleChangeDeg = angleChange * (180 / Math.PI)
+          setRotation(prevRotation => prevRotation + angleChangeDeg)
+        }
+
+        setInitialDistance(currentDistance) // Update initial distance for next movement
+        setInitialAngle(angleRadians) // Update initial angle for next movement
+      }
     }
     updatePreview(editorRef, setCroppedImage)
-  }, [editorDimensions.width, editorDimensions.height, setCroppedImage, editorRef, zoom])
+  }, [editorDimensions.width, editorDimensions.height, setCroppedImage, editorRef, zoom, initialDistance, setInitialDistance, initialAngle, setInitialAngle, setZoom, rotation, setRotation])
 
   const handleTouchEnd = useCallback((e) => {
     lastTouchDistance.current = null
-  }, [])
+    setInitialDistance(null)
+    setInitialAngle(null)
+  }, [setInitialDistance, setInitialAngle])
 
   const preventDefault = useCallback((e) => {
     e.preventDefault()
@@ -750,6 +808,9 @@ const App = () => {
     ),
     dpi_ratio: template.dpi / (MM2INCH * 10)
   })
+  const [initialDistance, setInitialDistance] = useState(null)
+  const [initialAngle, setInitialAngle] = useState(null)
+
 
   const editorRef = React.createRef()
   const { translate, translateObject, setLanguage, getLanguage } = useLanguage()
@@ -823,6 +884,10 @@ const App = () => {
             setEditorDimensions={setEditorDimensions}
             photoGuides={photoGuides}
             translate={translate}
+            initialDistance={initialDistance}
+            setInitialDistance={setInitialDistance}
+            initialAngle={initialAngle}
+            setInitialAngle={setInitialAngle}
           />
           <RightColumn
             editorRef={editorRef}

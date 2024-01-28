@@ -4,6 +4,14 @@
       "date": "2024-01-27",
       "item": [
         {
+          "en": "On touchscreen, Added two-finger rotate function.",
+          "zh": "在触摸设备上，增加了两指旋转功能。"
+        },
+        {
+          "en": "Changed to be able to zoom and move out of original boundary, giving more flexibility.",
+          "zh": "更改为可以缩小移动至原图片边界之外，增加更多灵活性。"
+        },
+        {
           "en": "Fixed the move issue that when firstly loaded the image, have to drag few times to move.",
           "zh": "修复第一次载入照片之后，需要拖动几次图片才能移动的问题。"
         },
