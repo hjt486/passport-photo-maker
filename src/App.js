@@ -676,7 +676,7 @@ const BuyMeACoffee = ({
     <dialog open={modals.coffee} className='modal'>
       <article>
         <h2>{translate("buyMeACoffeeTitle")}</h2>
-        <div class="grid modal-method">
+        <div className="grid modal-method">
           <div><img src="https://jiataihan.dev/assets/css/hid.hid" alt="WeChat" className="wechat-logo" /><p>WeChat</p></div>
           <div>
             <img src={process.env.PUBLIC_URL + "/BuyMeACoffee/zelle.png"} alt="Zelle" className="zelle-logo" />
@@ -693,7 +693,7 @@ const BuyMeACoffee = ({
     </dialog>
     <div
       role="button"
-      class="outline modal-button"
+      className="outline modal-button"
       onClick={() => setModals((prevModals) => ({ ...prevModals, coffee: true }))}>
       {translate("buyMeACoffeeButton")}
     </div>
@@ -731,7 +731,7 @@ const Changelog = ({
     </dialog>
     <div
       role="button"
-      class="outline modal-button"
+      className="outline modal-button"
       onClick={() => setModals((prevModals) => ({ ...prevModals, changelog: true }))}>
       {translate("changelog")}
     </div>
