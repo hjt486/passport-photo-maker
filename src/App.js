@@ -330,7 +330,7 @@ const MiddleColumn = ({
 
   const handleZoomIn = (e) => {
     setZoom((prevZoom) => {
-      const newZoom = Math.max(prevZoom / ZOOM_FACTOR, MIN_ZOOM)
+      const newZoom = Math.min(prevZoom * ZOOM_FACTOR, MAX_ZOOM)
       updatePreview(editorRef, setCroppedImage)
       return newZoom
     })
@@ -338,7 +338,7 @@ const MiddleColumn = ({
 
   const handleZoomOut = (e) => {
     setZoom((prevZoom) => {
-      const newZoom = Math.min(prevZoom * ZOOM_FACTOR, MAX_ZOOM)
+      const newZoom = Math.max(prevZoom / ZOOM_FACTOR, MIN_ZOOM)
       updatePreview(editorRef, setCroppedImage)
       return newZoom
     })
