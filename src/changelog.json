@@ -5,11 +5,11 @@
       "item": [
         {
           "en": "Added rotate threshold for two-finger touch, to prevent rotating when simply zooming.",
-          "zh": "两指操作时增加旋转阈值，防止仅想缩放时发生旋转"
+          "zh": "两指操作时增加旋转阈值，防止仅想缩放时发生旋转。"
         },
         {
-          "en": "Added disclaimer as reminder.",
-          "zh": "增加免责声明作为提醒。"
+          "en": "Added disclaimer and data privacy policy.",
+          "zh": "增加免责声明和数据隐私政策说明，"
         },
         {
           "en": "Added 4''x6'' printable option.",
