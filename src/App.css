@@ -87,7 +87,7 @@
   flex-direction: column;
   margin-left: 0.25em;
   margin-right: 0.25em;
-  margin-top: 1em;
+  margin-top: 0.5em;
 }
 
 .photo-area {
@@ -137,7 +137,7 @@
   flex-grow: 1;
   margin-left: 0.25em;
   margin-right: 0.25em;
-  margin-top: 1em;
+  margin-top: 0.5em;
 }
 
 .guide-instruction {
@@ -176,7 +176,7 @@
   flex-grow: 1;
   margin-left: 0.25em;
   margin-right: 0.25em;
-  margin-top: 1em;
+  margin-top: 0.5em;
 }
 
 .preview-container {
@@ -198,7 +198,7 @@
   max-height: 100%;
   background-color: white;
   border: 1px solid var(--pico-primary);
-  margin-bottom: 1em;
+  margin-bottom: 0.5em;
 }
 
 .export-container {
@@ -218,7 +218,7 @@
 }
 
 .save-button {
-  margin-top: 1em;
+  margin-top: 0.5em;
 }
 
 .modal {
@@ -226,9 +226,9 @@
 }
 
 .modal-button {
-  margin-top: 1em;
-  margin-left: 1em;
-  margin-right: 1em;
+  margin-top: 0.5em;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
 }
 
 .modal-method {
@@ -255,7 +255,7 @@
   align-items: center;
   flex-grow: 1;
   border: 1px solid var(--pico-primary);
-  margin: 1em;
+  margin: 0.5em;
   justify-content:space-between;
 }
 
@@ -264,15 +264,15 @@
   max-height: 100%;
   background-color: white;
   border: 1px solid var(--pico-primary);
-  margin-top: 1em;
+  margin-top: 0.5em;
 }
 
 .save-text {
-  margin-top: 1em;
+  margin-top: 0.5em;;
 }
 
 .save-option-button {
-  margin: 1em;
+  margin: 0.5em;;
 }
 
 .disable-scroll {
