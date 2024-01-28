@@ -4,6 +4,10 @@
       "date": "2024-01-28",
       "item": [
         {
+          "en": "Added AI background removal feature.",
+          "zh": "增加AI自动去背景功能。"
+        },
+        {
           "en": "Added rotate threshold for two-finger touch, to prevent rotating when simply zooming.",
           "zh": "两指操作时增加旋转阈值，防止仅想缩放时发生旋转。"
         },

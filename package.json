@@ -1,9 +1,10 @@
 {
   "name": "passport-photo-maker",
   "homepage": "https://jiataihan.dev/passport-photo-maker",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
+    "@imgly/background-removal": "^1.4.1",
     "@picocss/pico": "^2.0.0-rc3",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",

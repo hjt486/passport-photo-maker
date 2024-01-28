@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react'
 import AvatarEditor from 'react-avatar-editor'
+import imglyRemoveBackground from "@imgly/background-removal"
 import GuideDrawer from './GuideDrawer'
 import { useLanguage } from './translate'
 import { generateSingle, handleSaveSingle, generate4x6, handleSave4x6 } from './SaveImage'
@@ -224,6 +225,9 @@ const MiddleColumn = ({
   setInitialDistance,
   initialAngle,
   setInitialAngle,
+  removeBg,
+  setRemoveBg,
+  loadingModel,
 }) => {
   const { guide } = photoGuides
   const touchStartRef = useRef({ x: null, y: null })
@@ -529,6 +533,22 @@ const MiddleColumn = ({
           }}
         >
           <div className="control-row1">
+            <small>
+              <label>
+                <input
+                  type="checkbox"
+                  role="switch"
+                  checked={removeBg}
+                  onChange={(e) => setRemoveBg(e.target.checked)}
+                />{removeBg && loadingModel ? translate("backgroundRemovalProcessing") : translate("backgroundRemovalLabel")}
+              </label>
+            </small>
+            <div aria-busy={removeBg && loadingModel}></div>
+          </div>
+          {removeBg && loadingModel && (<div className="control-row3">
+            <small>It may take a while for the first time, please be patient...</small>
+          </div>)}
+          <div className="control-row2">
             <input
               className="slide-control"
               list="slide-markers"
@@ -750,12 +770,12 @@ const SaveModal = ({
 }) => {
   const [image4x6Src, setImage4x6Src] = useState(null)
   const [imageSingleSrc, setImageSingleSrc] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isSaveLoading, setIsSaveLoading] = useState(false)
   // eslint-disable-next-line no-unused-vars
   const [loadCounter, setLoadCounter] = useState(0)
 
   const initiateLoading = () => {
-    setIsLoading(true)
+    setIsSaveLoading(true)
     setLoadCounter(2) // Expecting two async operations
   }
 
@@ -763,7 +783,7 @@ const SaveModal = ({
     setLoadCounter(prevCount => {
       const newCount = prevCount - 1
       if (newCount === 0) {
-        setIsLoading(false)
+        setIsSaveLoading(false)
       }
       return newCount
     })
@@ -792,9 +812,9 @@ const SaveModal = ({
     <>
       <dialog open={modals.save} className='modal'>
         <article>
-          <h2>{isLoading? translate("saveGenerating") : translate("saveTitle")}</h2>
-          <div aria-busy={isLoading} >
-            {!isLoading && (<div className="save-option-container">
+          <h2>{isSaveLoading ? translate("saveGenerating") : translate("saveTitle")}</h2>
+          <div aria-busy={isSaveLoading} >
+            {!isSaveLoading && (<div className="save-option-container">
               <div className="save-option">
                 <img src={imageSingleSrc || croppedImage} alt="Save preview" className="save-preview" height={editorDimensions.height * editorDimensions.zoom / 2} width={editorDimensions.width * editorDimensions.zoom / 2} />
                 <p className="save-text" >{translate("saveSingleText")}</p>
@@ -816,7 +836,7 @@ const SaveModal = ({
                   disabled={!image4x6Src}
                   className="save-option-button"
                   onClick={() => image4x6Src && handleSave4x6(image4x6Src)}
-                >{translate("save4x6")}</div>                
+                >{translate("save4x6")}</div>
               </div>
             </div>)}
           </div>
@@ -842,12 +862,12 @@ const Disclaimer = ({
           <h4>{translate("disclaimerModalTitle")}</h4>
           <small><b>{translate("disclaimerTitle")}</b></small>
           <small>{translate("disclaimer")}</small>
-          <br/>
+          <br />
           <small><b>{translate("datePrivacyTitle")}</b></small>
           <small>{translate("disclaimer2")}</small>
           <footer>
             <button onClick={() => setModals((prevModals) => ({ ...prevModals, disclaimer: false }))}>{translate("agreeButton")}</button>
-            <button onClick={() => {window.location.href = 'https://www.google.com';}}>{translate("disagreeButton")}</button>
+            <button onClick={() => { window.location.href = 'https://www.google.com'; }}>{translate("disagreeButton")}</button>
           </footer>
         </article>
       </dialog>
@@ -860,6 +880,10 @@ const Disclaimer = ({
 const App = () => {
   const [template, setTemplate] = useState(TEMPLATES[0]) // Default is China
   const [photo, setPhoto] = useState(null)
+  const [removeBg, setRemoveBg] = useState(false); // Toggle for background removal
+  const [loadingModel, setLoadingModel] = useState(false); // State for loading model 
+  const [originalPhoto, setOriginalPhoto] = useState(null);
+  const [processedPhoto, setProcessedPhoto] = useState(null);
   const [zoom, setZoom] = useState(INITIAL_ZOOM)
   const [rotation, setRotation] = useState(INITIAL_ROTATION)
   const [options, setOptions] = useState({
@@ -900,19 +924,57 @@ const App = () => {
 
   const photoGuides = template
 
-  const handlePhotoLoad = useCallback((photoData) => {
-    setPhoto(photoData)
-    setZoom(INITIAL_ZOOM) // Reset zoom to initial value
-    setRotation(INITIAL_ROTATION) // Reset rotation to initial value
-    setTimeout(() => updatePreview(editorRef, setCroppedImage, rotation), 0)
-    setModals((prevModals) => ({ ...prevModals, disclaimer: true }))
-  }, [editorRef, rotation])
+  const processPhotoForBgRemoval = useCallback(async (photoData) => {
+    setLoadingModel(true);
+    try {
+      const config = { /* ... your config ... */ };
+      const resultBlob = await imglyRemoveBackground(photoData, config);
+      const url = URL.createObjectURL(resultBlob);
+      setProcessedPhoto(url);
+    } catch (error) {
+      console.error('Background removal error:', error);
+    } finally {
+      setLoadingModel(false);
+    }
+  }, []);
+
+  const handlePhotoLoad = useCallback(async (photoData) => {
+    setOriginalPhoto(photoData);
+    setProcessedPhoto(null);
+    setPhoto(photo);
+    setRemoveBg(false)
+    setZoom(INITIAL_ZOOM);
+    setRotation(INITIAL_ROTATION);
+    updatePreview(editorRef, setCroppedImage);
+    setModals((prevModals) => ({ ...prevModals, disclaimer: true }));
+  }, [editorRef, photo]);
+
+  // Update the photo state when removeBg changes
+  useEffect(() => {
+    if (removeBg && processedPhoto) {
+      setPhoto(processedPhoto);
+      setTimeout(() => updatePreview(editorRef, setCroppedImage), 100); // Update preview immediately after setting photo
+    } else {
+      setPhoto(originalPhoto);
+      setTimeout(() => updatePreview(editorRef, setCroppedImage), 100); // Update preview immediately after setting photo
+    }
+  }, [removeBg, originalPhoto, processedPhoto, editorRef]);
+
+  // Update the preview whenever the photo state changes
+  useEffect(() => {
+    console.log("Updating preview");
+    if (photo) {
+      updatePreview(editorRef, setCroppedImage);
+    }
+  }, [photo, editorRef]);
+
 
   useEffect(() => {
-    if (photo) {
-      updatePreview(editorRef, setCroppedImage)
+    if (removeBg && originalPhoto && !processedPhoto) {
+      console.log("useEffect #2")
+      processPhotoForBgRemoval(originalPhoto);
     }
-  }, [photo, zoom, rotation, editorRef])
+  }, [removeBg, originalPhoto, processedPhoto, processPhotoForBgRemoval]);
 
   const handleOptionChange = (event) => {
     const { name, checked } = event.target
@@ -972,6 +1034,9 @@ const App = () => {
             setInitialDistance={setInitialDistance}
             initialAngle={initialAngle}
             setInitialAngle={setInitialAngle}
+            removeBg={removeBg}
+            setRemoveBg={setRemoveBg}
+            loadingModel={loadingModel}
           />
           <RightColumn
             editorRef={editorRef}
