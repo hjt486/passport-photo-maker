@@ -612,9 +612,6 @@ const RightColumn = ({
     photo && (<div className="right-column" style={{ width: `${editorDimensions.width * editorDimensions.zoom / 2}px` }}>
       {croppedImage && (
         <>
-          <article className="guides-section guide-instruction">
-            <LoadPhotoButton onPhotoLoad={onPhotoLoad} title={translate("loadNewPhotoButton")} />
-          </article>
           <article className="preview-container">
             <img src={croppedImage} alt="Cropped preview" className="cropped-preview" height={editorDimensions.height * editorDimensions.zoom / 2} width={editorDimensions.width * editorDimensions.zoom / 2} />
             <div className='export-container' style={{ width: `${editorDimensions.width * editorDimensions.zoom / 2}px` }}>
@@ -657,6 +654,9 @@ const RightColumn = ({
               style={{ width: `${editorDimensions.width * editorDimensions.zoom / 2}px` }}
               onClick={() => setModals((prevModals) => ({ ...prevModals, save: true }))}
             >{translate("saveTitle")}</div>
+          </article>
+          <article className="guides-section guide-instruction">
+            <LoadPhotoButton onPhotoLoad={onPhotoLoad} title={translate("loadNewPhotoButton")} />
           </article>
         </>
       )}
@@ -826,6 +826,28 @@ const SaveModal = ({
   )
 }
 
+const Disclaimer = ({
+  translate,
+  modals,
+  setModals,
+  croppedImage,
+}) => {
+  return (
+    <>
+      <dialog open={modals.disclaimer} className='modal'>
+        <article>
+          <h4>{translate("disclaimerTitle")}</h4>
+          <small>{translate("disclaimer")}</small>
+          <footer>
+            <button onClick={() => setModals((prevModals) => ({ ...prevModals, disclaimer: false }))}>{translate("agreeButton")}</button>
+            <button onClick={() => {window.location.href = 'https://www.google.com';}}>{translate("disagreeButton")}</button>
+          </footer>
+        </article>
+      </dialog>
+    </>
+  )
+}
+
 
 // Main App component
 const App = () => {
@@ -852,7 +874,7 @@ const App = () => {
     height_valid: true,
     size_valid: true,
   })
-  const [modals, setModals] = useState({ coffee: false, changelog: false, save: false })
+  const [modals, setModals] = useState({ coffee: false, changelog: false, save: false, disclaimer: false })
   const [editorDimensions, setEditorDimensions] = useState({
     width: parseInt(template.width) / MM2INCH * parseInt(template.dpi),
     height: parseInt(template.height) / MM2INCH * parseInt(template.dpi),
@@ -876,6 +898,7 @@ const App = () => {
     setZoom(INITIAL_ZOOM) // Reset zoom to initial value
     setRotation(INITIAL_ROTATION) // Reset rotation to initial value
     setTimeout(() => updatePreview(editorRef, setCroppedImage, rotation), 0)
+    setModals((prevModals) => ({ ...prevModals, disclaimer: true }))
   }, [editorRef, rotation])
 
   useEffect(() => {
@@ -969,6 +992,12 @@ const App = () => {
             exportPhoto={exportPhoto}
             editorRef={editorRef}
           />
+          <Disclaimer
+            translate={translate}
+            modals={modals}
+            setModals={setModals}
+            croppedImag={croppedImage}
+          />
         </div>
         <div className="container">
           <BuyMeACoffee
@@ -984,7 +1013,7 @@ const App = () => {
           />
           <div
             role="button"
-            class="outline modal-button"
+            className="outline modal-button"
           >
             <a target="_blank" rel="noreferrer" href="https://github.com/hjt486/passport-photo-maker/issues">{translate("feedback")}</a>
           </div>

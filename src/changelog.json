@@ -4,6 +4,10 @@
       "date": "2024-01-28",
       "item": [
         {
+          "en": "Added disclaimer as reminder.",
+          "zh": "增加免责声明作为提醒。"
+        },
+        {
           "en": "Added 4''x6'' printable option.",
           "zh": "增加打印成4‘’x6''照片的功能。"
         }
