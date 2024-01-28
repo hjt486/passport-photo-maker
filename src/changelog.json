@@ -4,7 +4,11 @@
       "date": "2024-01-27",
       "item": [
         {
-          "en": "Limit adaptive size to width, prevent overflow on handset.",
+          "en": "Fixed the move issue that when firstly loaded the image, have to drag few times to move.",
+          "zh": "修复第一次载入照片之后，需要拖动几次图片才能移动的问题。"
+        },
+        {
+          "en": "Limited adaptive size to width, prevent overflow on handset.",
           "zh": "将自适应尺寸改为由宽度定义，防止在手持设备上溢出。"
         }
       ]

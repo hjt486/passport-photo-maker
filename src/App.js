@@ -10,11 +10,12 @@ import Canada_Visa_Photo from './Templates/Canada_Visa_Photo.json'
 import './App.css'
 import ChangeLog from './changelog.json'
 
-const INITIAL_ZOOM = 1.5
+const INITIAL_ZOOM = 1
 const INITIAL_ROTATION = 0
-const ZOOM_FACTOR = 0.01
-const MOVE_FACTOR = 0.01
-const PAN_FACTOR = 0.5
+const ZOOM_FACTOR = 1.01
+const MOVE_FACTOR = 0.005
+const MIN_ZOOM = 0.5
+const MAX_ZOOM = 10
 const EXPORT_WIDTH_LIMIT = 2000
 const EXPORT_HEIGHT_LIMIT = 2000
 const EXPORT_SIZE_LIMIT = 2000
@@ -94,7 +95,6 @@ const SaveFileButton = ({
     if (croppedImage) {
       // Get the canvas from AvatarEditor
       const canvas = editorRef.current.getImage()
-      console.log('Canvas:', canvas)
       const imageDataUrl = canvas.toDataURL('image/png')
 
       // Now use resizeAndCompressImage
@@ -264,22 +264,23 @@ const MiddleColumn = ({
   const { guide } = photoGuides
   const touchStartRef = useRef({ x: null, y: null })
   const lastTouchDistance = useRef(null)
-  const [position, setPosition] = useState({ x: editorDimensions.width * 10, y: editorDimensions.height * 10 }) // Weirdly, have to set a out-of-boundary number to make moving working when page is loaded.
+  const [position, setPosition] = useState({ x: 0.5, y: 0.5 }) // Weirdly, have to set a out-of-boundary number to make moving working when page is loaded.
   const [isDragging, setIsDragging] = useState(false)
   const mouseStartRef = useRef({ x: null, y: null })
 
   const handleMouseMove = useCallback((e) => {
     if (isDragging) {
-      const dx = (e.clientX - mouseStartRef.current.x) / editorDimensions.width * PAN_FACTOR
-      const dy = (e.clientY - mouseStartRef.current.y) / editorDimensions.height * PAN_FACTOR
+      const dx = (e.clientX - mouseStartRef.current.x) / editorDimensions.width / zoom
+      const dy = (e.clientY - mouseStartRef.current.y) / editorDimensions.height / zoom
+
       setPosition((prevPosition) => ({
-        x: Math.min(1, Math.max(0, prevPosition.x - dx)),
-        y: Math.min(1, Math.max(0, prevPosition.y - dy))
+        x: prevPosition.x - dx,
+        y: prevPosition.y - dy,
       }))
       mouseStartRef.current = { x: e.clientX, y: e.clientY }
       updatePreview(editorRef, setCroppedImage)
     }
-  }, [editorRef, setCroppedImage, isDragging, editorDimensions.width, editorDimensions.height, setPosition])
+  }, [editorRef, setCroppedImage, isDragging, editorDimensions.width, editorDimensions.height, zoom, setPosition])
 
   const handleMouseUp = () => {
     setIsDragging(false)
@@ -329,7 +330,7 @@ const MiddleColumn = ({
 
   const handleZoomIn = (e) => {
     setZoom((prevZoom) => {
-      const newZoom = prevZoom + ZOOM_FACTOR
+      const newZoom = Math.max(prevZoom / ZOOM_FACTOR, MIN_ZOOM)
       updatePreview(editorRef, setCroppedImage)
       return newZoom
     })
@@ -337,7 +338,7 @@ const MiddleColumn = ({
 
   const handleZoomOut = (e) => {
     setZoom((prevZoom) => {
-      const newZoom = prevZoom - ZOOM_FACTOR
+      const newZoom = Math.min(prevZoom * ZOOM_FACTOR, MAX_ZOOM)
       updatePreview(editorRef, setCroppedImage)
       return newZoom
     })
@@ -361,22 +362,20 @@ const MiddleColumn = ({
 
   const handleMouseScroll = (event) => {
     const delta = event.deltaY
-    if (delta > 0) {
-      setZoom((prevZoom) => Math.max(1, prevZoom - ZOOM_FACTOR * 3))
-    } else {
-      setZoom((prevZoom) => Math.min(10, prevZoom + ZOOM_FACTOR * 3))
-    }
+    setZoom(prevZoom => {
+      // Define the zoom step
+      const zoomStep = Math.pow(ZOOM_FACTOR, 2) // Adjust this step size as needed
+
+      // Calculate the new zoom value
+      let newZoom = delta > 0 ? prevZoom / zoomStep : prevZoom * zoomStep
+
+      // Clamp the zoom value between 1 and 10
+      newZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, newZoom))
+
+      return newZoom
+    })
 
     updatePreview(editorRef, setCroppedImage)
-  }
-
-  const calculatePinchDistance = (touches) => {
-    const touch1 = touches[0]
-    const touch2 = touches[1]
-    return Math.sqrt(
-      Math.pow(touch1.clientX - touch2.clientX, 2) +
-      Math.pow(touch1.clientY - touch2.clientY, 2)
-    )
   }
 
   const handleTouchStart = (e) => {
@@ -395,29 +394,22 @@ const MiddleColumn = ({
       const dy = e.touches[0].clientY - touchStartRef.current.y
 
       // Normalize the change relative to the editor size
-      const normalizedDx = dx / editorDimensions.width * PAN_FACTOR
-      const normalizedDy = dy / editorDimensions.height * PAN_FACTOR
+      const normalizedDx = dx / editorDimensions.width / zoom
+      const normalizedDy = dy / editorDimensions.height / zoom
 
       setPosition((prevPosition) => {
         // Ensure the position stays within the bounds [0, 1]
-        const newX = Math.min(1, Math.max(0, prevPosition.x - normalizedDx))
-        const newY = Math.min(1, Math.max(0, prevPosition.y - normalizedDy))
+        const newX = prevPosition.x - normalizedDx
+        const newY = prevPosition.y - normalizedDy
         return { x: newX, y: newY }
       })
 
       // Update initial touch position for next move
       touchStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
     } else if (e.touches.length === 2) {
-      // Two fingers touch does pinch zooming
-      const distance = calculatePinchDistance(e.touches)
-      if (lastTouchDistance.current !== null) {
-        const zoomChange = distance - lastTouchDistance.current
-        setZoom((prevZoom) => Math.max(1, prevZoom + zoomChange * ZOOM_FACTOR))
-      }
-      lastTouchDistance.current = distance
     }
     updatePreview(editorRef, setCroppedImage)
-  }, [setZoom, editorDimensions.width, editorDimensions.height, setCroppedImage, editorRef])
+  }, [editorDimensions.width, editorDimensions.height, setCroppedImage, editorRef, zoom])
 
   const handleTouchEnd = useCallback((e) => {
     lastTouchDistance.current = null
@@ -496,6 +488,7 @@ const MiddleColumn = ({
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
+              disableBoundaryChecks={true}
             />
           )}
         </div>
@@ -518,13 +511,17 @@ const MiddleColumn = ({
           <div className="control-row1">
             <input
               className="slide-control"
+              list="slide-markers"
               type="range"
-              min="1"
-              max="5"
+              min={MIN_ZOOM}
+              max={MAX_ZOOM}
               step="0.01"
               value={zoom}
               onChange={handleZoomChange}
             />
+            <datalist id="slide-markers">
+              <option value="1"></option>
+            </datalist>
           </div>
           <div className="control-row2">
             <div role="button" className="control-button" onClick={handleZoomOut}>−</div>
