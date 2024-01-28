@@ -101,21 +101,24 @@ export const handleSaveSingle = (imageSrc) => {
 export const generate4x6 = (MM2INCH, croppedImage, exportPhoto) => {
   return new Promise((resolve, reject) => {
     if (croppedImage && exportPhoto) {
-      // Calculate the photo dimensions with margin
-      const marginMM = 1 // 1 mm margin
-      const spacingMM = 5 // 5 mm spacing
+      // Define margins and spacing
+      const outerMarginMM = 5 // 10 mm margin around the canvas
+      const marginMM = 0.2 // 1 mm margin around each photo
+      const spacingMM = 2 // 5 mm spacing between photos
+
+      const outerMargin = outerMarginMM / MM2INCH * exportPhoto.dpi
       const margin = marginMM / MM2INCH * exportPhoto.dpi
       const spacing = spacingMM / MM2INCH * exportPhoto.dpi
 
-      // Calculate the single photo dimensions
+      // Calculate the single photo dimensions with margin
       const photoWidth = exportPhoto.width_mm / MM2INCH * exportPhoto.dpi
       const photoHeight = exportPhoto.height_mm / MM2INCH * exportPhoto.dpi
       const photoWidthWithMargin = photoWidth + 2 * margin
       const photoHeightWithMargin = photoHeight + 2 * margin
 
       // Calculate potential layouts for portrait and landscape
-      const portrait = calculateLayout(4 * exportPhoto.dpi, 6 * exportPhoto.dpi, photoWidthWithMargin, photoHeightWithMargin, spacing)
-      const landscape = calculateLayout(6 * exportPhoto.dpi, 4 * exportPhoto.dpi, photoWidthWithMargin, photoHeightWithMargin, spacing)
+      const portrait = calculateLayout(4 * exportPhoto.dpi - 2 * outerMargin, 6 * exportPhoto.dpi - 2 * outerMargin, photoWidthWithMargin, photoHeightWithMargin, spacing)
+      const landscape = calculateLayout(6 * exportPhoto.dpi - 2 * outerMargin, 4 * exportPhoto.dpi - 2 * outerMargin, photoWidthWithMargin, photoHeightWithMargin, spacing)
 
       // Determine best orientation
       const usePortrait = (portrait.count >= landscape.count)
@@ -139,8 +142,8 @@ export const generate4x6 = (MM2INCH, croppedImage, exportPhoto) => {
       img.onload = () => {
         // Calculate the starting positions
         const layout = usePortrait ? portrait : landscape
-        const startX = (canvasWidth - (layout.columns * photoWidthWithMargin + (layout.columns - 1) * spacing)) / 2
-        const startY = (canvasHeight - (layout.rows * photoHeightWithMargin + (layout.rows - 1) * spacing)) / 2
+        const startX = outerMargin + (canvasWidth - 2 * outerMargin - (layout.columns * photoWidthWithMargin + (layout.columns - 1) * spacing)) / 2
+        const startY = outerMargin + (canvasHeight - 2 * outerMargin - (layout.rows * photoHeightWithMargin + (layout.rows - 1) * spacing)) / 2
 
         // Draw the photos with margin and dotted line
         for (let i = 0; i < layout.columns; i++) {
@@ -165,6 +168,9 @@ export const generate4x6 = (MM2INCH, croppedImage, exportPhoto) => {
     }
   })
 }
+
+// Rest of the helper functions remain the same
+
 
 // Helper function to calculate the layout
 const calculateLayout = (canvasWidth, canvasHeight, photoWidth, photoHeight, spacing) => {

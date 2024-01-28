@@ -228,6 +228,7 @@ const MiddleColumn = ({
   removeBg,
   setRemoveBg,
   loadingModel,
+  processedPhoto,
 }) => {
   const { guide } = photoGuides
   const touchStartRef = useRef({ x: null, y: null })
@@ -422,7 +423,7 @@ const MiddleColumn = ({
           const angleChange = angleRadians - initialAngle
           const angleChangeDeg = angleChange * (180 / Math.PI)
           if (Math.abs(angleChangeDeg) > ROTATION_THRESHOLD_DEG) {
-            setRotation((prevRotation) => prevRotation + angleChangeDeg);
+            setRotation((prevRotation) => prevRotation + angleChangeDeg)
           }
         }
 
@@ -476,7 +477,6 @@ const MiddleColumn = ({
       }
     }
   }, [editorRef, editorDimensions.width, editorDimensions.height, setCroppedImage, handleMouseMove])
-
 
   return (
     <article className="middle-column"
@@ -538,15 +538,18 @@ const MiddleColumn = ({
                 <input
                   type="checkbox"
                   role="switch"
-                  checked={removeBg}
-                  onChange={(e) => setRemoveBg(e.target.checked)}
-                />{removeBg && loadingModel ? translate("backgroundRemovalProcessing") : translate("backgroundRemovalLabel")}
+                  checked={removeBg.state}
+                  onChange={(e) => setRemoveBg({state: e.target.checked, error: false})}
+                />{removeBg.state && loadingModel ? translate("backgroundRemovalProcessing") : translate("backgroundRemovalLabel")}
               </label>
             </small>
-            <div aria-busy={removeBg && loadingModel}></div>
+            <div aria-busy={removeBg.state && loadingModel}></div>
           </div>
-          {removeBg && loadingModel && (<div className="control-row3">
-            <small>It may take a while for the first time, please be patient...</small>
+          {removeBg.state && loadingModel && (<div className="control-row3">
+            <small>{translate("backgroundRemovalReminder")}</small>
+          </div>)}
+          {removeBg.error && !processedPhoto && (<div className="control-row3" style={{color: "red"}}>
+            <small>{translate("backgroundRemovalError")}</small>
           </div>)}
           <div className="control-row2">
             <input
@@ -867,7 +870,7 @@ const Disclaimer = ({
           <small>{translate("disclaimer2")}</small>
           <footer>
             <button onClick={() => setModals((prevModals) => ({ ...prevModals, disclaimer: false }))}>{translate("agreeButton")}</button>
-            <button onClick={() => { window.location.href = 'https://www.google.com'; }}>{translate("disagreeButton")}</button>
+            <button onClick={() => { window.location.href = 'https://www.google.com' }}>{translate("disagreeButton")}</button>
           </footer>
         </article>
       </dialog>
@@ -880,10 +883,10 @@ const Disclaimer = ({
 const App = () => {
   const [template, setTemplate] = useState(TEMPLATES[0]) // Default is China
   const [photo, setPhoto] = useState(null)
-  const [removeBg, setRemoveBg] = useState(false); // Toggle for background removal
-  const [loadingModel, setLoadingModel] = useState(false); // State for loading model 
-  const [originalPhoto, setOriginalPhoto] = useState(null);
-  const [processedPhoto, setProcessedPhoto] = useState(null);
+  const [removeBg, setRemoveBg] = useState({state: false, error: false}) // Toggle for background removal
+  const [loadingModel, setLoadingModel] = useState(false) // State for loading model 
+  const [originalPhoto, setOriginalPhoto] = useState(null)
+  const [processedPhoto, setProcessedPhoto] = useState(null)
   const [zoom, setZoom] = useState(INITIAL_ZOOM)
   const [rotation, setRotation] = useState(INITIAL_ROTATION)
   const [options, setOptions] = useState({
@@ -925,56 +928,55 @@ const App = () => {
   const photoGuides = template
 
   const processPhotoForBgRemoval = useCallback(async (photoData) => {
-    setLoadingModel(true);
+    setLoadingModel(true)
     try {
-      const config = { /* ... your config ... */ };
-      const resultBlob = await imglyRemoveBackground(photoData, config);
-      const url = URL.createObjectURL(resultBlob);
-      setProcessedPhoto(url);
+      const config = { /* ... your config ... */ }
+      const resultBlob = await imglyRemoveBackground(photoData, config)
+      const url = URL.createObjectURL(resultBlob)
+      setProcessedPhoto(url)
     } catch (error) {
-      console.error('Background removal error:', error);
+      console.error('Background removal error:', error)
+      setRemoveBg({state: false, error: true})
     } finally {
-      setLoadingModel(false);
+      setLoadingModel(false)
     }
-  }, []);
+  }, [])
 
   const handlePhotoLoad = useCallback(async (photoData) => {
-    setOriginalPhoto(photoData);
-    setProcessedPhoto(null);
-    setPhoto(photo);
-    setRemoveBg(false)
-    setZoom(INITIAL_ZOOM);
-    setRotation(INITIAL_ROTATION);
-    updatePreview(editorRef, setCroppedImage);
-    setModals((prevModals) => ({ ...prevModals, disclaimer: true }));
-  }, [editorRef, photo]);
+    setOriginalPhoto(photoData)
+    setProcessedPhoto(null)
+    setPhoto(photo)
+    setRemoveBg({state: false, error: false})
+    setZoom(INITIAL_ZOOM)
+    setRotation(INITIAL_ROTATION)
+    updatePreview(editorRef, setCroppedImage)
+    setModals((prevModals) => ({ ...prevModals, disclaimer: true }))
+  }, [editorRef, photo])
 
   // Update the photo state when removeBg changes
   useEffect(() => {
-    if (removeBg && processedPhoto) {
-      setPhoto(processedPhoto);
-      setTimeout(() => updatePreview(editorRef, setCroppedImage), 100); // Update preview immediately after setting photo
+    if (removeBg.state && processedPhoto) {
+      setPhoto(processedPhoto)
+      setTimeout(() => updatePreview(editorRef, setCroppedImage), 100) // Update preview immediately after setting photo
     } else {
-      setPhoto(originalPhoto);
-      setTimeout(() => updatePreview(editorRef, setCroppedImage), 100); // Update preview immediately after setting photo
+      setPhoto(originalPhoto)
+      setTimeout(() => updatePreview(editorRef, setCroppedImage), 100) // Update preview immediately after setting photo
     }
-  }, [removeBg, originalPhoto, processedPhoto, editorRef]);
+  }, [removeBg, originalPhoto, processedPhoto, editorRef])
 
   // Update the preview whenever the photo state changes
   useEffect(() => {
-    console.log("Updating preview");
     if (photo) {
-      updatePreview(editorRef, setCroppedImage);
+      updatePreview(editorRef, setCroppedImage)
     }
-  }, [photo, editorRef]);
+  }, [photo, editorRef])
 
 
   useEffect(() => {
-    if (removeBg && originalPhoto && !processedPhoto) {
-      console.log("useEffect #2")
-      processPhotoForBgRemoval(originalPhoto);
+    if (removeBg.state && originalPhoto && !processedPhoto) {
+      processPhotoForBgRemoval(originalPhoto)
     }
-  }, [removeBg, originalPhoto, processedPhoto, processPhotoForBgRemoval]);
+  }, [removeBg, originalPhoto, processedPhoto, processPhotoForBgRemoval])
 
   const handleOptionChange = (event) => {
     const { name, checked } = event.target
@@ -1037,6 +1039,7 @@ const App = () => {
             removeBg={removeBg}
             setRemoveBg={setRemoveBg}
             loadingModel={loadingModel}
+            processedPhoto={processedPhoto}
           />
           <RightColumn
             editorRef={editorRef}

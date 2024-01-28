@@ -35,6 +35,14 @@
     "en": "Processing...",
     "zh": "处理中..."
   },
+  "backgroundRemovalError": {
+    "en": "Error on calling AI background removal, please refresh then retry.",
+    "zh": "AI去背景错误，请刷新并重试。"
+  },
+  "backgroundRemovalReminder": {
+    "en": "It may take a while for the first time, please be patient...",
+    "zh": "第一次使用需要稍加等待，请保持耐心......"
+  },
   "agreeButton": {
     "en": "Agree",
     "zh": "同意"
