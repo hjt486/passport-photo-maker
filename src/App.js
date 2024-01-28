@@ -16,6 +16,7 @@ const ZOOM_FACTOR = 1.01
 const MOVE_FACTOR = 0.005
 const MIN_ZOOM = 0.5
 const MAX_ZOOM = 10
+const ROTATION_THRESHOLD_DEG = 2
 const EXPORT_WIDTH_LIMIT = 2000
 const EXPORT_HEIGHT_LIMIT = 2000
 const EXPORT_SIZE_LIMIT = 2000
@@ -416,7 +417,9 @@ const MiddleColumn = ({
         if (initialAngle !== null) {
           const angleChange = angleRadians - initialAngle
           const angleChangeDeg = angleChange * (180 / Math.PI)
-          setRotation(prevRotation => prevRotation + angleChangeDeg)
+          if (Math.abs(angleChangeDeg) > ROTATION_THRESHOLD_DEG) {
+            setRotation((prevRotation) => prevRotation + angleChangeDeg);
+          }
         }
 
         setInitialDistance(currentDistance) // Update initial distance for next movement
