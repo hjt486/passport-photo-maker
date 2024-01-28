@@ -253,7 +253,7 @@
   flex-direction: column;
   justify-content:center;
   align-items: center;
-  flex: 0 0 40%; 
+  flex-grow: 1;
   border: 1px solid var(--pico-primary);
   margin: 1em;
   justify-content:space-between;
