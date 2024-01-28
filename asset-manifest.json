@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/passport-photo-maker/static/css/main.04298daf.css",
-    "main.js": "/passport-photo-maker/static/js/main.fd60ffcc.js",
+    "main.css": "/passport-photo-maker/static/css/main.719df4a3.css",
+    "main.js": "/passport-photo-maker/static/js/main.028bdf8c.js",
     "static/js/787.fcfa9129.chunk.js": "/passport-photo-maker/static/js/787.fcfa9129.chunk.js",
     "index.html": "/passport-photo-maker/index.html",
-    "main.04298daf.css.map": "/passport-photo-maker/static/css/main.04298daf.css.map",
-    "main.fd60ffcc.js.map": "/passport-photo-maker/static/js/main.fd60ffcc.js.map",
+    "main.719df4a3.css.map": "/passport-photo-maker/static/css/main.719df4a3.css.map",
+    "main.028bdf8c.js.map": "/passport-photo-maker/static/js/main.028bdf8c.js.map",
     "787.fcfa9129.chunk.js.map": "/passport-photo-maker/static/js/787.fcfa9129.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.04298daf.css",
-    "static/js/main.fd60ffcc.js"
+    "static/css/main.719df4a3.css",
+    "static/js/main.028bdf8c.js"
   ]
 }
