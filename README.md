@@ -12,23 +12,15 @@
     <br />
     <a href="https://jiataihan.dev/passport-photo-maker/"><strong>{ 点击开始使用 }</strong></a>
     <br />
-    <a href="https://www.youtube.com/watch?v=Q86svYysahA"><strong>{ 点击查看视频教程 }</strong></a>
+    <a href="https://www.youtube.com/watch?v=z6podleci5E"><strong>{ 点击查看视频教程 }</strong></a>
     <br />
-    (注：视频教程使用老版Windows程序，但使用参考线方法一致，可参考)
   </p>
 
 </div>
 
 
 <!-- ABOUT THE PROJECT -->
-## 简介
-<div align="center">
-    <a href="https://jiataihan.dev/passport-photo-maker/">
-        <img src="public/preview.png" alt="程序界面预览" width="400"">
-    </a>
-</div>
-
-### 特点
+## 特色
 
 * 网页版，自适应界面，可跨平台，跨设备使用（完美支持手机浏览器访问）
 * 中英文双语界面，实时切换（已支持多语言，后期有必要可以轻易扩展）
@@ -41,7 +33,29 @@
 
 <p align="right">(<a href="#top">回到页首</a>)</p>
 
-疫情开始以来，世界各地的中国使领馆均改变了对外办公的时间和方式，使得护照到期换发变的更加麻烦。以前经常有朋友抱怨使领馆对于照片的要求过于苛刻，很多通过第三方拍摄的照片都无法通过验证，但是疫情前的使领馆内部或附近都有相应的自助照片拍摄机器，或者了解相关标准的第三方摄影馆，除了额外的费用和一定的时间成本，绝大多数的情况下并不会耽误护照换发申请流程。如今因为很多使领馆不对外开放，同时引入了领事服务App，因此申请人需要在申请前期就要上传符合标准的照片，即便照片通过了初步验证，如果不符合具体要求，依然可能在后期审核过程中被拒绝，极大程度上增加了不确定性和时间成本。实际上，中国外交部领事服务网上发布的关于护照照片的标准非常清晰和详细，对于照片上人像的各种距离、大小均有明确的规定，但是对于绝大多数人，这些枯燥和详细的数字只是增加了理解的难度，同时因为缺乏处理照片的相关知识，使得很多人感觉无从下手又不知道去哪里寻求帮助。这个程序的存在，就是为了帮助大家化繁为简，用清晰明了的可视化的方式快速生成符合标准的照片。
+* 主界面，中国护照签证照片模板
+<div align="center">
+    <img src="readme_assets/preview.png" alt="程序界面预览" width="600"">
+</div>
+
+* AI去背景
+<div align="center">
+    <img src="readme_assets/preview_AI_removal.png" alt="程序界面预览" width="600"">
+</div>
+
+* 生成单张或者4"x6"照片打印排版
+<div align="center">
+    <img src="readme_assets/preview_print_layout.png" alt="程序界面预览" width="600"">
+</div>
+
+* 美国护照和签证照片模板以及中文界面
+<div align="center">
+    <img src="readme_assets/preview_US_Chinese.png" alt="程序界面预览" width="600"">
+</div>
+
+## 简介
+
+这是一款专为制作符合各国护照和签证要求的照片而设计的软件工具。它以用户友好、简洁高效为特点，能迅速生成符合使馆和领事馆最新指南的标准照片。软件提供了对于照片的多种调节方式，界面直观易用，即使是没有技术背景的用户也能轻松上手，为用户提供了一个便捷的解决方案，可以在家中快速制作出符合标准的照片。
 
 <p align="right">(<a href="#top">回到页首</a>)</p>
 
@@ -50,6 +64,11 @@
 * React
 * JavaScript
 * Node.js
+* @imgly/background-removal 用于AI去背景
+* @picocss/pico 界面UI框架
+* pica@9.0.1 用于高品质缩放照片
+* react-avatar-editor 用于作为图像编辑器
+* react-draggable@4.4.6 用于生成可拖拽参考线
 
 <p align="right">(<a href="#top">回到页首</a>)</p>
 
