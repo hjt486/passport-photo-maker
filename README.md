@@ -35,22 +35,22 @@
 
 * 主界面，中国护照签证照片模板
 <div align="center">
-    <img src="readme_assets/preview.png" alt="程序界面预览" width="600"">
+    <img src="readme_assets/Preview.png" alt="程序界面预览" width="600"">
 </div>
 
 * AI去背景
 <div align="center">
-    <img src="readme_assets/preview_AI_removal.png" alt="程序界面预览" width="600"">
+    <img src="readme_assets/Preview_AI_removal.png" alt="程序界面预览" width="600"">
 </div>
 
 * 生成单张或者4"x6"照片打印排版
 <div align="center">
-    <img src="readme_assets/preview_print_layout.png" alt="程序界面预览" width="600"">
+    <img src="readme_assets/Preview_print_layout.png" alt="程序界面预览" width="600"">
 </div>
 
 * 美国护照和签证照片模板以及中文界面
 <div align="center">
-    <img src="readme_assets/preview_US_Chinese.png" alt="程序界面预览" width="600"">
+    <img src="readme_assets/Preview_US_Chinese.png" alt="程序界面预览" width="600"">
 </div>
 
 ## 简介
