@@ -229,6 +229,10 @@ const MiddleColumn = ({
   setRemoveBg,
   loadingModel,
   processedPhoto,
+  modals,
+  setModals,
+  allowAiModel,
+  setAllowAiModel,
 }) => {
   const { guide } = photoGuides
   const touchStartRef = useRef({ x: null, y: null })
@@ -478,6 +482,9 @@ const MiddleColumn = ({
     }
   }, [editorRef, editorDimensions.width, editorDimensions.height, setCroppedImage, handleMouseMove])
 
+  let ua = window.navigator.userAgent
+  let iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i)
+
   return (
     <article className="middle-column"
       onMouseEnter={handleMouseEnter}
@@ -532,25 +539,16 @@ const MiddleColumn = ({
             width: editorDimensions.width * editorDimensions.zoom,
           }}
         >
-          <div className="control-row1">
-            <small>
-              <label>
-                <input
-                  type="checkbox"
-                  role="switch"
-                  checked={removeBg.state}
-                  onChange={(e) => setRemoveBg({state: e.target.checked, error: false})}
-                />{removeBg.state && loadingModel ? translate("backgroundRemovalProcessing") : translate("backgroundRemovalLabel")}
-              </label>
-            </small>
-            <div aria-busy={removeBg.state && loadingModel}></div>
+          <div className="control-row2">
+            <div role="button" className="control-button" onClick={handleZoomOut}>−</div>
+            <div role="button" className="control-button" onClick={handleZoomIn}>+</div>
+            <div role="button" className="control-button" onClick={handleRotateCounterclockwise}>↺</div>
+            <div role="button" className="control-button" onClick={handleRotateClockwise}>↻</div>
+            <div role="button" className="control-button" onClick={handleMoveLeft}>←</div>
+            <div role="button" className="control-button" onClick={handleMoveRight}>→</div>
+            <div role="button" className="control-button" onClick={handleMoveUp}>↑</div>
+            <div role="button" className="control-button" onClick={handleMoveDown}>↓</div>
           </div>
-          {removeBg.state && loadingModel && (<div className="control-row3">
-            <small>{translate("backgroundRemovalReminder")}</small>
-          </div>)}
-          {removeBg.error && !processedPhoto && (<div className="control-row3" style={{color: "red"}}>
-            <small>{translate("backgroundRemovalError")}</small>
-          </div>)}
           <div className="control-row2">
             <input
               className="slide-control"
@@ -566,16 +564,52 @@ const MiddleColumn = ({
               <option value="1"></option>
             </datalist>
           </div>
-          <div className="control-row2">
-            <div role="button" className="control-button" onClick={handleZoomOut}>−</div>
-            <div role="button" className="control-button" onClick={handleZoomIn}>+</div>
-            <div role="button" className="control-button" onClick={handleRotateCounterclockwise}>↺</div>
-            <div role="button" className="control-button" onClick={handleRotateClockwise}>↻</div>
-            <div role="button" className="control-button" onClick={handleMoveLeft}>←</div>
-            <div role="button" className="control-button" onClick={handleMoveRight}>→</div>
-            <div role="button" className="control-button" onClick={handleMoveUp}>↑</div>
-            <div role="button" className="control-button" onClick={handleMoveDown}>↓</div>
+          <dialog open={modals.aiModel} className='modal'>
+            <article>
+              <h4>{translate("aiConfirmTitle")}</h4>
+              <small>{translate("aiConfirmText")}</small>
+              <footer>
+                <button onClick={() => {
+                  setModals((prevModals) => ({ ...prevModals, aiModel: false }))
+                  setAllowAiModel(true)
+                }}>
+                  {translate("yesButton")}
+                </button>
+                <button onClick={() => {
+                  setModals((prevModals) => ({ ...prevModals, aiModel: false }))
+                  setAllowAiModel(false)
+                }}>
+                  {translate("noButton")}
+                </button>
+              </footer>
+            </article>
+          </dialog>
+          <div className="control-row1">
+            <small>
+              <label>
+                <input
+                  disabled={iOS}
+                  type="checkbox"
+                  role="switch"
+                  checked={removeBg.state && allowAiModel}
+                  onChange={(e) => {
+                    setRemoveBg({ state: e.target.checked, error: false })
+                    if (!allowAiModel) setModals((prevModals) => ({ ...prevModals, aiModel: true }))
+                  }}
+                />{removeBg.state && loadingModel ? translate("backgroundRemovalProcessing") : translate("backgroundRemovalLabel")}
+              </label>
+            </small>
+            <div aria-busy={removeBg.state && loadingModel}></div>
           </div>
+          {removeBg.state && loadingModel && (<div className="control-row3">
+            <small>{translate("backgroundRemovalReminder")}</small>
+          </div>)}
+          {removeBg.error && !processedPhoto && (<div className="control-row3" style={{ color: "red" }}>
+            <small>{translate("backgroundRemovalError")}</small>
+          </div>)}
+          {iOS && (<div className="control-row3" style={{ color: "red" }}>
+            <small>{translate("backgroundRemovalIOS")}</small>
+          </div>)}
         </div>
       )}
     </article >
@@ -883,7 +917,8 @@ const Disclaimer = ({
 const App = () => {
   const [template, setTemplate] = useState(TEMPLATES[0]) // Default is China
   const [photo, setPhoto] = useState(null)
-  const [removeBg, setRemoveBg] = useState({state: false, error: false}) // Toggle for background removal
+  const [allowAiModel, setAllowAiModel] = useState(false)
+  const [removeBg, setRemoveBg] = useState({ state: false, error: false }) // Toggle for background removal
   const [loadingModel, setLoadingModel] = useState(false) // State for loading model 
   const [originalPhoto, setOriginalPhoto] = useState(null)
   const [processedPhoto, setProcessedPhoto] = useState(null)
@@ -908,7 +943,7 @@ const App = () => {
     height_valid: true,
     size_valid: true,
   })
-  const [modals, setModals] = useState({ coffee: false, changelog: false, save: false, disclaimer: false })
+  const [modals, setModals] = useState({ coffee: false, changelog: false, save: false, disclaimer: false, aiModel: false })
   const [editorDimensions, setEditorDimensions] = useState({
     width: parseInt(template.width) / MM2INCH * parseInt(template.dpi),
     height: parseInt(template.height) / MM2INCH * parseInt(template.dpi),
@@ -929,24 +964,43 @@ const App = () => {
 
   const processPhotoForBgRemoval = useCallback(async (photoData) => {
     setLoadingModel(true)
-    try {
-      const config = { /* ... your config ... */ }
-      const resultBlob = await imglyRemoveBackground(photoData, config)
-      const url = URL.createObjectURL(resultBlob)
-      setProcessedPhoto(url)
-    } catch (error) {
-      console.error('Background removal error:', error)
-      setRemoveBg({state: false, error: true})
-    } finally {
-      setLoadingModel(false)
+
+    const configs = [
+      {
+        debug: true,
+        model: "medium",
+        publicPath: window.location.href + "/ai-assets/dist/"
+      },
+      { // If can't load local model, try remote one.
+        debug: true,
+        model: "medium",
+      }
+    ]
+
+    for (const config of configs) {
+      try {
+        const resultBlob = await imglyRemoveBackground(photoData, config)
+        const url = URL.createObjectURL(resultBlob)
+        setProcessedPhoto(url)
+        setLoadingModel(false)
+        return // Exit the loop if successful
+      } catch (error) {
+        console.error('Background removal error:', error)
+        // Continue to the next configuration in case of an error
+      }
     }
+
+    // If all configurations fail, set error state
+    setRemoveBg({ state: false, error: true })
+    setLoadingModel(false)
   }, [])
+
 
   const handlePhotoLoad = useCallback(async (photoData) => {
     setOriginalPhoto(photoData)
     setProcessedPhoto(null)
     setPhoto(photo)
-    setRemoveBg({state: false, error: false})
+    setRemoveBg({ state: false, error: false })
     setZoom(INITIAL_ZOOM)
     setRotation(INITIAL_ROTATION)
     updatePreview(editorRef, setCroppedImage)
@@ -973,10 +1027,10 @@ const App = () => {
 
 
   useEffect(() => {
-    if (removeBg.state && originalPhoto && !processedPhoto) {
+    if (removeBg.state && originalPhoto && !processedPhoto && allowAiModel) {
       processPhotoForBgRemoval(originalPhoto)
     }
-  }, [removeBg, originalPhoto, processedPhoto, processPhotoForBgRemoval])
+  }, [removeBg, originalPhoto, processedPhoto, processPhotoForBgRemoval, allowAiModel])
 
   const handleOptionChange = (event) => {
     const { name, checked } = event.target
@@ -1040,6 +1094,10 @@ const App = () => {
             setRemoveBg={setRemoveBg}
             loadingModel={loadingModel}
             processedPhoto={processedPhoto}
+            modals={modals}
+            setModals={setModals}
+            allowAiModel={allowAiModel}
+            setAllowAiModel={setAllowAiModel}
           />
           <RightColumn
             editorRef={editorRef}

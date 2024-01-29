@@ -39,6 +39,10 @@
     "en": "Error on calling AI background removal, please refresh then retry.",
     "zh": "AI去背景错误，请刷新并重试。"
   },
+  "backgroundRemovalIOS": {
+    "en": "AI Background Removal does NOT support iPhone or iPad, please use Android, macOS or Windows device.",
+    "zh": "AI去背景不支持iPhone或iPad，请使用安卓，苹果电脑，或者Windows设备。"
+  },
   "backgroundRemovalReminder": {
     "en": "It may take a while for the first time, please be patient...",
     "zh": "第一次使用需要稍加等待，请保持耐心......"
@@ -50,6 +54,22 @@
   "disagreeButton": {
     "en": "Disagree",
     "zh": "不同意"
+  },
+  "yesButton": {
+    "en": "Confirm",
+    "zh": "确定"
+  },
+  "noButton": {
+    "en": "Cancel",
+    "zh": "取消"
+  },
+  "aiConfirmTitle": {
+    "en": "Download AI Model？",
+    "zh": "继续下载AI模型"
+  },
+  "aiConfirmText": {
+    "en": "Click \"Confirm\" to start download AI pre-trained model for background removal. It will take ~80MB and will only need to download once for this session.",
+    "zh": "点击“确认”以开始下载AI预训练的去背景模型。它将占用约80MB的空间，并且仅需要在本次会话中下载一次。"
   },
   "loadNewPhotoButton": {
     "en": "Load New Photo",

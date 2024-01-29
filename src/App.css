@@ -113,21 +113,20 @@
 .control-row1 {
   display: flex;
   flex-direction:row;
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
   align-items:baseline;
   justify-content: space-between;
   height: 2em;
 }
 
 .control-row2 {
+  margin-top: 0.5em;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
 }
 
 .control-row3 {
-  font-size: xx-small;
+  font-size: small;
   margin-bottom: 1em;
   color: var( --pico-secondary);
 }

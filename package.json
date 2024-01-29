@@ -5,6 +5,7 @@
   "private": true,
   "dependencies": {
     "@imgly/background-removal": "^1.4.1",
+    "@imgly/background-removal-data": "^1.4.1",
     "@picocss/pico": "^2.0.0-rc3",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",

@@ -4,8 +4,8 @@
       "date": "2024-01-28",
       "item": [
         {
-          "en": "Added AI background removal feature.",
-          "zh": "增加AI自动去背景功能。"
+          "en": "Added AI background removal feature.(iOS device is not supported)",
+          "zh": "增加AI自动去背景功能。（不支持iOS设备）"
         },
         {
           "en": "Added rotate threshold for two-finger touch, to prevent rotating when simply zooming.",
