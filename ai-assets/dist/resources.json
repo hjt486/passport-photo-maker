@@ -1,0 +1,435 @@
+{
+  "/onnxruntime-web/ort-wasm.wasm": {
+    "chunks": [
+      {
+        "hash": "ec4fed85437428b2a9bb00e3520632e80c1025d977d97252f5992bb6e3837ff7",
+        "offsets": [
+          0,
+          4194304
+        ]
+      },
+      {
+        "hash": "4bae6253de7c3c2261b8c58168215ac62570b1d76f495f664f152712422158c0",
+        "offsets": [
+          4194304,
+          8388608
+        ]
+      },
+      {
+        "hash": "35b512e28d3397aad6fe08e668c746fc0ccb290abd5b081ad3ea89595c8e2ed0",
+        "offsets": [
+          8388608,
+          9931804
+        ]
+      }
+    ],
+    "size": 9931804,
+    "mime": "application/wasm"
+  },
+  "/onnxruntime-web/ort-wasm-threaded.wasm": {
+    "chunks": [
+      {
+        "hash": "c918eed454a47bb07594f250a8f245493b3cb73f3ab2345f6403df2cff245c9c",
+        "offsets": [
+          0,
+          4194304
+        ]
+      },
+      {
+        "hash": "9c79f200867a1a58b782e875d87b1a959b029935460acc8328421c75df2e841a",
+        "offsets": [
+          4194304,
+          8388608
+        ]
+      },
+      {
+        "hash": "5fa9533ffa0bcdf6563b07f2caee49686a3217da9b253a2b65653418ea41cf84",
+        "offsets": [
+          8388608,
+          9868357
+        ]
+      }
+    ],
+    "size": 9868357,
+    "mime": "application/wasm"
+  },
+  "/onnxruntime-web/ort-wasm-simd.wasm": {
+    "chunks": [
+      {
+        "hash": "c77165be7e08590aa9c9b429e6fe0fb226d7c8116ae3437475525e577e8dca6e",
+        "offsets": [
+          0,
+          4194304
+        ]
+      },
+      {
+        "hash": "6c02da2d5439fe6ebbcfc19d2b2ec0cb427446301534940ea97379be43d5b8ef",
+        "offsets": [
+          4194304,
+          8388608
+        ]
+      },
+      {
+        "hash": "f011d7da3defcd6e416b0680543a137e45268ca3a7246d2292175aa31a36f2d5",
+        "offsets": [
+          8388608,
+          10912730
+        ]
+      }
+    ],
+    "size": 10912730,
+    "mime": "application/wasm"
+  },
+  "/onnxruntime-web/ort-wasm-simd.jsep.wasm": {
+    "chunks": [
+      {
+        "hash": "fc245094ef57bfc331d5d9ac813ab98993982cc9e1dbf379433292213b88bfbe",
+        "offsets": [
+          0,
+          4194304
+        ]
+      },
+      {
+        "hash": "c07241f742bba34926db52ab955e70dac7a06b411dd938cc21dde21a89935417",
+        "offsets": [
+          4194304,
+          8388608
+        ]
+      },
+      {
+        "hash": "01a92dae96b9eb2fc59a9236cfb508e850fe700640c0fc74d97b5c511ce704fd",
+        "offsets": [
+          8388608,
+          12582912
+        ]
+      },
+      {
+        "hash": "fec9dd05587ba8f70f4a29adb6767832a7611ab0cc927079ad10c55abaf81966",
+        "offsets": [
+          12582912,
+          16777216
+        ]
+      },
+      {
+        "hash": "0b46adac4f0ab6b630c71b79aca902d54b6a5da11b9dc93063fc122a378e1992",
+        "offsets": [
+          16777216,
+          17826224
+        ]
+      }
+    ],
+    "size": 17826224,
+    "mime": "application/wasm"
+  },
+  "/onnxruntime-web/ort-wasm-simd-threaded.wasm": {
+    "chunks": [
+      {
+        "hash": "d057c2fe2a663ea72e227dbc1b7bb29a9536118193c84378daeec144ffd0876b",
+        "offsets": [
+          0,
+          4194304
+        ]
+      },
+      {
+        "hash": "15bc58d07f1755729c178f427b971932a156bfa881888fdd0e9b5a05615d23c2",
+        "offsets": [
+          4194304,
+          8388608
+        ]
+      },
+      {
+        "hash": "9e0fe1849a784328c64cc84f253ffb2ef834d8c3002c111baccb7a3ed9ec5469",
+        "offsets": [
+          8388608,
+          10867989
+        ]
+      }
+    ],
+    "size": 10867989,
+    "mime": "application/wasm"
+  },
+  "/onnxruntime-web/ort-wasm-simd-threaded.jsep.wasm": {
+    "chunks": [
+      {
+        "hash": "9fa089154fa21f45aa5bb4d4f3f18217ba9917248c6acdcc86f138806aad0253",
+        "offsets": [
+          0,
+          4194304
+        ]
+      },
+      {
+        "hash": "22b2e4f188dd5a9ce0bd5f49ba6e0776803ff92233fe911ab3eefaaaaad2a73d",
+        "offsets": [
+          4194304,
+          8388608
+        ]
+      },
+      {
+        "hash": "aa3c82db95225211d95855161d0590235c5117f1cf7da20f7ede22520d8975b9",
+        "offsets": [
+          8388608,
+          12582912
+        ]
+      },
+      {
+        "hash": "abd9829fec6309c91362091ffffc33c5abb258faf44b6cc7c857cb455256a023",
+        "offsets": [
+          12582912,
+          16777216
+        ]
+      },
+      {
+        "hash": "30488a20752335633069be78f6c980fae93117c8c00f49ec48cfccc20ab747c1",
+        "offsets": [
+          16777216,
+          19496358
+        ]
+      }
+    ],
+    "size": 19496358,
+    "mime": "application/wasm"
+  },
+  "/models/small": {
+    "chunks": [
+      {
+        "hash": "b34a3e9350ad77140964b6a2e1e32cd9738acd9d01e5899b96be71901a22ef47",
+        "offsets": [
+          0,
+          4194304
+        ]
+      },
+      {
+        "hash": "8a85c22e472bed10198298a3d57480a5a90946dba88bddecf8b0bf0eafc06e70",
+        "offsets": [
+          4194304,
+          8388608
+        ]
+      },
+      {
+        "hash": "5faec25d2338ae8ca2c7bff72e954cebd40a04c5f34c4b6bb8ca6720fae40996",
+        "offsets": [
+          8388608,
+          12582912
+        ]
+      },
+      {
+        "hash": "b9861d932a549be455fc8ebd8ce5d413049515bfdd3edd55e136dbe05dd34ef5",
+        "offsets": [
+          12582912,
+          16777216
+        ]
+      },
+      {
+        "hash": "f070b4c4f512cfe8dd6936c3cb9a616f132894867d3d33304d83599eb6b55636",
+        "offsets": [
+          16777216,
+          20971520
+        ]
+      },
+      {
+        "hash": "10d02652d10fbc47bf93732ff9e8ad53eefbd3bd89ab3c1fbc15ddd740bea672",
+        "offsets": [
+          20971520,
+          25165824
+        ]
+      },
+      {
+        "hash": "014c9e0229363137e92b85ed3c6f56b1386c279cdd9af2d7f1960ed8428b5e94",
+        "offsets": [
+          25165824,
+          29360128
+        ]
+      },
+      {
+        "hash": "34dd3ad760f7e31b5e9144b8c387b8ecd6dc43116248c93c56dd7051ab525e3b",
+        "offsets": [
+          29360128,
+          33554432
+        ]
+      },
+      {
+        "hash": "e7ca5cc3e0afd65581642a05ac91eb8ea4d0deb868df94b8981c910212526476",
+        "offsets": [
+          33554432,
+          37748736
+        ]
+      },
+      {
+        "hash": "0ad4ebb86cfdd847901427181b7a7804dba93d868c3cd5f11a294acf36c9413f",
+        "offsets": [
+          37748736,
+          41943040
+        ]
+      },
+      {
+        "hash": "9582c0375aed822c5577a814766c4afc6c096f4ccd3b0d08af6a1794987206a1",
+        "offsets": [
+          41943040,
+          44342436
+        ]
+      }
+    ],
+    "size": 44342436,
+    "mime": "application/octet-steam"
+  },
+  "/models/medium": {
+    "chunks": [
+      {
+        "hash": "fe1b9f06af9d2147016884f4eb683d4dc540244a7453c3b742ae527725df2eec",
+        "offsets": [
+          0,
+          4194304
+        ]
+      },
+      {
+        "hash": "724543b36c7b5eddfbd7f55cb5a7c1676b2089c277611850c257efa42212d8a2",
+        "offsets": [
+          4194304,
+          8388608
+        ]
+      },
+      {
+        "hash": "f9290547b2e34555536647c1e2ca456348170eef1aee05d8fd522f5a051f260c",
+        "offsets": [
+          8388608,
+          12582912
+        ]
+      },
+      {
+        "hash": "897d4d8a3f9f8c07f439300a5d81c8be4b0fcecf19ca6d77929b1750fedd8306",
+        "offsets": [
+          12582912,
+          16777216
+        ]
+      },
+      {
+        "hash": "cbcda0a0c830ba51928e7935d9d3cfe1c4dc258bf117f2c76d047113ab8f9f8c",
+        "offsets": [
+          16777216,
+          20971520
+        ]
+      },
+      {
+        "hash": "4c44c8b64af9f044623ceace7cc55e0bc348394f7ff63629d46118c0a03c9c54",
+        "offsets": [
+          20971520,
+          25165824
+        ]
+      },
+      {
+        "hash": "8b2e3d773d7084c5cfac1c04d69d3586e4b8914a840d2b582dfde4940d698957",
+        "offsets": [
+          25165824,
+          29360128
+        ]
+      },
+      {
+        "hash": "024e3d8beaf517d25496b73e36b0e0498110652753273e0dd8b591ad7c1c9e2f",
+        "offsets": [
+          29360128,
+          33554432
+        ]
+      },
+      {
+        "hash": "1b8eaad4cd019b76e7eba964a38711a0bdeafbd10b6208c1107403a64dbd902a",
+        "offsets": [
+          33554432,
+          37748736
+        ]
+      },
+      {
+        "hash": "0c8c5c24237304482ccc70a50008b73c8ef53e4656068da32b635607cca0c8c9",
+        "offsets": [
+          37748736,
+          41943040
+        ]
+      },
+      {
+        "hash": "a5b8c519c832bc46b2ae5a9887fac1e3d5cc76a04846d8c3544875c7f2b40960",
+        "offsets": [
+          41943040,
+          46137344
+        ]
+      },
+      {
+        "hash": "7b1dd767c5c1c0156b8d13bb34d4c1d11e014723b10cddc25c93e89a28e7cd96",
+        "offsets": [
+          46137344,
+          50331648
+        ]
+      },
+      {
+        "hash": "3f5638267419916c9d4d906ff25f721d3d2e034851ea01566f0d2d6f943550b8",
+        "offsets": [
+          50331648,
+          54525952
+        ]
+      },
+      {
+        "hash": "9927e74b3a0638d4cf5701e78e66d77476a4ba68c75831f1c8ea9117ec7f8809",
+        "offsets": [
+          54525952,
+          58720256
+        ]
+      },
+      {
+        "hash": "3315eb3c14ca3ff5c03c80fac58f486a14264dd0bb9c168c096f2bd2531ba438",
+        "offsets": [
+          58720256,
+          62914560
+        ]
+      },
+      {
+        "hash": "230f667e0332dc09ef08aacbf1992c40ce112192f95dfc14231a3ef515f9a2c7",
+        "offsets": [
+          62914560,
+          67108864
+        ]
+      },
+      {
+        "hash": "e01a157b677e0e17815cd738dcda7e6daa268898d006b52b5d3604c439e6c96e",
+        "offsets": [
+          67108864,
+          71303168
+        ]
+      },
+      {
+        "hash": "529f1df7d027b0315090ba15d42ef32998cac2efd6783c62f6b11cedf4c548f3",
+        "offsets": [
+          71303168,
+          75497472
+        ]
+      },
+      {
+        "hash": "6cfd013f552a05e9fc81156e6d6de593668e0247a3970feae22e285c16d13e62",
+        "offsets": [
+          75497472,
+          79691776
+        ]
+      },
+      {
+        "hash": "3f31511c3c16a29cf81b32379f51ead2bd082677b48b1dcc11a66beeb37cc729",
+        "offsets": [
+          79691776,
+          83886080
+        ]
+      },
+      {
+        "hash": "01f6efcc8a01c727d99073ceede8e64c654fa3c4612b006e69e22dc663236943",
+        "offsets": [
+          83886080,
+          88080384
+        ]
+      },
+      {
+        "hash": "145d8355f50b7847de5d04815124790867fe1752a0013bdf6ce28882b5e0a2fc",
+        "offsets": [
+          88080384,
+          88188479
+        ]
+      }
+    ],
+    "size": 88188479,
+    "mime": "application/octet-steam"
+  }
+}
