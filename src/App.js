@@ -778,6 +778,7 @@ const BuyMeACoffee = ({
               <p className="save-text" >{translate("buyMeACoffeePaypalZelle")}</p>
             </div>
           </div>
+          <p className="save-text" >{translate("buyMeACoffeeWords")}</p>
         </div>
         <footer>
           <button onClick={() => setModals((prevModals) => ({ ...prevModals, coffee: false }))}>OK</button>
