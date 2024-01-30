@@ -95,6 +95,18 @@
     "en": "Thank you for your coffee!",
     "zh": "谢谢打赏！"
   },
+  "buyMeCopied" : {
+    "en": "Copied!",
+    "zh": "已复制"
+  },
+  "buyMeACoffeePaypalZelle" : {
+    "en": "Paypal / Zelle",
+    "zh": "Paypal / Zelle"
+  },
+  "buyMeACoffeeWeChat" : {
+    "en": "Wechat Pay",
+    "zh": "微信支付"
+  },
   "buyMeACoffeeWords" : {
     "en": "Anything is appreciated! A thank-you letter sent to hjt486@gmail.com would make my day! I'm glad I can help.",
     "zh": "任何心意都很感激！哪怕是一封发到 hjt486@gmail.com 的感谢信，能帮到你是我最开心的事情！"
