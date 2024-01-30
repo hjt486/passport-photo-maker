@@ -65,6 +65,7 @@ const LoadPhotoButton = ({ onPhotoLoad, title }) => {
     // Trigger the file input when the "Browse..." button is clicked
     document.getElementById('selectedFile').click()
   }
+  
 
   return (
     <>
@@ -80,7 +81,14 @@ const LoadPhotoButton = ({ onPhotoLoad, title }) => {
         tabIndex="0"
         className="load-file-button"
         onClick={handleClickBrowse}
-      >{title}</div>
+        style={{
+          fill: "red",
+          backgroundImage:`url(${process.env.PUBLIC_URL + "/year_of_dragon.svg"})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "100%",
+          backgroundPosition: "bottom right",
+        }}
+      ><kbd style={{opacity:"0.5", fontSize: "x-large"}}>{title}</kbd></div>
     </>
   )
 }
