@@ -39,7 +39,7 @@
         "zh": "请上下拖动这两条绿色方框使得你的头部和脸部符合以下要求"
       },
       "start_x": "20",
-      "start_y": "38",
+      "start_y": "48",
       "width": "25",
       "height": "28",
       "color": "aqua",
@@ -57,7 +57,7 @@
         "zh": "请将头部（包含头发）上沿放入此区域"
       },
       "start_x": "0",
-      "start_y": "20",
+      "start_y": "30",
       "width": "510",
       "height": "65",
       "color": "green",
@@ -75,7 +75,7 @@
         "zh": "请将脸部（下巴）下沿放入此区域"
       },
       "start_x": "0",
-      "start_y": "315",
+      "start_y": "325",
       "width": "510",
       "height": "65",
       "color": "green",

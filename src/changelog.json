@@ -1,6 +1,15 @@
 {
   "changelog": [
     {
+      "date": "2024-01-30",
+      "item": [
+        {
+          "en": "Optimized Buy Me A Coffee UI & US Passport/Visa Photo template.",
+          "zh": "优化打赏界面和美国护照签证照片模板。"
+        }
+      ]
+    },
+    {
       "date": "2024-01-28",
       "item": [
         {
