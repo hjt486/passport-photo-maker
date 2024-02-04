@@ -126,6 +126,10 @@ const NavBar = ({
 
     // Set the selected template
     if (selectedTemplate) {
+      ReactGA.event({
+        action: selectedTemplate.title[getLanguage()].toLowerCase().replace(/ /g, "_").replace(/\//g, "_"),
+        label: selectedTemplate.title[getLanguage()],
+      })
       setTemplate(selectedTemplate)
       setExportPhoto({
         width: parseInt(parseInt(selectedTemplate.width) / MM2INCH * parseInt(selectedTemplate.dpi)),
