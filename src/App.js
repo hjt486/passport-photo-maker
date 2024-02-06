@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react'
 import AvatarEditor from 'react-avatar-editor'
 import imglyRemoveBackground from "@imgly/background-removal"
+import ReactGA from 'react-ga4'
 import GuideDrawer from './GuideDrawer'
 import { useLanguage } from './translate'
 import { generateSingle, handleSaveSingle, generate4x6, handleSave4x6 } from './SaveImage'
@@ -64,8 +65,13 @@ const LoadPhotoButton = ({ onPhotoLoad, title }) => {
   const handleClickBrowse = () => {
     // Trigger the file input when the "Browse..." button is clicked
     document.getElementById('selectedFile').click()
+    ReactGA.event({
+      action: 'browsing_file',
+      category: 'Button Click',
+      label: 'Load Photo',
+    })
   }
-  
+
 
   return (
     <>
@@ -83,12 +89,12 @@ const LoadPhotoButton = ({ onPhotoLoad, title }) => {
         onClick={handleClickBrowse}
         style={{
           fill: "red",
-          backgroundImage:`url(${process.env.PUBLIC_URL + "/year_of_dragon.svg"})`,
+          backgroundImage: `url(${process.env.PUBLIC_URL + "/year_of_dragon.svg"})`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "100%",
           backgroundPosition: "bottom right",
         }}
-      ><kbd style={{opacity:"0.5", fontSize: "x-large"}}>{title}</kbd></div>
+      ><kbd style={{ opacity: "0.5", fontSize: "x-large" }}>{title}</kbd></div>
     </>
   )
 }
@@ -120,6 +126,10 @@ const NavBar = ({
 
     // Set the selected template
     if (selectedTemplate) {
+      ReactGA.event({
+        action: selectedTemplate.title[getLanguage()].toLowerCase().replace(/ /g, "_").replace(/\//g, "_"),
+        label: selectedTemplate.title[getLanguage()],
+      })
       setTemplate(selectedTemplate)
       setExportPhoto({
         width: parseInt(parseInt(selectedTemplate.width) / MM2INCH * parseInt(selectedTemplate.dpi)),
@@ -149,6 +159,11 @@ const NavBar = ({
   const handleLanguageChange = (event) => {
     const isChecked = event.target.checked
     setLanguage(isChecked ? "zh" : "en")
+    ReactGA.event({
+      action: isChecked ? 'chinese' : 'english',
+      category: 'Switch Toggle',
+      label: isChecked ? 'Language to Chinese' : 'Language to English',
+    })
   }
 
   return (
@@ -264,16 +279,32 @@ const MiddleColumn = ({
       }))
       mouseStartRef.current = { x: e.clientX, y: e.clientY }
       updatePreview(editorRef, setCroppedImage)
+
+      ReactGA.event({
+        action: 'move_mouse',
+        category: 'Editor Operation',
+        label: 'Move Mouse',
+      })
     }
   }, [editorRef, setCroppedImage, isDragging, editorDimensions.width, editorDimensions.height, zoom, setPosition, rotation])
 
   const handleMouseUp = () => {
     setIsDragging(false)
+    ReactGA.event({
+      action: 'move_mouse_up',
+      category: 'Editor Operation',
+      label: 'Move mouse up',
+    })
   }
 
   const handleMouseDown = (e) => {
     setIsDragging(true)
     mouseStartRef.current = { x: e.clientX, y: e.clientY }
+    ReactGA.event({
+      action: 'move_mouse_down',
+      category: 'Editor Operation',
+      label: 'Move mouse down',
+    })
   }
 
   const handleMoveLeft = (e) => {
@@ -285,6 +316,11 @@ const MiddleColumn = ({
       }
     })
     updatePreview(editorRef, setCroppedImage)
+    ReactGA.event({
+      action: 'click_to_move_left',
+      category: 'Editor Operation',
+      label: 'Click to move left',
+    })
   }
 
   const handleMoveRight = (e) => {
@@ -296,6 +332,11 @@ const MiddleColumn = ({
       }
     })
     updatePreview(editorRef, setCroppedImage)
+    ReactGA.event({
+      action: 'click_to_move_right',
+      category: 'Editor Operation',
+      label: 'Click to move right',
+    })
   }
 
   const handleMoveUp = (e) => {
@@ -307,6 +348,11 @@ const MiddleColumn = ({
       }
     })
     updatePreview(editorRef, setCroppedImage)
+    ReactGA.event({
+      action: 'click_to_move_up',
+      category: 'Editor Operation',
+      label: 'Click to move up',
+    })
   }
 
   const handleMoveDown = (e) => {
@@ -318,12 +364,24 @@ const MiddleColumn = ({
       }
     })
     updatePreview(editorRef, setCroppedImage)
+    setIsDragging(true)
+    mouseStartRef.current = { x: e.clientX, y: e.clientY }
+    ReactGA.event({
+      action: 'click_to_move_down',
+      category: 'Editor Operation',
+      label: 'Click to move down',
+    })
   }
 
 
   const handleZoomChange = (e) => {
     setZoom(parseFloat(e.target.value))
     updatePreview(editorRef, setCroppedImage)
+    ReactGA.event({
+      action: 'change_zoom',
+      category: 'Editor Operation',
+      label: 'Change zoom',
+    })
   }
 
   const handleZoomIn = (e) => {
@@ -331,6 +389,11 @@ const MiddleColumn = ({
       const newZoom = Math.min(prevZoom * ZOOM_FACTOR, MAX_ZOOM)
       updatePreview(editorRef, setCroppedImage)
       return newZoom
+    })
+    ReactGA.event({
+      action: 'click_to_zoom_in',
+      category: 'Editor Operation',
+      label: 'Click to zoom in',
     })
   }
 
@@ -340,6 +403,11 @@ const MiddleColumn = ({
       updatePreview(editorRef, setCroppedImage)
       return newZoom
     })
+    ReactGA.event({
+      action: 'click_to_zoom_out',
+      category: 'Editor Operation',
+      label: 'Click to zoom out',
+    })
   }
 
   const handleRotateClockwise = () => {
@@ -348,6 +416,11 @@ const MiddleColumn = ({
       updatePreview(editorRef, setCroppedImage)
       return newRotation
     })
+    ReactGA.event({
+      action: 'click_to_rotate_clockwise',
+      category: 'Editor Operation',
+      label: 'Click to rotate clockwise',
+    })
   }
 
   const handleRotateCounterclockwise = () => {
@@ -355,6 +428,11 @@ const MiddleColumn = ({
       const newRotation = prevRotation - 0.5
       updatePreview(editorRef, setCroppedImage)
       return newRotation
+    })
+    ReactGA.event({
+      action: 'click_to_rotate_counterclockwise',
+      category: 'Editor Operation',
+      label: 'Click to rotate counterclockwise',
     })
   }
 
@@ -369,6 +447,11 @@ const MiddleColumn = ({
     })
 
     updatePreview(editorRef, setCroppedImage)
+    ReactGA.event({
+      action: 'mouse_scroll',
+      category: 'Editor Operation',
+      label: 'Mouse scroll',
+    })
   }
 
   const adjustPositionForRotation = (dx, dy, rotation) => {
@@ -387,6 +470,11 @@ const MiddleColumn = ({
       setInitialDistance(null)
       setInitialAngle(null)
     }
+    ReactGA.event({
+      action: 'touch_start',
+      category: 'Editor Operation',
+      label: 'Touch start',
+    })
   }
 
   const handleTouchMove = useCallback((e) => {
@@ -444,12 +532,22 @@ const MiddleColumn = ({
       }
     }
     updatePreview(editorRef, setCroppedImage)
+    ReactGA.event({
+      action: 'touch_move',
+      category: 'Editor Operation',
+      label: 'Touch move',
+    })
   }, [editorDimensions.width, editorDimensions.height, setCroppedImage, editorRef, zoom, initialDistance, setInitialDistance, initialAngle, setInitialAngle, setZoom, rotation, setRotation])
 
   const handleTouchEnd = useCallback((e) => {
     lastTouchDistance.current = null
     setInitialDistance(null)
     setInitialAngle(null)
+    ReactGA.event({
+      action: 'touch_end',
+      category: 'Editor Operation',
+      label: 'Touch end',
+    })
   }, [setInitialDistance, setInitialAngle])
 
   const preventDefault = useCallback((e) => {
@@ -603,6 +701,11 @@ const MiddleColumn = ({
                   onChange={(e) => {
                     setRemoveBg({ state: e.target.checked, error: false })
                     if (!allowAiModel) setModals((prevModals) => ({ ...prevModals, aiModel: true }))
+                    ReactGA.event({
+                      action: e.target.checked ? 'ai_enabled' : 'ai_disabled',
+                      category: 'Switch Toggle',
+                      label: e.target.checked ? 'AI Enabled' : 'AI Disabled',
+                    })
                   }}
                 />{removeBg.state && loadingModel ? translate("backgroundRemovalProcessing") : translate("backgroundRemovalLabel")}
               </label>
@@ -651,6 +754,11 @@ const RightColumn = ({
     } else setExportPhoto((prevState) => ({
       ...prevState, width: newWidth, width_valid: false
     }))
+    ReactGA.event({
+      action: 'change_width',
+      category: 'Export Area',
+      label: 'Change width',
+    })
   }
 
   const handleHeightChange = (e) => {
@@ -663,6 +771,11 @@ const RightColumn = ({
     } else setExportPhoto((prevState) => ({
       ...prevState, height: newHeight, height_valid: false
     }))
+    ReactGA.event({
+      action: 'change_height',
+      category: 'Export Area',
+      label: 'Change height',
+    })
   }
 
   const handleSizeChange = (e) => {
@@ -674,6 +787,11 @@ const RightColumn = ({
     } else setExportPhoto((prevState) => ({
       ...prevState, size: newSize, size_valid: false
     }))
+    ReactGA.event({
+      action: 'change_size',
+      category: 'Export Area',
+      label: 'Change size',
+    })
   }
 
   return (
@@ -720,7 +838,14 @@ const RightColumn = ({
               role="button"
               className="save-button"
               style={{ width: `${editorDimensions.width * editorDimensions.zoom / 2}px` }}
-              onClick={() => setModals((prevModals) => ({ ...prevModals, save: true }))}
+              onClick={() => {
+                setModals((prevModals) => ({ ...prevModals, save: true }))
+                ReactGA.event({
+                  action: 'generate_photo',
+                  category: 'Button Click',
+                  label: 'Generate photo',
+                })
+              }}
             >{translate("saveTitle")}</div>
           </article>
           <article className="guides-section guide-instruction">
@@ -738,33 +863,33 @@ const BuyMeACoffee = ({
   setModals,
 }) => {
   const [copied, setCopied] = useState(false)
-  const kbdRef = useRef(null);
+  const kbdRef = useRef(null)
   const handleCopy = () => {
-    const emailText = 'hjt486@gmail.com';
+    const emailText = 'hjt486@gmail.com'
     if (navigator.clipboard) {
       navigator.clipboard.writeText(emailText).then(() => {
-        setCopied(true);
+        setCopied(true)
       }).catch((error) => {
-        console.error('Error copying text:', error);
-      });
+        console.error('Error copying text:', error)
+      })
     } else {
       // Clipboard API not supported, provide a fallback action here
-      console.warn('Clipboard API not supported.');
+      console.warn('Clipboard API not supported.')
     }
   }
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (kbdRef.current && !kbdRef.current.contains(e.target)) {
-        setCopied(false);
+        setCopied(false)
       }
-    };
+    }
 
-    document.addEventListener('click', handleClickOutside);
+    document.addEventListener('click', handleClickOutside)
 
     return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, []);
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [])
   return (<>
     <dialog open={modals.coffee} className='modal'>
       <article>
@@ -781,7 +906,7 @@ const BuyMeACoffee = ({
               <textarea id="emailAddress" hidden="true">hjt486@gmail.com</textarea>
               <div>
                 <kbd onClick={handleCopy} ref={kbdRef} className="save-text">hjt486@gmail.com</kbd>
-                {copied && (<sup><kbd style={{fontSize: "xx-small", color: "var(--pico-color)", background: "var(--pico-primary-background)"}}>{translate("buyMeCopied")}</kbd></sup>)}
+                {copied && (<sup><kbd style={{ fontSize: "xx-small", color: "var(--pico-color)", background: "var(--pico-primary-background)" }}>{translate("buyMeCopied")}</kbd></sup>)}
               </div>
               <p className="save-text" >{translate("buyMeACoffeePaypalZelle")}</p>
             </div>
@@ -796,7 +921,14 @@ const BuyMeACoffee = ({
     <div
       role="button"
       className="outline modal-button"
-      onClick={() => setModals((prevModals) => ({ ...prevModals, coffee: true }))}>
+      onClick={() => {
+        setModals((prevModals) => ({ ...prevModals, coffee: true }))
+        ReactGA.event({
+          action: 'buy_me_a_coffee',
+          category: 'Button Click',
+          label: 'Buy Me A Coffee',
+        })
+      }}>
       {translate("buyMeACoffeeButton")}
     </div>
   </>)
@@ -834,7 +966,14 @@ const Changelog = ({
     <div
       role="button"
       className="outline modal-button"
-      onClick={() => setModals((prevModals) => ({ ...prevModals, changelog: true }))}>
+      onClick={() => {
+        setModals((prevModals) => ({ ...prevModals, changelog: true }))
+        ReactGA.event({
+          action: 'change_log',
+          category: 'Button Click',
+          label: 'Changelog',
+        })
+      }}>
       {translate("changelog")}
     </div>
   </>)
@@ -904,7 +1043,14 @@ const SaveModal = ({
                   role="button"
                   className="save-option-button"
                   disabled={!imageSingleSrc}
-                  onClick={() => imageSingleSrc && handleSaveSingle(imageSingleSrc)}
+                  onClick={() => {
+                    imageSingleSrc && handleSaveSingle(imageSingleSrc)
+                    ReactGA.event({
+                      action: 'save_single_photo',
+                      category: 'Button Click',
+                      label: 'Save single photo',
+                    })
+                  }}
                 >{translate("saveSingle")}</div>
               </div>
               <div className="save-option">
@@ -917,7 +1063,14 @@ const SaveModal = ({
                   role="button"
                   disabled={!image4x6Src}
                   className="save-option-button"
-                  onClick={() => image4x6Src && handleSave4x6(image4x6Src)}
+                  onClick={() => {
+                    image4x6Src && handleSave4x6(image4x6Src)
+                    ReactGA.event({
+                      action: 'save_4x6_photo',
+                      category: 'Button Click',
+                      label: 'Save 4x6 Photo',
+                    })
+                  }}
                 >{translate("save4x6")}</div>
               </div>
             </div>)}
@@ -960,6 +1113,12 @@ const Disclaimer = ({
 
 // Main App component
 const App = () => {
+  // Init Google Analytics
+  useEffect(() => {
+    ReactGA.initialize('G-V3MNPTJ8CY')
+    ReactGA.send({ hitType: "pageview", page: window.location.pathname })
+  }, [])
+
   const [template, setTemplate] = useState(TEMPLATES[0]) // Default is China
   const [photo, setPhoto] = useState(null)
   const [allowAiModel, setAllowAiModel] = useState(false)
@@ -1193,7 +1352,18 @@ const App = () => {
             role="button"
             className="outline modal-button"
           >
-            <a target="_blank" rel="noreferrer" href="https://github.com/hjt486/passport-photo-maker/issues">{translate("feedback")}</a>
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://github.com/hjt486/passport-photo-maker/issues"
+              onClick={() => {
+                ReactGA.event({
+                  action: 'feedback',
+                  category: 'Button Click',
+                  label: 'Feedback',
+                })
+              }}
+            >{translate("feedback")}</a>
           </div>
         </div>
       </div>
