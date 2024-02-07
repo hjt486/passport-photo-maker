@@ -2,6 +2,8 @@ import React, { useState, useCallback, useEffect, useRef } from 'react'
 import AvatarEditor from 'react-avatar-editor'
 import imglyRemoveBackground from "@imgly/background-removal"
 import ReactGA from 'react-ga4'
+import { Fireworks } from '@fireworks-js/react'
+import AnimatedText from './AnimatedText'
 import GuideDrawer from './GuideDrawer'
 import { useLanguage } from './translate'
 import { generateSingle, handleSaveSingle, generate4x6, handleSave4x6 } from './SaveImage'
@@ -995,6 +997,26 @@ const SaveModal = ({
   // eslint-disable-next-line no-unused-vars
   const [loadCounter, setLoadCounter] = useState(0)
 
+  // fireworks
+  const ref = useRef(null)
+  const startFireworks = () => {
+    if (ref.current) {
+      ref.current.start()
+    }
+  }
+  const stopFireworks = () => {
+    if (ref.current) {
+      ref.current.stop()
+    }
+  }
+  useEffect(() => {
+    if (modals.save) {
+      startFireworks()
+    } else {
+      stopFireworks()
+    }
+  }, [modals.save])
+
   const initiateLoading = () => {
     setIsSaveLoading(true)
     setLoadCounter(2) // Expecting two async operations
@@ -1032,6 +1054,10 @@ const SaveModal = ({
   return (
     <>
       <dialog open={modals.save} className='modal'>
+        <AnimatedText
+          text1={translate("anmiatedText1")}
+          text2={translate("anmiatedText2")}
+        />
         <article>
           <h2>{isSaveLoading ? translate("saveGenerating") : translate("saveTitle")}</h2>
           <div aria-busy={isSaveLoading} >
@@ -1079,6 +1105,24 @@ const SaveModal = ({
             <button onClick={() => setModals((prevModals) => ({ ...prevModals, save: false }))}>OK</button>
           </footer>
         </article>
+          <Fireworks
+            ref={ref}
+            options={{ 
+              hue: {min: 0,max: 360 },
+              acceleration: 1.05,
+              opacity: 0.1,
+              particles: 180,
+              traceLength: 2,
+            }}
+            style={{
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              position: 'fixed',
+              zIndex: -1,
+            }}
+          />
       </dialog>
     </>
   )
@@ -1243,7 +1287,6 @@ const App = () => {
       [name]: checked,
     }))
   }
-
   return (
     <div className="app">
       <div className="frame">
