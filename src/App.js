@@ -9,6 +9,7 @@ import PRC_Passport_Photo from './Templates/PRC_Passport_Photo.json'
 import US_Passport_Photo from './Templates/US_Passport_Photo.json'
 import Canada_Passport_Photo from './Templates/Canada_Passport_Photo.json'
 import Canada_Visa_Photo from './Templates/Canada_Visa_Photo.json'
+import Japan_Visa_Photo from './Templates/Japan_Passport_Photo.json'
 import './App.css'
 import ChangeLog from './changelog.json'
 
@@ -27,6 +28,7 @@ const TEMPLATES = [
   US_Passport_Photo,
   Canada_Passport_Photo,
   Canada_Visa_Photo,
+  Japan_Visa_Photo,
 ]
 const MAX_EDITOR_WIDTH = 330
 const MAX_EDITOR_HEIGHT = 480

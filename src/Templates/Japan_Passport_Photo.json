@@ -1,0 +1,143 @@
+{
+  "title": {
+    "en": "Japan Passport/Visa Photo",
+    "zh": "日本护照签证照片"
+  },
+  "width": "35",
+  "height": "45",
+  "dpi": "300",
+  "format": "jpg",
+  "size": "200",
+  "instruction": {
+    "en": "Please check the latest requirement at <a target=\"_blank\" rel=\"noreferrer\" href=\"https://www.mofa.go.jp/mofaj/toko/passport/ic_photo.html\">here</a>.",
+    "zh": "请点击<a target=\"_blank\" rel=\"noreferrer\" href=\"https://www.mofa.go.jp/mofaj/toko/passport/ic_photo.html\">这里</a>查看最新标准。"
+  },
+  "guide": [
+    {
+      "index": "A",
+      "title": "Center Guide Line",
+      "instruction": {
+        "en": "Align the nose tip to the center line",
+        "zh": "将鼻尖居中对齐这条线"
+      },
+      "start_x": "172.5",
+      "start_y": "20",
+      "width": "5",
+      "height": "380",
+      "color": "yellow",
+      "isVerticalMovable": false,
+      "isHorizontalMovable": false,
+      "overlap": true,
+      "opacity": "0.5",
+      "group": "1"
+    },
+    {
+      "index": "B",
+      "title": "Forbidden Area: Top",
+      "instruction": {
+        "en": "Do not put top of the head/hair into this area",
+        "zh": "请勿将头部（包含头发）上沿放入此区域"
+      },
+      "start_x": "0",
+      "start_y": "0",
+      "width": "350",
+      "height": "20",
+      "color": "red",
+      "isVerticalMovable": false,
+      "isHorizontalMovable": false,
+      "overlap": false,
+      "opacity": "0.5",
+      "group": "1"
+    },
+    {
+      "index": "C",
+      "title": "Forbidden Area: Bottom",
+      "instruction": {
+        "en": "Do not put bottom of the face/chin into this area",
+        "zh": "请勿将头部（包含下巴）下沿放入此区域"
+      },
+      "start_x": "0",
+      "start_y": "400",
+      "width": "350",
+      "height": "50",
+      "color": "red",
+      "isVerticalMovable": false,
+      "isHorizontalMovable": false,
+      "overlap": false,
+      "opacity": "0.5",
+      "group": "1"
+    },
+    {
+      "index": "C",
+      "title": "Forbidden Area: Top",
+      "instruction": {
+        "en": "Do not put the head(including ears) into this area",
+        "zh": "请勿将头部（包含耳朵）放入此区域"
+      },
+      "start_x": "0",
+      "start_y": "20",
+      "width": "20",
+      "height": "380",
+      "color": "red",
+      "isVerticalMovable": false,
+      "isHorizontalMovable": false,
+      "overlap": false,
+      "opacity": "0.5",
+      "group": "1"
+    },
+    {
+      "index": "D",
+      "title": "Forbidden Area: Bottom",
+      "instruction": {
+        "en": "Do not put the head(including ears) into this area",
+        "zh": "请勿将头部（包含耳朵）放入此区域"
+      },
+      "start_x": "330",
+      "start_y": "20",
+      "width": "20",
+      "height": "380",
+      "color": "red",
+      "isVerticalMovable": false,
+      "isHorizontalMovable": false,
+      "overlap": false,
+      "opacity": "0.5",
+      "group": "1"
+    },
+    {
+      "index": "E",
+      "title": "Top Head Area",
+      "instruction": {
+        "en": "Put top of the head/hair into this area",
+        "zh": "请将头部（包含头发）上沿放入此区域"
+      },
+      "start_x": "20",
+      "start_y": "20",
+      "width": "310",
+      "height": "40",
+      "color": "green",
+      "isVerticalMovable": false,
+      "isHorizontalMovable": false,
+      "overlap": true,
+      "opacity": "0.5",
+      "group": "1"
+    },
+    {
+      "index": "F",
+      "title": "Center Square: bottom",
+      "instruction": {
+        "en": "Put the edge of the bottom of the face/chin into this area",
+        "zh": "请将脸部（下巴）下沿放入此区域"
+      },
+      "start_x": "20",
+      "start_y": "360",
+      "width": "310",
+      "height": "40",
+      "color": "green",
+      "isVerticalMovable": false,
+      "isHorizontalMovable": false,
+      "overlap": true,
+      "opacity": "0.5",
+      "group": "2"
+    }
+  ]
+}
