@@ -292,3 +292,13 @@
 .disable-scroll {
   overflow: hidden;
 }
+
+.test {
+  width: 80vw;
+  align-self: center;
+}
+
+iframe {
+  /* set Disqus color scheme to Auto*/
+  color-scheme: light;
+}

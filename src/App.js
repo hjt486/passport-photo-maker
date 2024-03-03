@@ -7,6 +7,8 @@ import AnimatedText from './AnimatedText'
 import GuideDrawer from './GuideDrawer'
 import { useLanguage } from './translate'
 import { generateSingle, handleSaveSingle, generate4x6, handleSave4x6 } from './SaveImage'
+import { DiscussionEmbed } from 'disqus-react';
+import { Helmet } from 'react-helmet';
 import PRC_Passport_Photo from './Templates/PRC_Passport_Photo.json'
 import US_Passport_Photo from './Templates/US_Passport_Photo.json'
 import Canada_Passport_Photo from './Templates/Canada_Passport_Photo.json'
@@ -1107,24 +1109,24 @@ const SaveModal = ({
             <button onClick={() => setModals((prevModals) => ({ ...prevModals, save: false }))}>OK</button>
           </footer>
         </article>
-          <Fireworks
-            ref={ref}
-            options={{ 
-              hue: {min: 0,max: 360 },
-              acceleration: 1.05,
-              opacity: 0.1,
-              particles: 180,
-              traceLength: 2,
-            }}
-            style={{
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              position: 'fixed',
-              zIndex: -1,
-            }}
-          />
+        <Fireworks
+          ref={ref}
+          options={{
+            hue: { min: 0, max: 360 },
+            acceleration: 1.05,
+            opacity: 0.1,
+            particles: 180,
+            traceLength: 2,
+          }}
+          style={{
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            position: 'fixed',
+            zIndex: -1,
+          }}
+        />
       </dialog>
     </>
   )
@@ -1156,6 +1158,70 @@ const Disclaimer = ({
   )
 }
 
+const Disqus = ({
+  template,
+  getLanguage,
+  translateObject
+}) => {
+  function formatStringForURL(inputString) {
+    // Convert the string to lowercase
+    let formattedString = inputString.toLowerCase();
+
+    // Replace non-compatible URL characters with underscores
+    formattedString = formattedString.replace(/[/\\:;,.?!"'(){}[\]<>^*%&@#$+=|~`\s]/g, '_');
+
+    // Remove consecutive underscores
+    formattedString = formattedString.replace(/_+/g, '_');
+
+    // Remove leading and trailing underscores
+    formattedString = formattedString.replace(/^_+|_+$/g, '');
+
+    return formattedString;
+  }
+
+  // Function to reload Disqus plugin
+  const reloadDisqusPlugin = () => {
+    if (typeof window.DISQUS !== 'undefined') {
+      window.DISQUS.reset({ reload: true });
+    }
+  };
+
+  // Effect hook to listen for changes in color scheme and reload Disqus
+  useEffect(() => {
+    const colorSchemeListener = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (event) => {
+      reloadDisqusPlugin();
+    };
+    colorSchemeListener.addEventListener('change', handleChange);
+    return () => {
+      colorSchemeListener.removeEventListener('change', handleChange);
+    };
+  }, []);
+
+  // console.log("DEBUG: url:", 'https://jiataihan.dev/passport-photo-maker/' + formatStringForURL(translateObject(template.title)))
+  // console.log("DEBUG: identifier:", formatStringForURL(translateObject(template.title)))
+
+  return (
+    <>
+      <Helmet>
+        <script src="https://YOUR_DISQUS_SHORTNAME.disqus.com/embed.js" async></script>
+      </Helmet>
+      <DiscussionEmbed
+        className="test"
+        key={formatStringForURL(translateObject(template.title))}
+        shortname='passport-photo-maker'
+        config={
+          {
+            url: 'https://jiataihan.dev/passport-photo-maker/' + formatStringForURL(translateObject(template.title)),
+            identifier: 'https://jiataihan.dev/passport-photo-maker/' + formatStringForURL(translateObject(template.title)),
+            title: translateObject(template.title),
+            language: getLanguage() === "zh" ? 'zh' : 'en_US'
+          }
+        }
+      />
+    </>
+  )
+}
 
 // Main App component
 const App = () => {
@@ -1411,6 +1477,12 @@ const App = () => {
             >{translate("feedback")}</a>
           </div>
         </div>
+        <Disqus
+          className="container"
+          template={template}
+          getLanguage={getLanguage}
+          translateObject={translateObject}
+        />
       </div>
     </div>
   )

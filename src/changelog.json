@@ -1,6 +1,15 @@
 {
   "changelog": [
     {
+      "date": "2024-03-03",
+      "item": [
+        {
+          "en": "Added discussion section.",
+          "zh": "增加讨论区域。"
+        }
+      ]
+    },
+    {
       "date": "2024-03-02",
       "item": [
         {
