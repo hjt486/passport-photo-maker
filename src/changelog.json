@@ -10,6 +10,15 @@
       ]
     },
     {
+      "date": "2024-02-06",
+      "item": [
+        {
+          "en": "Lower save quality try step from 0.1 to 0.01, to prevent generating file that is too small.",
+          "zh": "将保存照片的尝试步数从0.1改为0.01，防止生成文件过小无法满足要求。"
+        }
+      ]
+    },
+    {
       "date": "2024-01-30",
       "item": [
         {

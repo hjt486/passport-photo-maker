@@ -34,11 +34,11 @@ const resizeAndCompressImage = (imageData, targetWidth, targetHeight, maxSizeKB)
         const compressImage = () => {
           compressCanvas.toBlob(
             (blob) => {
-              if (blob.size / 1024 <= maxSizeKB || quality <= 0) {
+              if (blob.size / 1024 <= maxSizeKB - 2 || quality <= 0) {
                 resolve(blob)
               } else {
                 // Reduce quality and try again
-                quality -= 0.1 // Adjust the step size as needed
+                quality -= 0.01 // Adjust the step size as needed
                 compressCanvas.toBlob(compressImage, 'image/jpeg', quality)
               }
             },
