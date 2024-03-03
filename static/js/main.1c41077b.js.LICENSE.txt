@@ -4,6 +4,12 @@
       @license MIT
       */
 
+/*
+object-assign
+(c) Sindre Sorhus
+@license MIT
+*/
+
 /*!
 
 pica
