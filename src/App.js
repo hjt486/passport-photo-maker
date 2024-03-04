@@ -1407,7 +1407,8 @@ const App = () => {
         <CookieConsent
           //debug={true}
           flipButtons={true}
-          //overlay={true}
+          overlay={true}
+          acceptOnOverlayClick={true}
           enableDeclineButton
           onDecline={() => {
             window.location.href = 'https://www.google.com'
