@@ -1,7 +1,7 @@
 {
   "name": "passport-photo-maker",
   "homepage": "https://jiataihan.dev/passport-photo-maker",
-  "version": "0.2.0",
+  "version": "0.2.5",
   "private": true,
   "dependencies": {
     "@fireworks-js/react": "^2.10.7",
@@ -16,6 +16,7 @@
     "pica": "^9.0.1",
     "react": "^18.2.0",
     "react-avatar-editor": "^13.0.2",
+    "react-cookie-consent": "^9.0.0",
     "react-dom": "^18.2.0",
     "react-draggable": "^4.4.6",
     "react-ga4": "^2.1.0",

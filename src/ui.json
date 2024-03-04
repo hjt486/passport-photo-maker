@@ -27,6 +27,18 @@
     "en": "Your photo will be processed locally inside your browser. NO photos will be uploaded to any server. The only data shared are your access activities to this website, which are used for Google website analytics. By clicking 'Agree' and continuing, you confirm your agreement with this policy.",
     "zh": "您的照片将在本地浏览器内进行处理，*不会*上传到任何服务器。唯一共享的数据是您对本网站的访问活动，用于Google网站分析。点击'同意'并继续，即表示您确认同意此政策。"
   },
+  "disclaimer3": {
+    "en": "We collect cookies to analyze our website traffic and performance, and we never collect any personal data. By clicking 'Agree' or continue use the website, you confirm your agreement with this policy.",
+    "zh": "我们收集 cookie 是为了分析我们的网站流量和性能，其中不涉及收集任何个人数据。点击“同意”或继续使用该网站，即表示您确认同意本条款。"
+  },
+  "Agree": {
+    "en": "Agree",
+    "zh": "同意"
+  },
+  "Disagree": {
+    "en": "Disagree",
+    "zh": "拒绝"
+  },
   "backgroundRemovalLabel": {
     "en": "AI Background Removal",
     "zh": "AI去背景"

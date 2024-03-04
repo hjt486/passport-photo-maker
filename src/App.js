@@ -9,6 +9,7 @@ import { useLanguage } from './translate'
 import { generateSingle, handleSaveSingle, generate4x6, handleSave4x6 } from './SaveImage'
 import { DiscussionEmbed } from 'disqus-react';
 import { Helmet } from 'react-helmet';
+import CookieConsent from "react-cookie-consent";
 import PRC_Passport_Photo from './Templates/PRC_Passport_Photo.json'
 import US_Passport_Photo from './Templates/US_Passport_Photo.json'
 import Canada_Passport_Photo from './Templates/Canada_Passport_Photo.json'
@@ -1393,6 +1394,7 @@ const App = () => {
                   label: 'Feedback',
                 })
               }}
+              style={{ textDecoration: 'none', color: 'inherit' }}
             >{translate("feedback")}</a>
           </div>
         </div>
@@ -1402,6 +1404,28 @@ const App = () => {
           getLanguage={getLanguage}
           translateObject={translateObject}
         />
+        <CookieConsent
+          //debug={true}
+          flipButtons={true}
+          //overlay={true}
+          enableDeclineButton
+          onDecline={() => {
+            window.location.href = 'https://www.google.com'
+          }}
+          visible="byCookieValue"
+          hideOnAccept={true}
+          location="bottom"
+          buttonText={translate("Agree")}
+          declineButtonText={translate("Disagree")}
+          style={{ 
+            alignItems: "center", 
+            color: "var(--pico-contrast)",
+            background: "var(--pico-form-element-selected-background-color)"
+          }}
+          buttonStyle={{}}
+        >
+          {translate("disclaimer3")}
+        </CookieConsent>
       </div>
     </div>
   )
