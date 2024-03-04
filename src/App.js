@@ -285,32 +285,16 @@ const MiddleColumn = ({
       }))
       mouseStartRef.current = { x: e.clientX, y: e.clientY }
       updatePreview(editorRef, setCroppedImage)
-
-      ReactGA.event({
-        action: 'move_mouse',
-        category: 'Editor Operation',
-        label: 'Move Mouse',
-      })
     }
   }, [editorRef, setCroppedImage, isDragging, editorDimensions.width, editorDimensions.height, zoom, setPosition, rotation])
 
   const handleMouseUp = () => {
     setIsDragging(false)
-    ReactGA.event({
-      action: 'move_mouse_up',
-      category: 'Editor Operation',
-      label: 'Move mouse up',
-    })
   }
 
   const handleMouseDown = (e) => {
     setIsDragging(true)
     mouseStartRef.current = { x: e.clientX, y: e.clientY }
-    ReactGA.event({
-      action: 'move_mouse_down',
-      category: 'Editor Operation',
-      label: 'Move mouse down',
-    })
   }
 
   const handleMoveLeft = (e) => {
@@ -322,11 +306,6 @@ const MiddleColumn = ({
       }
     })
     updatePreview(editorRef, setCroppedImage)
-    ReactGA.event({
-      action: 'click_to_move_left',
-      category: 'Editor Operation',
-      label: 'Click to move left',
-    })
   }
 
   const handleMoveRight = (e) => {
@@ -338,11 +317,6 @@ const MiddleColumn = ({
       }
     })
     updatePreview(editorRef, setCroppedImage)
-    ReactGA.event({
-      action: 'click_to_move_right',
-      category: 'Editor Operation',
-      label: 'Click to move right',
-    })
   }
 
   const handleMoveUp = (e) => {
@@ -354,11 +328,6 @@ const MiddleColumn = ({
       }
     })
     updatePreview(editorRef, setCroppedImage)
-    ReactGA.event({
-      action: 'click_to_move_up',
-      category: 'Editor Operation',
-      label: 'Click to move up',
-    })
   }
 
   const handleMoveDown = (e) => {
@@ -372,22 +341,12 @@ const MiddleColumn = ({
     updatePreview(editorRef, setCroppedImage)
     setIsDragging(true)
     mouseStartRef.current = { x: e.clientX, y: e.clientY }
-    ReactGA.event({
-      action: 'click_to_move_down',
-      category: 'Editor Operation',
-      label: 'Click to move down',
-    })
   }
 
 
   const handleZoomChange = (e) => {
     setZoom(parseFloat(e.target.value))
     updatePreview(editorRef, setCroppedImage)
-    ReactGA.event({
-      action: 'change_zoom',
-      category: 'Editor Operation',
-      label: 'Change zoom',
-    })
   }
 
   const handleZoomIn = (e) => {
@@ -395,11 +354,6 @@ const MiddleColumn = ({
       const newZoom = Math.min(prevZoom * ZOOM_FACTOR, MAX_ZOOM)
       updatePreview(editorRef, setCroppedImage)
       return newZoom
-    })
-    ReactGA.event({
-      action: 'click_to_zoom_in',
-      category: 'Editor Operation',
-      label: 'Click to zoom in',
     })
   }
 
@@ -409,11 +363,6 @@ const MiddleColumn = ({
       updatePreview(editorRef, setCroppedImage)
       return newZoom
     })
-    ReactGA.event({
-      action: 'click_to_zoom_out',
-      category: 'Editor Operation',
-      label: 'Click to zoom out',
-    })
   }
 
   const handleRotateClockwise = () => {
@@ -422,11 +371,6 @@ const MiddleColumn = ({
       updatePreview(editorRef, setCroppedImage)
       return newRotation
     })
-    ReactGA.event({
-      action: 'click_to_rotate_clockwise',
-      category: 'Editor Operation',
-      label: 'Click to rotate clockwise',
-    })
   }
 
   const handleRotateCounterclockwise = () => {
@@ -434,11 +378,6 @@ const MiddleColumn = ({
       const newRotation = prevRotation - 0.5
       updatePreview(editorRef, setCroppedImage)
       return newRotation
-    })
-    ReactGA.event({
-      action: 'click_to_rotate_counterclockwise',
-      category: 'Editor Operation',
-      label: 'Click to rotate counterclockwise',
     })
   }
 
@@ -453,11 +392,6 @@ const MiddleColumn = ({
     })
 
     updatePreview(editorRef, setCroppedImage)
-    ReactGA.event({
-      action: 'mouse_scroll',
-      category: 'Editor Operation',
-      label: 'Mouse scroll',
-    })
   }
 
   const adjustPositionForRotation = (dx, dy, rotation) => {
@@ -476,11 +410,6 @@ const MiddleColumn = ({
       setInitialDistance(null)
       setInitialAngle(null)
     }
-    ReactGA.event({
-      action: 'touch_start',
-      category: 'Editor Operation',
-      label: 'Touch start',
-    })
   }
 
   const handleTouchMove = useCallback((e) => {
@@ -538,22 +467,12 @@ const MiddleColumn = ({
       }
     }
     updatePreview(editorRef, setCroppedImage)
-    ReactGA.event({
-      action: 'touch_move',
-      category: 'Editor Operation',
-      label: 'Touch move',
-    })
   }, [editorDimensions.width, editorDimensions.height, setCroppedImage, editorRef, zoom, initialDistance, setInitialDistance, initialAngle, setInitialAngle, setZoom, rotation, setRotation])
 
   const handleTouchEnd = useCallback((e) => {
     lastTouchDistance.current = null
     setInitialDistance(null)
     setInitialAngle(null)
-    ReactGA.event({
-      action: 'touch_end',
-      category: 'Editor Operation',
-      label: 'Touch end',
-    })
   }, [setInitialDistance, setInitialAngle])
 
   const preventDefault = useCallback((e) => {
