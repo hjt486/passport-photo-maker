@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import translations from './ui.json'
 
-const DEFAULT_LANGUAGE = "en"
+const DEFAULT_LANGUAGE = "zh"
 
 export function useLanguage() {
   const [currentLanguage, setCurrentLanguage] = useState(DEFAULT_LANGUAGE)

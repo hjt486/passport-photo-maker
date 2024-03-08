@@ -199,7 +199,7 @@ const NavBar = ({
               onChange={handleLanguageChange}
               checked={getLanguage() === "zh"}
             />
-            中文</label>
+            中文/English</label>
         </li>
       </ul>
     </nav>
@@ -978,10 +978,10 @@ const SaveModal = ({
   return (
     <>
       <dialog open={modals.save} className='modal'>
-        <AnimatedText
+        {/* <AnimatedText
           text1={translate("anmiatedText1")}
           text2={translate("anmiatedText2")}
-        />
+        /> */}
         <article>
           <h2>{isSaveLoading ? translate("saveGenerating") : translate("saveTitle")}</h2>
           <div aria-busy={isSaveLoading} >
@@ -1029,7 +1029,7 @@ const SaveModal = ({
             <button onClick={() => setModals((prevModals) => ({ ...prevModals, save: false }))}>OK</button>
           </footer>
         </article>
-        <Fireworks
+        {/* <Fireworks
           ref={ref}
           options={{
             hue: { min: 0, max: 360 },
@@ -1046,7 +1046,7 @@ const SaveModal = ({
             position: 'fixed',
             zIndex: -1,
           }}
-        />
+        /> */}
       </dialog>
     </>
   )
