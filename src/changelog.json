@@ -1,6 +1,15 @@
 {
   "changelog": [
     {
+      "date": "2024-03-08",
+      "item": [
+        {
+          "en": "Added Malaysia Passport/Visa Photo template.",
+          "zh": "增加马来西亚护照签证照片模板。"
+        }
+      ]
+    },
+    {
       "date": "2024-03-03",
       "item": [
         {
