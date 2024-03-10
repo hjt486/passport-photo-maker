@@ -107,7 +107,22 @@
   padding: 0.25em;
 }
 
+.control-tab-label {
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  cursor: pointer;
+}
+
+.inactive-tab {
+  background-color: var(--pico-code-background-color);
+  color: var(--pico-muted-color);
+}
+
 .slide-control {
+  margin-top: 1.5em;
+  margin-bottom: 5em;
   width: 100%;
 }
 .control-row1 {
@@ -119,7 +134,6 @@
 }
 
 .control-row2 {
-  margin-top: 0.5em;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;

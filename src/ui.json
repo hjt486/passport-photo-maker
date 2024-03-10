@@ -39,6 +39,14 @@
     "en": "Disagree",
     "zh": "拒绝"
   },
+  "controlTab1": {
+    "en": "Transform",
+    "zh": "变换"
+  },
+  "controlTab2": {
+    "en": "Color",
+    "zh": "颜色"
+  },
   "backgroundRemovalLabel": {
     "en": "AI Background Removal",
     "zh": "AI去背景"

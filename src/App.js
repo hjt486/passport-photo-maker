@@ -2,8 +2,9 @@ import React, { useState, useCallback, useEffect, useRef } from 'react'
 import AvatarEditor from 'react-avatar-editor'
 import imglyRemoveBackground from "@imgly/background-removal"
 import ReactGA from 'react-ga4'
-import { Fireworks } from '@fireworks-js/react'
-import AnimatedText from './AnimatedText'
+import { fabric } from 'fabric';
+//import { Fireworks } from '@fireworks-js/react'
+//import AnimatedText from './AnimatedText'
 import GuideDrawer from './GuideDrawer'
 import { useLanguage } from './translate'
 import { generateSingle, handleSaveSingle, generate4x6, handleSave4x6 } from './SaveImage'
@@ -519,6 +520,8 @@ const MiddleColumn = ({
   let ua = window.navigator.userAgent
   let iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i)
 
+  const [activeControlTab, setActiveControlTab] = useState('tab1');
+
   return (
     <article className="middle-column"
       onMouseEnter={handleMouseEnter}
@@ -573,30 +576,55 @@ const MiddleColumn = ({
             width: editorDimensions.width * editorDimensions.zoom,
           }}
         >
-          <div className="control-row2">
-            <div role="button" className="control-button" onClick={handleZoomOut}>−</div>
-            <div role="button" className="control-button" onClick={handleZoomIn}>+</div>
-            <div role="button" className="control-button" onClick={handleRotateCounterclockwise}>↺</div>
-            <div role="button" className="control-button" onClick={handleRotateClockwise}>↻</div>
-            <div role="button" className="control-button" onClick={handleMoveLeft}>←</div>
-            <div role="button" className="control-button" onClick={handleMoveRight}>→</div>
-            <div role="button" className="control-button" onClick={handleMoveUp}>↑</div>
-            <div role="button" className="control-button" onClick={handleMoveDown}>↓</div>
-          </div>
-          <div className="control-row2">
-            <input
-              className="slide-control"
-              list="slide-markers"
-              type="range"
-              min={MIN_ZOOM}
-              max={MAX_ZOOM}
-              step="0.01"
-              value={zoom}
-              onChange={handleZoomChange}
-            />
-            <datalist id="slide-markers">
-              <option value="1"></option>
-            </datalist>
+          <nav role="control-tabs-switch">
+            <ul>
+              <li><label
+                onClick={() => setActiveControlTab('tab1')}
+                className={`control-tab-label ${activeControlTab === 'tab1' ? "" : "inactive-tab"}`}
+              >{translate("controlTab1")}</label></li>
+              {/* <li><label
+                onClick={() => setActiveControlTab('tab2')}
+                className={`control-tab-label ${activeControlTab === 'tab2' ? "" : "inactive-tab"}`}
+              >{translate("controlTab2")}</label></li> */}
+            </ul>
+          </nav>
+          <div role="tabs">
+            <section>
+              {activeControlTab === 'tab1' && (
+                <>
+                  <div className="control-row2">
+                    <div role="button" className="control-button" onClick={handleZoomOut}>−</div>
+                    <div role="button" className="control-button" onClick={handleZoomIn}>+</div>
+                    <div role="button" className="control-button" onClick={handleRotateCounterclockwise}>↺</div>
+                    <div role="button" className="control-button" onClick={handleRotateClockwise}>↻</div>
+                    <div role="button" className="control-button" onClick={handleMoveLeft}>←</div>
+                    <div role="button" className="control-button" onClick={handleMoveRight}>→</div>
+                    <div role="button" className="control-button" onClick={handleMoveUp}>↑</div>
+                    <div role="button" className="control-button" onClick={handleMoveDown}>↓</div>
+                  </div>
+                  <div className="control-row2">
+                    <input
+                      className="slide-control"
+                      list="slide-markers"
+                      type="range"
+                      min={MIN_ZOOM}
+                      max={MAX_ZOOM}
+                      step="0.01"
+                      value={zoom}
+                      onChange={handleZoomChange}
+                    />
+                    <datalist id="slide-markers">
+                      <option value="1"></option>
+                    </datalist>
+                  </div>
+                </>
+              )}
+              {activeControlTab === 'tab2' && (
+                <>
+                  tab2
+                </>
+              )}
+            </section>
           </div>
           <dialog open={modals.aiModel} className='modal'>
             <article>
@@ -1420,8 +1448,8 @@ const App = () => {
           location="bottom"
           buttonText={translate("Agree")}
           declineButtonText={translate("Disagree")}
-          style={{ 
-            alignItems: "center", 
+          style={{
+            alignItems: "center",
             color: "var(--pico-contrast)",
             background: "var(--pico-form-element-selected-background-color)"
           }}
