@@ -2,7 +2,6 @@ import React, { useState, useCallback, useEffect, useRef } from 'react'
 import AvatarEditor from 'react-avatar-editor'
 import imglyRemoveBackground from "@imgly/background-removal"
 import ReactGA from 'react-ga4'
-import { fabric } from 'fabric';
 //import { Fireworks } from '@fireworks-js/react'
 //import AnimatedText from './AnimatedText'
 import GuideDrawer from './GuideDrawer'
