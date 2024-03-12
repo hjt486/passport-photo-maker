@@ -145,6 +145,21 @@
   color: var( --pico-secondary);
 }
 
+.control-row4 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.color-label {
+  flex: 1;
+}
+
+.slide-control-color {
+  flex: 2;
+}
+
 .control-button {
   position: relative;
   flex-grow: 1;

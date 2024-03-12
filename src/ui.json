@@ -47,6 +47,22 @@
     "en": "Color",
     "zh": "颜色"
   },
+  "brightness": {
+    "en": "Brightness",
+    "zh": "亮度"
+  },
+  "saturation": {
+    "en": "saturation",
+    "zh": "饱和度"
+  },
+  "warmth": {
+    "en": "warmth",
+    "zh": "色温"
+  },
+  "contrast": {
+    "en": "contrast",
+    "zh": "对比度"
+  },
   "backgroundRemovalLabel": {
     "en": "AI Background Removal",
     "zh": "AI去背景"

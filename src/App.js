@@ -2,7 +2,6 @@ import React, { useState, useCallback, useEffect, useRef } from 'react'
 import AvatarEditor from 'react-avatar-editor'
 import imglyRemoveBackground from "@imgly/background-removal"
 import ReactGA from 'react-ga4'
-import {CanvasImageEdit} from 'simple-canvas-image-editor'
 //import { Fireworks } from '@fireworks-js/react'
 //import AnimatedText from './AnimatedText'
 import GuideDrawer from './GuideDrawer'
@@ -10,6 +9,7 @@ import { useLanguage } from './translate'
 import { generateSingle, handleSaveSingle, generate4x6, handleSave4x6 } from './SaveImage'
 import { DiscussionEmbed } from 'disqus-react';
 import { Helmet } from 'react-helmet';
+import Color from './Color'
 import CookieConsent from "react-cookie-consent";
 import PRC_Passport_Photo from './Templates/PRC_Passport_Photo.json'
 import PRC_Travel_Document from './Templates/PRC_Travel_Document_Photo.json'
@@ -43,18 +43,6 @@ const TEMPLATES = [
 const MAX_EDITOR_WIDTH = 330
 const MAX_EDITOR_HEIGHT = 480
 const MM2INCH = 25.4 // Convert millimeter to inch
-
-// Function to update the preview
-const updatePreview = (editorRef, setCroppedImage) => {
-  if (editorRef.current) {
-    const canvas = editorRef.current.getImageScaledToCanvas()
-    canvas.style.touchAction = 'none'
-    const loader = new CanvasImageEdit()
-    loader.ImageLoader(canvas)
-    loader.result?.brightness(10).render(canvas)
-    setCroppedImage(canvas.toDataURL())
-  }
-}
 
 // LoadPhotoButton component
 const LoadPhotoButton = ({ onPhotoLoad, title }) => {
@@ -130,7 +118,8 @@ const NavBar = ({
   translateObject,
   setEditorDimensions,
   editorRef,
-  setCroppedImage
+  setCroppedImage,
+  updatePreview
 }) => {
 
   const handleTemplateChange = (event) => {
@@ -271,13 +260,18 @@ const MiddleColumn = ({
   setModals,
   allowAiModel,
   setAllowAiModel,
+  updatePreview,
+  setColor,
+  color,
+  position,
+  setPosition,
 }) => {
   const { guide } = photoGuides
   const touchStartRef = useRef({ x: null, y: null })
   const lastTouchDistance = useRef(null)
-  const [position, setPosition] = useState({ x: 0.5, y: 0.5 }) // Weirdly, have to set a out-of-boundary number to make moving working when page is loaded.
   const [isDragging, setIsDragging] = useState(false)
   const mouseStartRef = useRef({ x: null, y: null })
+  const debounceTimer = useRef(null)
 
   const handleMouseMove = useCallback((e) => {
     if (isDragging) {
@@ -293,9 +287,8 @@ const MiddleColumn = ({
         y: prevPosition.y - dy,
       }))
       mouseStartRef.current = { x: e.clientX, y: e.clientY }
-      updatePreview(editorRef, setCroppedImage)
     }
-  }, [editorRef, setCroppedImage, isDragging, editorDimensions.width, editorDimensions.height, zoom, setPosition, rotation])
+  }, [isDragging, editorDimensions.width, editorDimensions.height, zoom, setPosition, rotation])
 
   const handleMouseUp = () => {
     setIsDragging(false)
@@ -314,7 +307,6 @@ const MiddleColumn = ({
         y: prevPosition.y + adjusted.y
       }
     })
-    updatePreview(editorRef, setCroppedImage)
   }
 
   const handleMoveRight = (e) => {
@@ -325,7 +317,6 @@ const MiddleColumn = ({
         y: prevPosition.y + adjusted.y
       }
     })
-    updatePreview(editorRef, setCroppedImage)
   }
 
   const handleMoveUp = (e) => {
@@ -336,7 +327,6 @@ const MiddleColumn = ({
         y: prevPosition.y + adjusted.y
       }
     })
-    updatePreview(editorRef, setCroppedImage)
   }
 
   const handleMoveDown = (e) => {
@@ -347,7 +337,6 @@ const MiddleColumn = ({
         y: prevPosition.y + adjusted.y
       }
     })
-    updatePreview(editorRef, setCroppedImage)
     setIsDragging(true)
     mouseStartRef.current = { x: e.clientX, y: e.clientY }
   }
@@ -355,13 +344,11 @@ const MiddleColumn = ({
 
   const handleZoomChange = (e) => {
     setZoom(parseFloat(e.target.value))
-    updatePreview(editorRef, setCroppedImage)
   }
 
   const handleZoomIn = (e) => {
     setZoom((prevZoom) => {
       const newZoom = Math.min(prevZoom * ZOOM_FACTOR, MAX_ZOOM)
-      updatePreview(editorRef, setCroppedImage)
       return newZoom
     })
   }
@@ -369,7 +356,6 @@ const MiddleColumn = ({
   const handleZoomOut = (e) => {
     setZoom((prevZoom) => {
       const newZoom = Math.max(prevZoom / ZOOM_FACTOR, MIN_ZOOM)
-      updatePreview(editorRef, setCroppedImage)
       return newZoom
     })
   }
@@ -377,7 +363,6 @@ const MiddleColumn = ({
   const handleRotateClockwise = () => {
     setRotation((prevRotation) => {
       const newRotation = prevRotation + 0.5
-      updatePreview(editorRef, setCroppedImage)
       return newRotation
     })
   }
@@ -385,7 +370,6 @@ const MiddleColumn = ({
   const handleRotateCounterclockwise = () => {
     setRotation((prevRotation) => {
       const newRotation = prevRotation - 0.5
-      updatePreview(editorRef, setCroppedImage)
       return newRotation
     })
   }
@@ -399,8 +383,6 @@ const MiddleColumn = ({
 
       return newZoom
     })
-
-    updatePreview(editorRef, setCroppedImage)
   }
 
   const adjustPositionForRotation = (dx, dy, rotation) => {
@@ -475,8 +457,7 @@ const MiddleColumn = ({
         setInitialAngle(angleRadians) // Update initial angle for next movement
       }
     }
-    updatePreview(editorRef, setCroppedImage)
-  }, [editorDimensions.width, editorDimensions.height, setCroppedImage, editorRef, zoom, initialDistance, setInitialDistance, initialAngle, setInitialAngle, setZoom, rotation, setRotation])
+  }, [editorDimensions.width, editorDimensions.height, zoom, initialDistance, setInitialDistance, initialAngle, setInitialAngle, setZoom, rotation, setRotation, setPosition])
 
   const handleTouchEnd = useCallback((e) => {
     lastTouchDistance.current = null
@@ -496,6 +477,38 @@ const MiddleColumn = ({
   const handleMouseLeave = () => {
     // Allow scroll when the mouse leaves
     document.removeEventListener('wheel', preventDefault, { passive: false })
+  }
+
+  const handleBrightnessChange = (e) => {
+    const value = e.target.value
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    debounceTimer.current = setTimeout(() => {
+      setColor((prevColor) => ({ ...prevColor, brightness: value, changed: true }));
+    }, 5);
+  }
+
+  const handleSaturationChange = (e) => {
+    const value = e.target.value
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    debounceTimer.current = setTimeout(() => {
+      setColor((prevColor) => ({ ...prevColor, saturation: value, changed: true }));
+    }, 5);
+  }
+
+  const handleWarmthChange = (e) => {
+    const value = e.target.value
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    debounceTimer.current = setTimeout(() => {
+      setColor((prevColor) => ({ ...prevColor, warmth: value, changed: true }));
+    }, 5);
+  }
+
+  const handleContrastChange = (e) => {
+    const value = e.target.value
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    debounceTimer.current = setTimeout(() => {
+      setColor((prevColor) => ({ ...prevColor, contrast: value, changed: true }));
+    }, 5);
   }
 
   useEffect(() => {
@@ -618,7 +631,7 @@ const MiddleColumn = ({
                       value={zoom}
                       onChange={handleZoomChange}
                     />
-                    <datalist id="slide-markers">
+                    <datalist id="slide-markers-1">
                       <option value="1"></option>
                     </datalist>
                   </div>
@@ -626,7 +639,70 @@ const MiddleColumn = ({
               )}
               {activeControlTab === 'tab2' && (
                 <>
-                  tab2
+                  <div className="control-row4">
+                    <label className="export-label color-label">{translate("brightness")}</label>
+                    <input
+                      className="slide-control-color"
+                      list="slide-markers"
+                      type="range"
+                      min="-50"
+                      max="50"
+                      step="1"
+                      value={color.brightness}
+                      onChange={handleBrightnessChange}
+                    />
+                    <datalist id="slide-markers-2">
+                      <option value="0"></option>
+                    </datalist>
+                  </div>
+                  <div className="control-row4">
+                    <label className="export-label color-label">{translate("saturation")}</label>
+                    <input
+                      className="slide-control-color"
+                      list="slide-markers"
+                      type="range"
+                      min="-50"
+                      max="50"
+                      step="1"
+                      value={color.saturation}
+                      onChange={handleSaturationChange}
+                    />
+                    <datalist id="slide-markers-3">
+                      <option value="0"></option>
+                    </datalist>
+                  </div>
+                  <div className="control-row4">
+                    <label className="export-label color-label">{translate("warmth")}</label>
+                    <input
+                      className="slide-control-color"
+                      list="slide-markers"
+                      type="range"
+                      min="-50"
+                      max="50"
+                      step="1"
+                      value={color.warmth}
+                      onChange={handleWarmthChange}
+                    />
+                    <datalist id="slide-markers-4">
+                      <option value="0"></option>
+                    </datalist>
+                  </div>
+                  <div className="control-row4">
+                    <label className="export-label color-label">{translate("contrast")}</label>
+                    <input
+                      className="slide-control-color"
+                      list="slide-markers"
+                      type="range"
+                      min="-50"
+                      max="50"
+                      step="1"
+                      value={color.contrast}
+                      onChange={handleContrastChange}
+                    />
+                    <datalist id="slide-markers-5">
+                      <option value="0"></option>
+                    </datalist>
+                  </div>
                 </>
               )}
             </section>
@@ -851,6 +927,7 @@ const BuyMeACoffee = ({
       document.removeEventListener('click', handleClickOutside)
     }
   }, [])
+  
   return (<>
     <dialog open={modals.coffee} className='modal'>
       <article>
@@ -957,24 +1034,24 @@ const SaveModal = ({
   const [loadCounter, setLoadCounter] = useState(0)
 
   // fireworks
-  const ref = useRef(null)
-  const startFireworks = () => {
-    if (ref.current) {
-      ref.current.start()
-    }
-  }
-  const stopFireworks = () => {
-    if (ref.current) {
-      ref.current.stop()
-    }
-  }
-  useEffect(() => {
-    if (modals.save) {
-      startFireworks()
-    } else {
-      stopFireworks()
-    }
-  }, [modals.save])
+  // const ref = useRef(null)
+  // const startFireworks = () => {
+  //   if (ref.current) {
+  //     ref.current.start()
+  //   }
+  // }
+  // const stopFireworks = () => {
+  //   if (ref.current) {
+  //     ref.current.stop()
+  //   }
+  // }
+  // useEffect(() => {
+  //   if (modals.save) {
+  //     startFireworks()
+  //   } else {
+  //     stopFireworks()
+  //   }
+  // }, [modals.save])
 
   const initiateLoading = () => {
     setIsSaveLoading(true)
@@ -1226,12 +1303,55 @@ const App = () => {
   })
   const [initialDistance, setInitialDistance] = useState(null)
   const [initialAngle, setInitialAngle] = useState(null)
-
+  const [color, setColor] = useState({
+    brightness: 0,
+    saturation: 0,
+    warmth: 0,
+    contrast: -0,
+    changed: true,
+  })
+  const [position, setPosition] = useState({ x: 0.5, y: 0.5 }) // Weirdly, have to set a out-of-boundary number to make moving working when page is loaded.
 
   const editorRef = React.createRef()
   const { translate, translateObject, setLanguage, getLanguage } = useLanguage()
 
   const photoGuides = template
+
+  const adjustImageAndSetPhoto = useCallback(() => {
+    if (!photo) return; // Do not proceed if the photo is not set
+
+    const image = new Image();
+    image.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = image.width;
+      canvas.height = image.height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(image, 0, 0);
+
+      // Apply color adjustments here
+      Color(canvas, color);
+
+      const newImageUrl = canvas.toDataURL();
+      setPhoto(newImageUrl); // Update the photo state with the adjusted image
+    };
+    image.src = photo; // Use the current photo as the source
+  }, [photo, color]);
+
+  // Function to update the preview
+  const updatePreview = (editorRef, setCroppedImage) => {
+    if (editorRef.current) {
+      const canvas = editorRef.current.getImageScaledToCanvas()
+      canvas.style.touchAction = 'none'
+      setCroppedImage(canvas.toDataURL())
+    }
+  }
+
+  useEffect(() => {
+    if (color.changed) {
+      setColor((prevColor) => ({ ...prevColor, changed: false }));
+      setTimeout(() => adjustImageAndSetPhoto(), 200)
+    }
+  }, [color, adjustImageAndSetPhoto]);
 
   const processPhotoForBgRemoval = useCallback(async (photoData) => {
     setLoadingModel(true)
@@ -1274,7 +1394,6 @@ const App = () => {
     setRemoveBg({ state: false, error: false })
     setZoom(INITIAL_ZOOM)
     setRotation(INITIAL_ROTATION)
-    updatePreview(editorRef, setCroppedImage)
     setModals((prevModals) => ({ ...prevModals, disclaimer: true }))
   }, [editorRef, photo])
 
@@ -1287,14 +1406,7 @@ const App = () => {
       setPhoto(originalPhoto)
       setTimeout(() => updatePreview(editorRef, setCroppedImage), 100) // Update preview immediately after setting photo
     }
-  }, [removeBg, originalPhoto, processedPhoto, editorRef])
-
-  // Update the preview whenever the photo state changes
-  useEffect(() => {
-    if (photo) {
-      updatePreview(editorRef, setCroppedImage)
-    }
-  }, [photo, editorRef])
+  }, [removeBg, originalPhoto, processedPhoto, editorRef, updatePreview])
 
 
   useEffect(() => {
@@ -1310,6 +1422,7 @@ const App = () => {
       [name]: checked,
     }))
   }
+
   return (
     <div className="app">
       <div className="frame">
@@ -1326,6 +1439,7 @@ const App = () => {
             setEditorDimensions={setEditorDimensions}
             setCroppedImage={setCroppedImage}
             editorRef={editorRef}
+            updatePreview={updatePreview}
           />
         </div>
         <div className="container">
@@ -1368,6 +1482,11 @@ const App = () => {
             setModals={setModals}
             allowAiModel={allowAiModel}
             setAllowAiModel={setAllowAiModel}
+            updatePreview={updatePreview}
+            setColor={setColor}
+            color={color}
+            position={position}
+            setPosition={setPosition}
           />
           <RightColumn
             editorRef={editorRef}
