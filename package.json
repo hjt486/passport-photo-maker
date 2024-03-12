@@ -22,6 +22,7 @@
     "react-ga4": "^2.1.0",
     "react-helmet": "^6.1.0",
     "react-image-crop": "^11.0.5",
+    "simple-canvas-image-editor": "^1.0.15",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

@@ -1,6 +1,15 @@
 {
   "changelog": [
     {
+      "date": "2024-03-11",
+      "item": [
+        {
+          "en": "Added Chinese Travel Document Photo Template.",
+          "zh": "增加中国旅行证照片模板。"
+        }
+      ]
+    },
+    {
       "date": "2024-03-08",
       "item": [
         {

@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect, useRef } from 'react'
 import AvatarEditor from 'react-avatar-editor'
 import imglyRemoveBackground from "@imgly/background-removal"
 import ReactGA from 'react-ga4'
+import {CanvasImageEdit} from 'simple-canvas-image-editor'
 //import { Fireworks } from '@fireworks-js/react'
 //import AnimatedText from './AnimatedText'
 import GuideDrawer from './GuideDrawer'
@@ -11,6 +12,7 @@ import { DiscussionEmbed } from 'disqus-react';
 import { Helmet } from 'react-helmet';
 import CookieConsent from "react-cookie-consent";
 import PRC_Passport_Photo from './Templates/PRC_Passport_Photo.json'
+import PRC_Travel_Document from './Templates/PRC_Travel_Document_Photo.json'
 import US_Passport_Photo from './Templates/US_Passport_Photo.json'
 import Canada_Passport_Photo from './Templates/Canada_Passport_Photo.json'
 import Canada_Visa_Photo from './Templates/Canada_Visa_Photo.json'
@@ -31,6 +33,7 @@ const EXPORT_HEIGHT_LIMIT = 2000
 const EXPORT_SIZE_LIMIT = 2000
 const TEMPLATES = [
   PRC_Passport_Photo,
+  PRC_Travel_Document,
   US_Passport_Photo,
   Canada_Passport_Photo,
   Canada_Visa_Photo,
@@ -46,6 +49,9 @@ const updatePreview = (editorRef, setCroppedImage) => {
   if (editorRef.current) {
     const canvas = editorRef.current.getImageScaledToCanvas()
     canvas.style.touchAction = 'none'
+    const loader = new CanvasImageEdit()
+    loader.ImageLoader(canvas)
+    loader.result?.brightness(10).render(canvas)
     setCroppedImage(canvas.toDataURL())
   }
 }
@@ -575,18 +581,18 @@ const MiddleColumn = ({
             width: editorDimensions.width * editorDimensions.zoom,
           }}
         >
-          <nav role="control-tabs-switch">
+          {/* <nav role="control-tabs-switch">
             <ul>
               <li><label
                 onClick={() => setActiveControlTab('tab1')}
                 className={`control-tab-label ${activeControlTab === 'tab1' ? "" : "inactive-tab"}`}
               >{translate("controlTab1")}</label></li>
-              {/* <li><label
+              <li><label
                 onClick={() => setActiveControlTab('tab2')}
                 className={`control-tab-label ${activeControlTab === 'tab2' ? "" : "inactive-tab"}`}
-              >{translate("controlTab2")}</label></li> */}
+              >{translate("controlTab2")}</label></li>
             </ul>
-          </nav>
+          </nav> */}
           <div role="tabs">
             <section>
               {activeControlTab === 'tab1' && (
