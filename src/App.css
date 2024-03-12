@@ -120,11 +120,6 @@
   color: var(--pico-muted-color);
 }
 
-.slide-control {
-  margin-top: 1.5em;
-  margin-bottom: 5em;
-  width: 100%;
-}
 .control-row1 {
   display: flex;
   flex-direction:row;
@@ -143,6 +138,8 @@
   font-size: small;
   margin-bottom: 1em;
   color: var( --pico-secondary);
+  margin-top: 2em;
+  margin-bottom: 2em;
 }
 
 .control-row4 {
@@ -150,6 +147,7 @@
   flex-direction: row;
   justify-content: space-between;
   flex-wrap: wrap;
+  
 }
 
 .color-label {
@@ -157,7 +155,18 @@
 }
 
 .slide-control-color {
-  flex: 2;
+  flex: 3;
+}
+
+.color-reset {
+  margin: 0;
+  margin-left: 1em;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
+  height: min-content;
+  width:max-content;
 }
 
 .control-button {

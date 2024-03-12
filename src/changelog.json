@@ -1,6 +1,19 @@
 {
   "changelog": [
     {
+      "date": "2024-03-12",
+      "item": [
+        {
+          "en": "Added color adjustment feature.",
+          "zh": "增加颜色调整功能。"
+        },
+        {
+          "en": "Optimized dragging & preview.",
+          "zh": "优化拖动和预览的速度。"
+        }
+      ]
+    },
+    {
       "date": "2024-03-11",
       "item": [
         {

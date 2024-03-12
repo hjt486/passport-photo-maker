@@ -7,10 +7,10 @@ import ReactGA from 'react-ga4'
 import GuideDrawer from './GuideDrawer'
 import { useLanguage } from './translate'
 import { generateSingle, handleSaveSingle, generate4x6, handleSave4x6 } from './SaveImage'
-import { DiscussionEmbed } from 'disqus-react';
-import { Helmet } from 'react-helmet';
+import { DiscussionEmbed } from 'disqus-react'
+import { Helmet } from 'react-helmet'
 import Color from './Color'
-import CookieConsent from "react-cookie-consent";
+import CookieConsent from "react-cookie-consent"
 import PRC_Passport_Photo from './Templates/PRC_Passport_Photo.json'
 import PRC_Travel_Document from './Templates/PRC_Travel_Document_Photo.json'
 import US_Passport_Photo from './Templates/US_Passport_Photo.json'
@@ -31,6 +31,7 @@ const ROTATION_THRESHOLD_DEG = 2
 const EXPORT_WIDTH_LIMIT = 2000
 const EXPORT_HEIGHT_LIMIT = 2000
 const EXPORT_SIZE_LIMIT = 2000
+const DEBOUNCE = 250
 const TEMPLATES = [
   PRC_Passport_Photo,
   PRC_Travel_Document,
@@ -272,6 +273,22 @@ const MiddleColumn = ({
   const [isDragging, setIsDragging] = useState(false)
   const mouseStartRef = useRef({ x: null, y: null })
   const debounceTimer = useRef(null)
+  // Debounce function that allows immediate invocation
+  const debounce = (func, wait, immediate) => {
+    let timeout;
+    return function executedFunction() {
+      const context = this;
+      const args = arguments;
+      const later = function () {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      };
+      const callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) func.apply(context, args);
+    };
+  };
 
   const handleMouseMove = useCallback((e) => {
     if (isDragging) {
@@ -481,35 +498,27 @@ const MiddleColumn = ({
 
   const handleBrightnessChange = (e) => {
     const value = e.target.value
-    if (debounceTimer.current) clearTimeout(debounceTimer.current);
-    debounceTimer.current = setTimeout(() => {
-      setColor((prevColor) => ({ ...prevColor, brightness: value, changed: true }));
-    }, 5);
+    setColor((prevColor) => ({ ...prevColor, brightness: value }))
   }
+  const handleBrightnessChangeDebounced = debounce(handleBrightnessChange, DEBOUNCE, true);
 
   const handleSaturationChange = (e) => {
     const value = e.target.value
-    if (debounceTimer.current) clearTimeout(debounceTimer.current);
-    debounceTimer.current = setTimeout(() => {
-      setColor((prevColor) => ({ ...prevColor, saturation: value, changed: true }));
-    }, 5);
+    setColor((prevColor) => ({ ...prevColor, saturation: value }))
   }
+  const handleSaturationChangeDebounced = debounce(handleSaturationChange, DEBOUNCE, true);
 
   const handleWarmthChange = (e) => {
     const value = e.target.value
-    if (debounceTimer.current) clearTimeout(debounceTimer.current);
-    debounceTimer.current = setTimeout(() => {
-      setColor((prevColor) => ({ ...prevColor, warmth: value, changed: true }));
-    }, 5);
+    setColor((prevColor) => ({ ...prevColor, warmth: value }))
   }
+  const handleWarmthChangeDebounced = debounce(handleWarmthChange, DEBOUNCE, true);
 
   const handleContrastChange = (e) => {
     const value = e.target.value
-    if (debounceTimer.current) clearTimeout(debounceTimer.current);
-    debounceTimer.current = setTimeout(() => {
-      setColor((prevColor) => ({ ...prevColor, contrast: value, changed: true }));
-    }, 5);
+    setColor((prevColor) => ({ ...prevColor, contrast: value }))
   }
+  const handleContrastChangeDebounced = debounce(handleContrastChange, DEBOUNCE, true);
 
   useEffect(() => {
     const photoArea = document.querySelector('.photo-area')
@@ -538,7 +547,7 @@ const MiddleColumn = ({
   let ua = window.navigator.userAgent
   let iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i)
 
-  const [activeControlTab, setActiveControlTab] = useState('tab1');
+  const [activeControlTab, setActiveControlTab] = useState('tab1')
 
   return (
     <article className="middle-column"
@@ -594,7 +603,7 @@ const MiddleColumn = ({
             width: editorDimensions.width * editorDimensions.zoom,
           }}
         >
-          {/* <nav role="control-tabs-switch">
+          <nav role="control-tabs-switch">
             <ul>
               <li><label
                 onClick={() => setActiveControlTab('tab1')}
@@ -605,7 +614,7 @@ const MiddleColumn = ({
                 className={`control-tab-label ${activeControlTab === 'tab2' ? "" : "inactive-tab"}`}
               >{translate("controlTab2")}</label></li>
             </ul>
-          </nav> */}
+          </nav>
           <div role="tabs">
             <section>
               {activeControlTab === 'tab1' && (
@@ -620,9 +629,10 @@ const MiddleColumn = ({
                     <div role="button" className="control-button" onClick={handleMoveUp}>↑</div>
                     <div role="button" className="control-button" onClick={handleMoveDown}>↓</div>
                   </div>
-                  <div className="control-row2">
+                  <div className="control-row3 control-row4">
+                    <label className="export-label color-label">{translate("zoom")}</label>
                     <input
-                      className="slide-control"
+                      className="slide-control-color"
                       list="slide-markers"
                       type="range"
                       min={MIN_ZOOM}
@@ -634,6 +644,11 @@ const MiddleColumn = ({
                     <datalist id="slide-markers-1">
                       <option value="1"></option>
                     </datalist>
+                    <label
+                      role="button"
+                      className="export-label color-reset"
+                      onClick={() => setZoom((zoom) => (1))}
+                    >&#8634;</label>
                   </div>
                 </>
               )}
@@ -649,11 +664,16 @@ const MiddleColumn = ({
                       max="50"
                       step="1"
                       value={color.brightness}
-                      onChange={handleBrightnessChange}
+                      onChange={handleBrightnessChangeDebounced}
                     />
                     <datalist id="slide-markers-2">
                       <option value="0"></option>
                     </datalist>
+                    <label
+                      role="button"
+                      className="export-label color-reset"
+                      onClick={() => setColor((prevColor) => ({ ...prevColor, brightness: 0 }))}
+                    >&#8634;</label>
                   </div>
                   <div className="control-row4">
                     <label className="export-label color-label">{translate("saturation")}</label>
@@ -661,15 +681,20 @@ const MiddleColumn = ({
                       className="slide-control-color"
                       list="slide-markers"
                       type="range"
-                      min="-50"
-                      max="50"
+                      min="-100"
+                      max="100"
                       step="1"
                       value={color.saturation}
-                      onChange={handleSaturationChange}
+                      onChange={handleSaturationChangeDebounced}
                     />
                     <datalist id="slide-markers-3">
                       <option value="0"></option>
                     </datalist>
+                    <label
+                      role="button"
+                      className="export-label color-reset"
+                      onClick={() => setColor((prevColor) => ({ ...prevColor, saturation: 0 }))}
+                    >&#8634;</label>
                   </div>
                   <div className="control-row4">
                     <label className="export-label color-label">{translate("warmth")}</label>
@@ -677,15 +702,20 @@ const MiddleColumn = ({
                       className="slide-control-color"
                       list="slide-markers"
                       type="range"
-                      min="-50"
-                      max="50"
+                      min="-25"
+                      max="25"
                       step="1"
                       value={color.warmth}
-                      onChange={handleWarmthChange}
+                      onChange={handleWarmthChangeDebounced}
                     />
                     <datalist id="slide-markers-4">
                       <option value="0"></option>
                     </datalist>
+                    <label
+                      role="button"
+                      className="export-label color-reset"
+                      onClick={() => setColor((prevColor) => ({ ...prevColor, warmth: 0 }))}
+                    >&#8634;</label>
                   </div>
                   <div className="control-row4">
                     <label className="export-label color-label">{translate("contrast")}</label>
@@ -697,11 +727,16 @@ const MiddleColumn = ({
                       max="50"
                       step="1"
                       value={color.contrast}
-                      onChange={handleContrastChange}
+                      onChange={handleContrastChangeDebounced}
                     />
                     <datalist id="slide-markers-5">
                       <option value="0"></option>
                     </datalist>
+                    <label
+                      role="button"
+                      className="export-label color-reset"
+                      onClick={() => setColor((prevColor) => ({ ...prevColor, contrast: 0 }))}
+                    >&#8634;</label>
                   </div>
                 </>
               )}
@@ -927,7 +962,7 @@ const BuyMeACoffee = ({
       document.removeEventListener('click', handleClickOutside)
     }
   }, [])
-  
+
   return (<>
     <dialog open={modals.coffee} className='modal'>
       <article>
@@ -1197,38 +1232,38 @@ const Disqus = ({
 }) => {
   function formatStringForURL(inputString) {
     // Convert the string to lowercase
-    let formattedString = inputString.toLowerCase();
+    let formattedString = inputString.toLowerCase()
 
     // Replace non-compatible URL characters with underscores
-    formattedString = formattedString.replace(/[/\\:;,.?!"'(){}[\]<>^*%&@#$+=|~`\s]/g, '_');
+    formattedString = formattedString.replace(/[/\\:,.?!"'(){}[\]<>^*%&@#$+=|~`\s]/g, '_')
 
     // Remove consecutive underscores
-    formattedString = formattedString.replace(/_+/g, '_');
+    formattedString = formattedString.replace(/_+/g, '_')
 
     // Remove leading and trailing underscores
-    formattedString = formattedString.replace(/^_+|_+$/g, '');
+    formattedString = formattedString.replace(/^_+|_+$/g, '')
 
-    return formattedString;
+    return formattedString
   }
 
   // Function to reload Disqus plugin
   const reloadDisqusPlugin = () => {
     if (typeof window.DISQUS !== 'undefined') {
-      window.DISQUS.reset({ reload: true });
+      window.DISQUS.reset({ reload: true })
     }
-  };
+  }
 
   // Effect hook to listen for changes in color scheme and reload Disqus
   useEffect(() => {
-    const colorSchemeListener = window.matchMedia('(prefers-color-scheme: dark)');
+    const colorSchemeListener = window.matchMedia('(prefers-color-scheme: dark)')
     const handleChange = (event) => {
-      reloadDisqusPlugin();
-    };
-    colorSchemeListener.addEventListener('change', handleChange);
+      reloadDisqusPlugin()
+    }
+    colorSchemeListener.addEventListener('change', handleChange)
     return () => {
-      colorSchemeListener.removeEventListener('change', handleChange);
-    };
-  }, []);
+      colorSchemeListener.removeEventListener('change', handleChange)
+    }
+  }, [])
 
   // console.log("DEBUG: url:", 'https://jiataihan.dev/passport-photo-maker/' + formatStringForURL(translateObject(template.title)))
   // console.log("DEBUG: identifier:", formatStringForURL(translateObject(template.title)))
@@ -1270,6 +1305,7 @@ const App = () => {
   const [loadingModel, setLoadingModel] = useState(false) // State for loading model 
   const [originalPhoto, setOriginalPhoto] = useState(null)
   const [processedPhoto, setProcessedPhoto] = useState(null)
+  const [adjustedPhoto, setAdjustedPhoto] = useState(null)
   const [zoom, setZoom] = useState(INITIAL_ZOOM)
   const [rotation, setRotation] = useState(INITIAL_ROTATION)
   const [options, setOptions] = useState({
@@ -1307,8 +1343,7 @@ const App = () => {
     brightness: 0,
     saturation: 0,
     warmth: 0,
-    contrast: -0,
-    changed: true,
+    contrast: 0,
   })
   const [position, setPosition] = useState({ x: 0.5, y: 0.5 }) // Weirdly, have to set a out-of-boundary number to make moving working when page is loaded.
 
@@ -1316,26 +1351,6 @@ const App = () => {
   const { translate, translateObject, setLanguage, getLanguage } = useLanguage()
 
   const photoGuides = template
-
-  const adjustImageAndSetPhoto = useCallback(() => {
-    if (!photo) return; // Do not proceed if the photo is not set
-
-    const image = new Image();
-    image.onload = () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = image.width;
-      canvas.height = image.height;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(image, 0, 0);
-
-      // Apply color adjustments here
-      Color(canvas, color);
-
-      const newImageUrl = canvas.toDataURL();
-      setPhoto(newImageUrl); // Update the photo state with the adjusted image
-    };
-    image.src = photo; // Use the current photo as the source
-  }, [photo, color]);
 
   // Function to update the preview
   const updatePreview = (editorRef, setCroppedImage) => {
@@ -1345,13 +1360,6 @@ const App = () => {
       setCroppedImage(canvas.toDataURL())
     }
   }
-
-  useEffect(() => {
-    if (color.changed) {
-      setColor((prevColor) => ({ ...prevColor, changed: false }));
-      setTimeout(() => adjustImageAndSetPhoto(), 200)
-    }
-  }, [color, adjustImageAndSetPhoto]);
 
   const processPhotoForBgRemoval = useCallback(async (photoData) => {
     setLoadingModel(true)
@@ -1390,24 +1398,56 @@ const App = () => {
   const handlePhotoLoad = useCallback(async (photoData) => {
     setOriginalPhoto(photoData)
     setProcessedPhoto(null)
+    setAdjustedPhoto(null)
     setPhoto(photo)
     setRemoveBg({ state: false, error: false })
     setZoom(INITIAL_ZOOM)
     setRotation(INITIAL_ROTATION)
     setModals((prevModals) => ({ ...prevModals, disclaimer: true }))
+    setColor({
+      brightness: 0,
+      saturation: 0,
+      warmth: 0,
+      contrast: 0,
+    })
   }, [editorRef, photo])
+
+  useEffect(() => {
+    const adjustImageAndSetPhoto = () => {
+      const image = new Image()
+      image.onload = () => {
+        const canvas = document.createElement('canvas')
+        canvas.width = image.width
+        canvas.height = image.height
+        const ctx = canvas.getContext('2d')
+        ctx.drawImage(image, 0, 0)
+
+        // Apply color adjustments here
+        Color(canvas, color)
+
+        const newImageUrl = canvas.toDataURL()
+        setAdjustedPhoto(newImageUrl)
+      }
+      image.src = removeBg.state && processedPhoto ? processedPhoto : originalPhoto
+    }
+    adjustImageAndSetPhoto()
+  }, [color, removeBg, processedPhoto, originalPhoto])
 
   // Update the photo state when removeBg changes
   useEffect(() => {
-    if (removeBg.state && processedPhoto) {
+    if (adjustedPhoto) {
+      setPhoto(adjustedPhoto)
+      setTimeout(() => updatePreview(editorRef, setCroppedImage), 100) // Update preview immediately after setting photo
+    }
+    else if (removeBg.state && processedPhoto) {
       setPhoto(processedPhoto)
       setTimeout(() => updatePreview(editorRef, setCroppedImage), 100) // Update preview immediately after setting photo
-    } else {
+    }
+    else {
       setPhoto(originalPhoto)
       setTimeout(() => updatePreview(editorRef, setCroppedImage), 100) // Update preview immediately after setting photo
     }
-  }, [removeBg, originalPhoto, processedPhoto, editorRef, updatePreview])
-
+  }, [originalPhoto, processedPhoto, adjustedPhoto, editorRef, adjustedPhoto, updatePreview])
 
   useEffect(() => {
     if (removeBg.state && originalPhoto && !processedPhoto && allowAiModel) {

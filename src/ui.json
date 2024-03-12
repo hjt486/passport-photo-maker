@@ -39,6 +39,10 @@
     "en": "Disagree",
     "zh": "拒绝"
   },
+  "zoom": {
+    "en": "Zoom",
+    "zh": "缩放"
+  },
   "controlTab1": {
     "en": "Transform",
     "zh": "变换"
@@ -52,15 +56,15 @@
     "zh": "亮度"
   },
   "saturation": {
-    "en": "saturation",
+    "en": "Saturation",
     "zh": "饱和度"
   },
   "warmth": {
-    "en": "warmth",
+    "en": "Warmth",
     "zh": "色温"
   },
   "contrast": {
-    "en": "contrast",
+    "en": "Contrast",
     "zh": "对比度"
   },
   "backgroundRemovalLabel": {
