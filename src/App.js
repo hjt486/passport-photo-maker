@@ -974,7 +974,7 @@ const BuyMeACoffee = ({
               <p className="save-text" >{translate("buyMeACoffeeWeChat")}</p>
             </div>
             <div className="save-option">
-              <img src={process.env.PUBLIC_URL + "/BuyMeACoffee/zelle.png"} width={300} alt="Zelle" className="zelle-logo" />
+              {/* <img src={process.env.PUBLIC_URL + "/BuyMeACoffee/zelle.png"} width={300} alt="Zelle" className="zelle-logo" /> */}
               <img src={process.env.PUBLIC_URL + "/BuyMeACoffee/paypal.png"} width={300} alt="Paypal" className="paypal-logo" />
               <textarea id="emailAddress" hidden="true">hjt486@gmail.com</textarea>
               <div>
