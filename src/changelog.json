@@ -1,6 +1,15 @@
 {
   "changelog": [
     {
+      "date": "2024-04-15",
+      "item": [
+        {
+          "en": "Added Australia Passport/Visa photo template.",
+          "zh": "增加澳大利亚护照签证照片模板。"
+        }
+      ]
+    },
+    {
       "date": "2024-03-12",
       "item": [
         {

@@ -18,6 +18,7 @@ import Canada_Passport_Photo from './Templates/Canada_Passport_Photo.json'
 import Canada_Visa_Photo from './Templates/Canada_Visa_Photo.json'
 import Japan_Visa_Photo from './Templates/Japan_Passport_Photo.json'
 import Malaysia_Visa_Photo from './Templates/Malaysia_Passport_Photo.json'
+import Australia_Visa_Photo from './Templates/Australia_Passport_Photo.json'
 import './App.css'
 import ChangeLog from './changelog.json'
 
@@ -38,6 +39,7 @@ const TEMPLATES = [
   US_Passport_Photo,
   Canada_Passport_Photo,
   Canada_Visa_Photo,
+  Australia_Visa_Photo,
   Japan_Visa_Photo,
   Malaysia_Visa_Photo,
 ]
