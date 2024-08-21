@@ -18,6 +18,8 @@ import Canada_Passport_Photo from './Templates/Canada_Passport_Photo.json'
 import Canada_Visa_Photo from './Templates/Canada_Visa_Photo.json'
 import Japan_Visa_Photo from './Templates/Japan_Passport_Photo.json'
 import Malaysia_Visa_Photo from './Templates/Malaysia_Passport_Photo.json'
+import UK_Passport_Photo from './Templates/UK_Passport_Photo.json'
+import Germany_Passport_Photo from './Templates/Germany_Passport_Photo.json'
 import './App.css'
 import ChangeLog from './changelog.json'
 
@@ -36,10 +38,12 @@ const TEMPLATES = [
   PRC_Passport_Photo,
   PRC_Travel_Document,
   US_Passport_Photo,
+  UK_Passport_Photo,
   Canada_Passport_Photo,
   Canada_Visa_Photo,
   Japan_Visa_Photo,
   Malaysia_Visa_Photo,
+  Germany_Passport_Photo,
 ]
 const MAX_EDITOR_WIDTH = 330
 const MAX_EDITOR_HEIGHT = 480
@@ -216,10 +220,14 @@ const LeftColumn = ({
   translate,
   translateObject,
 }) => {
-  const { guide, instruction } = photoGuides
+  const { guide, instruction, width, height } = photoGuides
   return (
     photo && (<div className="left-column" style={{ width: `${editorDimensions.width * editorDimensions.zoom}px` }}>
       <article className="guides-section guide-instruction">
+        <small>
+          {translate("width")}: {width}mm <br/>
+          {translate("height")}: {height}mm <br/><br/>
+        </small>
         <small dangerouslySetInnerHTML={{ __html: translateObject(instruction) }} />
       </article>
       <article className="guides-section guide-details">

@@ -1,16 +1,16 @@
 {
   "title": {
-    "en": "Canada Visa Photo",
-    "zh": "加拿大签证照片"
+    "en": "UK Passport Photo",
+    "zh": "英国护照照片"
   },
   "width": "35",
   "height": "45",
   "dpi": "300",
   "format": "jpg",
-  "size": "900",
+  "size": "150",
   "instruction": {
-    "en": "Please check the latest requirement at <a target=\"_blank\" rel=\"noreferrer\" href=\"https://www.canada.ca/en/immigration-refugees-citizenship/services/application/application-forms-guides/temporary-resident-visa-application-photograph-specifications.html\">here</a>.",
-    "zh": "请点击<a target=\"_blank\" rel=\"noreferrer\" href=\"https://www.canada.ca/en/immigration-refugees-citizenship/services/application/application-forms-guides/temporary-resident-visa-application-photograph-specifications.html\">这里</a>查看最新标准。"
+    "en": "Please check the latest requirement at <a target=\"_blank\" rel=\"noreferrer\" href=\"https://www.gov.uk/photos-for-passports/photo-requirements\">here</a>.",
+    "zh": "请点击<a target=\"_blank\" rel=\"noreferrer\" href=\"https://www.gov.uk/photos-for-passports/photo-requirements\">这里</a>查看最新标准。"
   },
   "guide": [
     {
@@ -57,7 +57,7 @@
         "zh": "请将脸部（下巴）下沿放入此区域"
       },
       "start_x": "0",
-      "start_y": "380",
+      "start_y": "360",
       "width": "350",
       "height": "25",
       "color": "green",

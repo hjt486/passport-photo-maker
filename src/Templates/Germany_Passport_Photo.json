@@ -1,16 +1,16 @@
 {
   "title": {
-    "en": "Canada Visa Photo",
-    "zh": "加拿大签证照片"
+    "en": "Germany Passport/Visa Photo",
+    "zh": "德国护照签证照片"
   },
   "width": "35",
   "height": "45",
   "dpi": "300",
   "format": "jpg",
-  "size": "900",
+  "size": "150",
   "instruction": {
-    "en": "Please check the latest requirement at <a target=\"_blank\" rel=\"noreferrer\" href=\"https://www.canada.ca/en/immigration-refugees-citizenship/services/application/application-forms-guides/temporary-resident-visa-application-photograph-specifications.html\">here</a>.",
-    "zh": "请点击<a target=\"_blank\" rel=\"noreferrer\" href=\"https://www.canada.ca/en/immigration-refugees-citizenship/services/application/application-forms-guides/temporary-resident-visa-application-photograph-specifications.html\">这里</a>查看最新标准。"
+    "en": "Please check the latest requirement at <a target=\"_blank\" rel=\"noreferrer\" href=\"https://www.germany.info/blob/906790/6e3eee9fd4d86e16aaefe0e92d809332/dd-sample-photos-data.pdf\">here</a>.",
+    "zh": "请点击<a target=\"_blank\" rel=\"noreferrer\" href=\"https://www.germany.info/blob/906790/6e3eee9fd4d86e16aaefe0e92d809332/dd-sample-photos-data.pdf\">这里</a>查看最新标准。"
   },
   "guide": [
     {
@@ -39,9 +39,9 @@
         "zh": "请将头部（包含头发）上沿放入此区域"
       },
       "start_x": "0",
-      "start_y": "45",
+      "start_y": "5",
       "width": "350",
-      "height": "25",
+      "height": "20",
       "color": "green",
       "isVerticalMovable": false,
       "isHorizontalMovable": false,
@@ -57,9 +57,9 @@
         "zh": "请将脸部（下巴）下沿放入此区域"
       },
       "start_x": "0",
-      "start_y": "380",
+      "start_y": "345",
       "width": "350",
-      "height": "25",
+      "height": "20",
       "color": "green",
       "isVerticalMovable": false,
       "isHorizontalMovable": false,

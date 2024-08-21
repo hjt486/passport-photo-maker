@@ -1,6 +1,24 @@
 {
   "changelog": [
     {
+      "date": "2024-08-21",
+      "item": [
+        {
+          "en": "Added displaying default height and weight in mm on UI.",
+          "zh": "增加以毫米为单位显示模板默认高度和宽度。"
+        },
+        {
+          "en": "Added UK Passport Photo Template.",
+          "zh": "增加英国护照照片模板。"
+        },
+        {
+          "en": "Added Germany Passport/Visa Photo Template.",
+          "zh": "增加德国护照签证照片模板。"
+        }
+        
+      ]
+    },
+    {
       "date": "2024-03-12",
       "item": [
         {

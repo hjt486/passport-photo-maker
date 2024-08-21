@@ -183,6 +183,14 @@
     "en": "For 4''x6'' Photo Print",
     "zh": "用于打印4''x6''照片"
   },
+  "width": {
+    "en": "Width",
+    "zh": "宽度"
+  },
+  "height": {
+    "en": "Height",
+    "zh": "高度"
+  },
   "anmiatedText1": {
     "en": "Happy",
     "zh": "新年"
