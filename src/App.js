@@ -21,6 +21,7 @@ import Malaysia_Visa_Photo from './Templates/Malaysia_Passport_Photo.json'
 import UK_Passport_Photo from './Templates/UK_Passport_Photo.json'
 import Germany_Passport_Photo from './Templates/Germany_Passport_Photo.json'
 import Australia_Visa_Photo from './Templates/Australia_Passport_Photo.json'
+import Mexico_TN_Visa_Photo from './Templates/Mexico_TN_Visa_Photo.json'
 import './App.css'
 import ChangeLog from './changelog.json'
 
@@ -46,6 +47,7 @@ const TEMPLATES = [
   Japan_Visa_Photo,
   Malaysia_Visa_Photo,
   Germany_Passport_Photo,
+  Mexico_TN_Visa_Photo,
 ]
 const MAX_EDITOR_WIDTH = 330
 const MAX_EDITOR_HEIGHT = 480

@@ -1,6 +1,15 @@
 {
   "changelog": [
     {
+      "date": "2024-09-03",
+      "item": [
+        {
+          "en": "Added Mexico Temporary Resident Visa Photo template.",
+          "zh": "增加墨西哥临时居民签证照片模板。"
+        }
+      ]
+    },
+    {
       "date": "2024-08-21",
       "item": [
         {
@@ -8,14 +17,13 @@
           "zh": "增加以毫米为单位显示模板默认高度和宽度。"
         },
         {
-          "en": "Added UK Passport Photo Template.",
+          "en": "Added UK Passport Photo template.",
           "zh": "增加英国护照照片模板。"
         },
         {
-          "en": "Added Germany Passport/Visa Photo Template.",
+          "en": "Added Germany Passport/Visa Photo template.",
           "zh": "增加德国护照签证照片模板。"
         }
-        
       ]
     },
     {

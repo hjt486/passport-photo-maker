@@ -1,0 +1,71 @@
+{
+  "title": {
+    "en": "Mexico TN Visa Photo",
+    "zh": "墨西哥临时居民签证照片"
+  },
+  "width": "31",
+  "height": "39",
+  "dpi": "300",
+  "format": "jpg",
+  "size": "500",
+  "instruction": {
+    "en": "Please check the latest requirement at <a target=\"_blank\" rel=\"noreferrer\" href=\"https://consulmex.sre.gob.mx/leamington/index.php/non-mexicans/visas/115-temporary-resident-visa\">here</a>.",
+    "zh": "请点击<a target=\"_blank\" rel=\"noreferrer\" href=\"https://consulmex.sre.gob.mx/leamington/index.php/non-mexicans/visas/115-temporary-resident-visa\">这里</a>查看最新标准。"
+  },
+  "guide": [
+    {
+      "index": "A",
+      "title": "Center Guide Line",
+      "instruction": {
+        "en": "Align the nose tip to the center line",
+        "zh": "将鼻尖居中对齐这条线"
+      },
+      "start_x": "155",
+      "start_y": "0",
+      "width": "5",
+      "height": "390",
+      "color": "yellow",
+      "isVerticalMovable": false,
+      "isHorizontalMovable": false,
+      "overlap": true,
+      "opacity": "0.5",
+      "group": "1"
+    },
+    {
+      "index": "B",
+      "title": "Bar: Top",
+      "instruction": {
+        "en": "Put the edge of the top of the head/hair into this area",
+        "zh": "请将头部（包含头发）上沿放入此区域"
+      },
+      "start_x": "0",
+      "start_y": "25",
+      "width": "310",
+      "height": "40",
+      "color": "green",
+      "isVerticalMovable": false,
+      "isHorizontalMovable": false,
+      "overlap": true,
+      "opacity": "0.5",
+      "group": "2"
+    },
+    {
+      "index": "C",
+      "title": "Bar: Bottom",
+      "instruction": {
+        "en": "Put the edge of the bottom of the face/chin into this area",
+        "zh": "请将脸部（下巴）下沿放入此区域"
+      },
+      "start_x": "0",
+      "start_y": "240",
+      "width": "310",
+      "height": "40",
+      "color": "green",
+      "isVerticalMovable": false,
+      "isHorizontalMovable": false,
+      "overlap": true,
+      "opacity": "0.5",
+      "group": "2"
+    }
+  ]
+}
