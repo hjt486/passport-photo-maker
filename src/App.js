@@ -1477,6 +1477,9 @@ const App = () => {
 
   return (
     <div className="app">
+      <div class="banner">
+      {translate("jobMessage1")}<a href="mailto:jiataihan.dev@gmail.com">jiataihan.dev@gmail.com</a>{translate("jobMessage2")}
+  </div>
       <div className="frame">
         <div className="container">
           <NavBar

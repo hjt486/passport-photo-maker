@@ -198,5 +198,13 @@
   "anmiatedText2": {
     "en": " New Year",
     "zh": "快乐"
+  },
+  "jobMessage1": {
+    "en": "Hello everyone, I was recently laid off due to reduction in force. If you are in the U.S. and would like to recommend any Software Engineer-related opportunities, please email me at ",
+    "zh": "大家好，我最近因为公司运营问题被裁员。如果您在美国，愿意推荐Software Engineer相关职位的，请发邮件到 "
+  },
+  "jobMessage2": {
+    "en": ", Thank you so much!",
+    "zh": "，非常感谢！"
   }
 }
