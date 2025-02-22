@@ -1,0 +1,14 @@
+export const INITIAL_ZOOM = 1
+export const INITIAL_ROTATION = 0
+export const ZOOM_FACTOR = 1.01
+export const MOVE_FACTOR = 0.005
+export const MIN_ZOOM = 0.5
+export const MAX_ZOOM = 10
+export const ROTATION_THRESHOLD_DEG = 2
+export const EXPORT_WIDTH_LIMIT = 2000
+export const EXPORT_HEIGHT_LIMIT = 2000
+export const EXPORT_SIZE_LIMIT = 2000
+export const DEBOUNCE = 250
+export const MAX_EDITOR_WIDTH = 330
+export const MAX_EDITOR_HEIGHT = 480
+export const MM2INCH = 25.4
