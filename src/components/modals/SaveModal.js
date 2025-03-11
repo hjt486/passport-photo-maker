@@ -83,29 +83,29 @@ const SaveModal = ({
           <div className="save-option-container">
             <div className="save-option">
               <img src={imageSingleSrc} alt="Single" className="save-preview" />
-              <p className="save-text">{translate("saveSingle")}</p>
+              <p className="save-text">{translate("saveSingleText")}</p>
               <button
                 className="save-option-button"
                 onClick={() => handleSaveSingle(imageSingleSrc)}
               >
-                {translate("saveButton")}
+                {translate("saveSingle")}
               </button>
             </div>
             <div className="save-option">
               <img src={image4x6Src} alt="4x6" className="save-preview" />
-              <p className="save-text">{translate("save4x6")}</p>
+              <p className="save-text">{translate("save4x6Text")}</p>
               <button
                 className="save-option-button"
                 onClick={() => handleSave4x6(image4x6Src)}
               >
-                {translate("saveButton")}
+                {translate("save4x6")}
               </button>
             </div>
           </div>
         )}
         <footer>
           <button onClick={() => setModals((prevModals) => ({ ...prevModals, save: false }))}>
-            {translate("closeButton")}
+            {translate("noButton")}
           </button>
         </footer>
       </article>

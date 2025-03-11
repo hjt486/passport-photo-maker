@@ -39,7 +39,11 @@
         "en": "Disagree",
         "zh": "拒绝"
     },
-    "zoom": {
+    "zoomLabel": {
+        "en": "Zoom",
+        "zh": "缩放"
+    },
+    "rotateLabel": {
         "en": "Zoom",
         "zh": "缩放"
     },
@@ -67,7 +71,7 @@
         "en": "Contrast",
         "zh": "对比度"
     },
-    "backgroundRemovalLabel": {
+    "removeBgLabel": {
         "en": "AI Background Removal",
         "zh": "AI去背景"
     },
