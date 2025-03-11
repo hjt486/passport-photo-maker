@@ -1,16 +1,22 @@
 {
   "files": {
-    "main.css": "/passport-photo-maker/static/css/main.ac1766a9.css",
-    "main.js": "/passport-photo-maker/static/js/main.0d2488a0.js",
-    "static/js/453.9ef64e0c.chunk.js": "/passport-photo-maker/static/js/453.9ef64e0c.chunk.js",
-    "static/media/ort-wasm-simd-threaded.wasm": "/passport-photo-maker/static/media/ort-wasm-simd-threaded.50be9f91026bda8b3ca4.wasm",
+    "main.css": "/passport-photo-maker/static/css/main.5dede359.css",
+    "main.js": "/passport-photo-maker/static/js/main.b058c5e9.js",
+    "static/js/759.591c3bf5.chunk.js": "/passport-photo-maker/static/js/759.591c3bf5.chunk.js",
+    "static/js/651.daf8689b.chunk.js": "/passport-photo-maker/static/js/651.daf8689b.chunk.js",
+    "static/js/787.fcfa9129.chunk.js": "/passport-photo-maker/static/js/787.fcfa9129.chunk.js",
+    "static/media/ort-wasm-simd-threaded.jsep.wasm": "/passport-photo-maker/static/media/ort-wasm-simd-threaded.jsep.03bafc41e28c2f1e46f4.wasm",
+    "static/media/ort.webgpu.bundle.min.mjs": "/passport-photo-maker/static/media/ort.webgpu.bundle.min.f4749fafc89f27b8f42c.mjs",
+    "static/media/ort.bundle.min.mjs": "/passport-photo-maker/static/media/ort.bundle.min.400e283aa9209cece0de.mjs",
     "index.html": "/passport-photo-maker/index.html",
-    "main.ac1766a9.css.map": "/passport-photo-maker/static/css/main.ac1766a9.css.map",
-    "main.0d2488a0.js.map": "/passport-photo-maker/static/js/main.0d2488a0.js.map",
-    "453.9ef64e0c.chunk.js.map": "/passport-photo-maker/static/js/453.9ef64e0c.chunk.js.map"
+    "main.5dede359.css.map": "/passport-photo-maker/static/css/main.5dede359.css.map",
+    "main.b058c5e9.js.map": "/passport-photo-maker/static/js/main.b058c5e9.js.map",
+    "759.591c3bf5.chunk.js.map": "/passport-photo-maker/static/js/759.591c3bf5.chunk.js.map",
+    "651.daf8689b.chunk.js.map": "/passport-photo-maker/static/js/651.daf8689b.chunk.js.map",
+    "787.fcfa9129.chunk.js.map": "/passport-photo-maker/static/js/787.fcfa9129.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.ac1766a9.css",
-    "static/js/main.0d2488a0.js"
+    "static/css/main.5dede359.css",
+    "static/js/main.b058c5e9.js"
   ]
 }
