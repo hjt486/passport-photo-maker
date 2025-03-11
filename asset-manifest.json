@@ -1,15 +1,16 @@
 {
   "files": {
-    "main.css": "/passport-photo-maker/static/css/main.dba322db.css",
-    "main.js": "/passport-photo-maker/static/js/main.83c80580.js",
-    "static/js/787.fcfa9129.chunk.js": "/passport-photo-maker/static/js/787.fcfa9129.chunk.js",
+    "main.css": "/passport-photo-maker/static/css/main.ac1766a9.css",
+    "main.js": "/passport-photo-maker/static/js/main.0d2488a0.js",
+    "static/js/453.9ef64e0c.chunk.js": "/passport-photo-maker/static/js/453.9ef64e0c.chunk.js",
+    "static/media/ort-wasm-simd-threaded.wasm": "/passport-photo-maker/static/media/ort-wasm-simd-threaded.50be9f91026bda8b3ca4.wasm",
     "index.html": "/passport-photo-maker/index.html",
-    "main.dba322db.css.map": "/passport-photo-maker/static/css/main.dba322db.css.map",
-    "main.83c80580.js.map": "/passport-photo-maker/static/js/main.83c80580.js.map",
-    "787.fcfa9129.chunk.js.map": "/passport-photo-maker/static/js/787.fcfa9129.chunk.js.map"
+    "main.ac1766a9.css.map": "/passport-photo-maker/static/css/main.ac1766a9.css.map",
+    "main.0d2488a0.js.map": "/passport-photo-maker/static/js/main.0d2488a0.js.map",
+    "453.9ef64e0c.chunk.js.map": "/passport-photo-maker/static/js/453.9ef64e0c.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.dba322db.css",
-    "static/js/main.83c80580.js"
+    "static/css/main.ac1766a9.css",
+    "static/js/main.0d2488a0.js"
   ]
 }
