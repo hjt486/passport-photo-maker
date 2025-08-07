@@ -9,6 +9,7 @@ import UK_Passport_Photo from './Templates/UK_Passport_Photo.json'
 import Germany_Passport_Photo from './Templates/Germany_Passport_Photo.json'
 import Australia_Visa_Photo from './Templates/Australia_Passport_Photo.json'
 import Mexico_TN_Visa_Photo from './Templates/Mexico_TN_Visa_Photo.json'
+import Spain_Passport_Photo from './Templates/Spain_Passport_Photo.json'
 
 export const TEMPLATES = [
   PRC_Passport_Photo,
@@ -22,4 +23,5 @@ export const TEMPLATES = [
   Malaysia_Visa_Photo,
   Germany_Passport_Photo,
   Mexico_TN_Visa_Photo,
+  Spain_Passport_Photo,
 ]
