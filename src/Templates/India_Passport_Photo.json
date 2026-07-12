@@ -1,0 +1,71 @@
+{
+  "title": "Indian Passport Photo",
+  "width": "35",
+  "height": "45",
+  "dpi": "457.2",
+  "format": "jpg",
+  "size": "250",
+  "instruction": "Please check the latest requirement at <a target=\"_blank\" rel=\"noreferrer\" href=\"https://services.vfsglobal.com/usa/en/ind/apply-passport\">here</a>.",
+  "guide": [
+    {
+      "index": "A",
+      "title": "Center Guide Line",
+      "instruction": "Align the nose tip to the center line",
+      "start_x": "172.5",
+      "start_y": "0",
+      "width": "5",
+      "height": "450",
+      "color": "yellow",
+      "isVerticalMovable": false,
+      "isHorizontalMovable": false,
+      "overlap": true,
+      "opacity": "0.5",
+      "group": "1"
+    },
+    {
+      "index": "↕",
+      "title": "Draggable Indicator",
+      "instruction": "Move the two bars up and down to fit your face",
+      "start_x": "20",
+      "start_y": "33",
+      "width": "25",
+      "height": "28",
+      "color": "aqua",
+      "isVerticalMovable": true,
+      "isHorizontalMovable": false,
+      "overlap": true,
+      "opacity": "0.5",
+      "group": "2"
+    },
+    {
+      "index": "B",
+      "title": "Bar: Top",
+      "instruction": "Put the edge of the top of the head/hair into this area",
+      "start_x": "0",
+      "start_y": "35",
+      "width": "350",
+      "height": "25",
+      "color": "green",
+      "isVerticalMovable": true,
+      "isHorizontalMovable": false,
+      "overlap": true,
+      "opacity": "0.5",
+      "group": "2"
+    },
+    {
+      "index": "C",
+      "title": "Bar: Bottom",
+      "instruction": "Put the edge of the bottom of the face/chin into this area",
+      "start_x": "0",
+      "start_y": "400",
+      "width": "350",
+      "height": "25",
+      "color": "green",
+      "isVerticalMovable": true,
+      "isHorizontalMovable": false,
+      "overlap": true,
+      "opacity": "0.5",
+      "group": "2"
+    }
+  ]
+}

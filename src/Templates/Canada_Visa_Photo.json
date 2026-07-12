@@ -1,25 +1,16 @@
 {
-  "title": {
-    "en": "Canada Visa Photo",
-    "zh": "加拿大签证照片"
-  },
+  "title": "Canada Visa Photo",
   "width": "35",
   "height": "45",
   "dpi": "300",
   "format": "jpg",
   "size": "900",
-  "instruction": {
-    "en": "Please check the latest requirement at <a target=\"_blank\" rel=\"noreferrer\" href=\"https://www.canada.ca/en/immigration-refugees-citizenship/services/application/application-forms-guides/temporary-resident-visa-application-photograph-specifications.html\">here</a>.",
-    "zh": "请点击<a target=\"_blank\" rel=\"noreferrer\" href=\"https://www.canada.ca/en/immigration-refugees-citizenship/services/application/application-forms-guides/temporary-resident-visa-application-photograph-specifications.html\">这里</a>查看最新标准。"
-  },
+  "instruction": "Please check the latest requirement at <a target=\"_blank\" rel=\"noreferrer\" href=\"https://www.canada.ca/en/immigration-refugees-citizenship/services/application/application-forms-guides/temporary-resident-visa-application-photograph-specifications.html\">here</a>.",
   "guide": [
     {
       "index": "A",
       "title": "Center Guide Line",
-      "instruction": {
-        "en": "Align the nose tip to the center line",
-        "zh": "将鼻尖居中对齐这条线"
-      },
+      "instruction": "Align the nose tip to the center line",
       "start_x": "172.5",
       "start_y": "0",
       "width": "5",
@@ -34,10 +25,7 @@
     {
       "index": "B",
       "title": "Bar: Top",
-      "instruction": {
-        "en": "Put the edge of the top of the head/hair into this area",
-        "zh": "请将头部（包含头发）上沿放入此区域"
-      },
+      "instruction": "Put the edge of the top of the head/hair into this area",
       "start_x": "0",
       "start_y": "45",
       "width": "350",
@@ -52,10 +40,7 @@
     {
       "index": "C",
       "title": "Bar: Bottom",
-      "instruction": {
-        "en": "Put the edge of the bottom of the face/chin into this area",
-        "zh": "请将脸部（下巴）下沿放入此区域"
-      },
+      "instruction": "Put the edge of the bottom of the face/chin into this area",
       "start_x": "0",
       "start_y": "380",
       "width": "350",

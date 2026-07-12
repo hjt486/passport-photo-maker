@@ -333,25 +333,3 @@
   overflow: hidden;
 }
 
-.test {
-  width: 80vw;
-  align-self: center;
-}
-
-iframe {
-  /* set Disqus color scheme to Auto*/
-  color-scheme: light;
-}
-
-.banner {
-  background-color: var(--pico-primary-background); 
-  color: #000; 
-  padding: 10px;
-  text-align: center;
-  font-size: 14px;
-}
-
-.banner a {
-  color: var(--pico-primary-inverse);
-  text-decoration: underline;
-}

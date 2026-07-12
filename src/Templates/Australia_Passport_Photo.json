@@ -1,25 +1,16 @@
 {
-  "title": {
-    "en": "Australia Passport/Visa Photo",
-    "zh": "澳大利亚护照签证照片"
-  },
+  "title": "Australia Passport/Visa Photo",
   "width": "35",
   "height": "45",
   "dpi": "300",
   "format": "jpg",
   "size": "400",
-  "instruction": {
-    "en": "This template uses 35mm as width and 45mm as height,<br>please check the latest requirement at <a target=\"_blank\" rel=\"noreferrer\" href=\"https://www.passports.gov.au/PhotoGuidelines\">here</a>.",
-    "zh": "模版采用35mm宽度和45mm长度，<br>具体要求请点击<a target=\"_blank\" rel=\"noreferrer\" href=\"https://www.passports.gov.au/PhotoGuidelines\">这里</a>查看最新标准。"
-  },
+  "instruction": "This template uses 35mm as width and 45mm as height,<br>please check the latest requirement at <a target=\"_blank\" rel=\"noreferrer\" href=\"https://www.passports.gov.au/PhotoGuidelines\">here</a>.",
   "guide": [
     {
       "index": "A",
       "title": "Center Guide Line",
-      "instruction": {
-        "en": "Align the nose tip to the center line",
-        "zh": "将鼻尖居中对齐这条线"
-      },
+      "instruction": "Align the nose tip to the center line",
       "start_x": "172.5",
       "start_y": "0",
       "width": "5",
@@ -34,10 +25,7 @@
     {
       "index": "↕",
       "title": "Draggable Indicator",
-      "instruction": {
-        "en": "Move the two bars up and down to fit your face",
-        "zh": "请上下拖动这两条绿色方框使得你的头部和脸部符合以下要求"
-      },
+      "instruction": "Move the two bars up and down to fit your face",
       "start_x": "20",
       "start_y": "18",
       "width": "25",
@@ -52,10 +40,7 @@
     {
       "index": "B",
       "title": "Bar: Top",
-      "instruction": {
-        "en": "Put the edge of the top of the head/hair into this area",
-        "zh": "请将头部（包含头发）上沿放入此区域"
-      },
+      "instruction": "Put the edge of the top of the head/hair into this area",
       "start_x": "0",
       "start_y": "20",
       "width": "350",
@@ -70,10 +55,7 @@
     {
       "index": "C",
       "title": "Bar: Bottom",
-      "instruction": {
-        "en": "Put the edge of the bottom of the face/chin into this area",
-        "zh": "请将脸部（下巴）下沿放入此区域"
-      },
+      "instruction": "Put the edge of the bottom of the face/chin into this area",
       "start_x": "0",
       "start_y": "360",
       "width": "350",

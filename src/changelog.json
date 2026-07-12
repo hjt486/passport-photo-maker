@@ -3,220 +3,112 @@
     {
       "date": "2024-09-03",
       "item": [
-        {
-          "en": "Added Mexico Temporary Resident Visa Photo template.",
-          "zh": "增加墨西哥临时居民签证照片模板。"
-        }
+        "Added Mexico Temporary Resident Visa Photo template."
       ]
     },
     {
       "date": "2024-08-21",
       "item": [
-        {
-          "en": "Added displaying default height and weight in mm on UI.",
-          "zh": "增加以毫米为单位显示模板默认高度和宽度。"
-        },
-        {
-          "en": "Added UK Passport Photo template.",
-          "zh": "增加英国护照照片模板。"
-        },
-        {
-          "en": "Added Germany Passport/Visa Photo template.",
-          "zh": "增加德国护照签证照片模板。"
-        }
+        "Added displaying default height and weight in mm on UI.",
+        "Added UK Passport Photo template.",
+        "Added Germany Passport/Visa Photo template."
       ]
     },
     {
       "date": "2024-04-15",
       "item": [
-        {
-          "en": "Added Australia Passport/Visa photo template.",
-          "zh": "增加澳大利亚护照签证照片模板。"
-        }
+        "Added Australia Passport/Visa photo template."
       ]
     },
     {
       "date": "2024-03-12",
       "item": [
-        {
-          "en": "Added color adjustment feature.",
-          "zh": "增加颜色调整功能。"
-        },
-        {
-          "en": "Optimized dragging & preview.",
-          "zh": "优化拖动和预览的速度。"
-        }
+        "Added color adjustment feature.",
+        "Optimized dragging & preview."
       ]
     },
     {
       "date": "2024-03-11",
       "item": [
-        {
-          "en": "Added Chinese Travel Document Photo Template.",
-          "zh": "增加中国旅行证照片模板。"
-        }
+        "Added Chinese Travel Document Photo Template."
       ]
     },
     {
       "date": "2024-03-08",
       "item": [
-        {
-          "en": "Added Malaysia Passport/Visa Photo template.",
-          "zh": "增加马来西亚护照签证照片模板。"
-        }
+        "Added Malaysia Passport/Visa Photo template."
       ]
     },
     {
       "date": "2024-03-03",
       "item": [
-        {
-          "en": "Added discussion section.",
-          "zh": "增加讨论区域。"
-        }
+        "Added discussion section."
       ]
     },
     {
       "date": "2024-03-02",
       "item": [
-        {
-          "en": "Added Japan Passport/Visa Photo template.",
-          "zh": "增加日本护照签证照片模板。"
-        }
+        "Added Japan Passport/Visa Photo template."
       ]
     },
     {
       "date": "2024-02-06",
       "item": [
-        {
-          "en": "Lower save quality try step from 0.1 to 0.01, to prevent generating file that is too small.",
-          "zh": "将保存照片的尝试步数从0.1改为0.01，防止生成文件过小无法满足要求。"
-        }
+        "Lower save quality try step from 0.1 to 0.01, to prevent generating file that is too small."
       ]
     },
     {
       "date": "2024-01-30",
       "item": [
-        {
-          "en": "Optimized Buy Me A Coffee UI & US Passport/Visa Photo template.",
-          "zh": "优化打赏界面和美国护照签证照片模板。"
-        }
+        "Optimized Buy Me A Coffee UI & US Passport/Visa Photo template."
       ]
     },
     {
       "date": "2024-01-28",
       "item": [
-        {
-          "en": "Added AI background removal feature.(iOS device is not supported)",
-          "zh": "增加AI自动去背景功能。（不支持iOS设备）。"
-        },
-        {
-          "en": "Added rotate threshold for two-finger touch, to prevent rotating when simply zooming.",
-          "zh": "两指操作时增加旋转阈值，防止仅想缩放时发生旋转。"
-        },
-        {
-          "en": "Added disclaimer and data privacy policy.",
-          "zh": "增加免责声明和数据隐私政策说明，"
-        },
-        {
-          "en": "Added 4''x6'' printable option.",
-          "zh": "增加打印成4‘’x6''照片的功能。"
-        }
+        "Added AI background removal feature.(iOS device is not supported)",
+        "Added rotate threshold for two-finger touch, to prevent rotating when simply zooming.",
+        "Added disclaimer and data privacy policy.",
+        "Added 4''x6'' printable option."
       ]
     },
     {
       "date": "2024-01-27",
       "item": [
-        {
-          "en": "On touchscreen, Added two-finger rotate function.",
-          "zh": "在触摸设备上，增加了两指旋转功能。"
-        },
-        {
-          "en": "Changed to be able to zoom and move out of original boundary, giving more flexibility.",
-          "zh": "更改为可以缩小移动至原图片边界之外，增加更多灵活性。"
-        },
-        {
-          "en": "Fixed the move issue that when firstly loaded the image, have to drag few times to move.",
-          "zh": "修复第一次载入照片之后，需要拖动几次图片才能移动的问题。"
-        },
-        {
-          "en": "Limited adaptive size to width, prevent overflow on handset.",
-          "zh": "将自适应尺寸改为由宽度定义，防止在手持设备上溢出。"
-        }
+        "On touchscreen, Added two-finger rotate function.",
+        "Changed to be able to zoom and move out of original boundary, giving more flexibility.",
+        "Fixed the move issue that when firstly loaded the image, have to drag few times to move.",
+        "Limited adaptive size to width, prevent overflow on handset."
       ]
     },
     {
       "date": "2024-01-26",
       "item": [
-        {
-          "en": "Added Changelog.",
-          "zh": "增加更新历史。"
-        },
-        {
-          "en": "Replaced with high quality export lib, better image quality.",
-          "zh": "替换成高品质图像输出的库，输出图像有更好的品质了。"
-        },
-        {
-          "en": "Updated editor area to auto size, preventing issue on handset devices.",
-          "zh": "更新编辑器区域支持自动调整大小，防止在手持设备上出现的一些问题。"
-        },
-        {
-          "en": "Updated all templates to support proper DPI to correct size.",
-          "zh": "更新所有模板信息以支持DPI和正确分辨率的转换。"
-        },
-        {
-          "en": "Added Google Analytics",
-          "zh": "增加Google分析。"
-        }
+        "Added Changelog.",
+        "Replaced with high quality export lib, better image quality.",
+        "Updated editor area to auto size, preventing issue on handset devices.",
+        "Updated all templates to support proper DPI to correct size.",
+        "Added Google Analytics"
       ]
     },
     {
       "date": "2024-01-25",
       "item": [
-        {
-          "en": "Added feedback link.",
-          "zh": "增加反馈链接。"
-        },
-        {
-          "en": "Added Canada templates, tweaked other templates.",
-          "zh": "增加加拿大模板，修改了其他的模板信息。"
-        },
-        {
-          "en": "Fixed draggable guide out of boundary.",
-          "zh": "修复可拖拽辅助线超出边界问题。"
-        },
-        {
-          "en": "Added Github Readme, favicon, project info etc..",
-          "zh": "增加Github描述，图标，项目信息等。"
-        },
-        {
-          "en": "First deploy to public.",
-          "zh": "正式上线"
-        },
-        {
-          "en": "Added 'Buy Me A Coffee'.",
-          "zh": "增加打赏功能。"
-        },
-        {
-          "en": "Resized the UI, Added English/Chinese language support.",
-          "zh": "重新调整UI，添加中英双语界面。"
-        },
-        {
-          "en": "Basic feature/structure finished.",
-          "zh": "基本框架功能完成"
-        }
+        "Added feedback link.",
+        "Added Canada templates, tweaked other templates.",
+        "Fixed draggable guide out of boundary.",
+        "Added Github Readme, favicon, project info etc..",
+        "First deploy to public.",
+        "Added 'Buy Me A Coffee'.",
+        "Resized the UI, Added English/Chinese language support.",
+        "Basic feature/structure finished."
       ]
     },
     {
       "date": "2024-01-24",
       "item": [
-        {
-          "en": "Responsive UI updated.",
-          "zh": "完成自适应界面。"
-        },
-        {
-          "en": "Basic feature/structure finished.",
-          "zh": "基本框架功能完成。"
-        }
+        "Responsive UI updated.",
+        "Basic feature/structure finished."
       ]
     }
   ]

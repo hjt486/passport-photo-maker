@@ -1,25 +1,16 @@
 {
-  "title": {
-    "en": "US Passport/Visa Photo",
-    "zh": "美国护照签证照片"
-  },
+  "title": "US Passport/Visa Photo",
   "width": "51",
   "height": "51",
   "dpi": "300",
   "format": "jpg",
   "size": "230",
-  "instruction": {
-    "en": "Please check the latest requirement at <a target=\"_blank\" rel=\"noreferrer\" href=\"https://travel.state.gov/content/travel/en/passports/how-apply/photos.html\">here</a>.",
-    "zh": "请点击<a target=\"_blank\" rel=\"noreferrer\" href=\"https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/photos.html\">这里</a>查看最新标准。"
-  },
+  "instruction": "Please check the latest requirement at <a target=\"_blank\" rel=\"noreferrer\" href=\"https://travel.state.gov/content/travel/en/passports/how-apply/photos.html\">here</a>.",
   "guide": [
     {
       "index": "A",
       "title": "Center Guide Line",
-      "instruction": {
-        "en": "Align the nose tip to the center line",
-        "zh": "将鼻尖居中对齐这条线"
-      },
+      "instruction": "Align the nose tip to the center line",
       "start_x": "252.5",
       "start_y": "0",
       "width": "5",
@@ -34,10 +25,7 @@
     {
       "index": "↕",
       "title": "Draggable Indicator",
-      "instruction": {
-        "en": "Move the two bars up and down to fit your face",
-        "zh": "请上下拖动这两条绿色方框使得你的头部和脸部符合以下要求"
-      },
+      "instruction": "Move the two bars up and down to fit your face",
       "start_x": "20",
       "start_y": "48",
       "width": "25",
@@ -52,10 +40,7 @@
     {
       "index": "B",
       "title": "Bar: Top",
-      "instruction": {
-        "en": "Put the edge of the top of the head/hair into this area",
-        "zh": "请将头部（包含头发）上沿放入此区域"
-      },
+      "instruction": "Put the edge of the top of the head/hair into this area",
       "start_x": "0",
       "start_y": "30",
       "width": "510",
@@ -70,10 +55,7 @@
     {
       "index": "C",
       "title": "Bar: Bottom",
-      "instruction": {
-        "en": "Put the edge of the bottom of the face/chin into this area",
-        "zh": "请将脸部（下巴）下沿放入此区域"
-      },
+      "instruction": "Put the edge of the bottom of the face/chin into this area",
       "start_x": "0",
       "start_y": "325",
       "width": "510",
